@@ -1,19 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { login, getToken } from '../servicios/auth';
+import ErrorFormulario from './ErrorFormulario';
+import {Context as InicioSesionContext} from '../context/InicioSesionContext';
 
 const UsuarioContra = () => {
-    const [usuario, setUsuario] = useState("");
-    const [password, setPassword] = useState("");
+    const {state:{usuario, password}, cambiarValor, inicioSesion} = useContext(InicioSesionContext);
+    const [secured, setSecured] = useState(true);
     const navigation = useNavigation();
-
-    const inicioSesion = () => {
-        login(usuario,password);
-        console.log("usuario", usuario);
-        console.log("password", password);
-    }
 
     return (
         <View>
@@ -23,7 +18,7 @@ const UsuarioContra = () => {
                     label="Email"
                     placeholder="ejemplo@ejemplo.com"
                     value={usuario}
-                    onChangeText={text => setUsuario(text)}
+                    onChangeText={text => cambiarValor({variable: 'usuario', valor: text})}
                     left={
                         <TextInput.Icon name="account-box"/>
                     }
@@ -32,13 +27,15 @@ const UsuarioContra = () => {
                     style={{margin:5}}
                     label="Password"
                     value={password}
+                    secureTextEntry={secured}
                     placeholder="password"
-                    onChangeText={text => setPassword(text)}
+                    onChangeText={text => cambiarValor({variable: 'password', valor: text})}
                     left={<TextInput.Icon name="key"/>}
+                    right={<TextInput.Icon name="eye" onPress={()=>setSecured(!secured)}/>}
                 />
                 <Button
                     style={{margin: 10, borderWidth:0}}
-                    onPress={()=>inicioSesion()}
+                    onPress={()=>inicioSesion({usuario,password})}
                     icon="account"
                     mode="outlined"
                     color="#fff"
@@ -55,6 +52,7 @@ const UsuarioContra = () => {
                     Registrarse
                 </Button>
             </View>
+            <ErrorFormulario/>
         </View>
       );
 }
