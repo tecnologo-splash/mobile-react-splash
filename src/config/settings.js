@@ -1,1 +1,2 @@
-export const baseURL =  "https://tecnologo-splash-api.herokuapp.com";
+import axios from 'axios';
+export default axios.create({baseURL: "https://tecnologo-splash-api.herokuapp.com"});

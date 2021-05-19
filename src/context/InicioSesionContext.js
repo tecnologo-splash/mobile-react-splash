@@ -1,6 +1,5 @@
 import crearContext from "./crearContext";
-import axios from 'axios';
-import {baseURL} from '../config/settings';
+import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const InicioSesionReducer = (state,action) => {
@@ -10,7 +9,6 @@ const InicioSesionReducer = (state,action) => {
         case 'onError':
             return {...state, error: action.payload.error}
         case 'cambiarValor':
-            console.log("cambio a ", action.payload.variable);
             return {...state, [action.payload.variable]: action.payload.valor};
         default:
             return state;
@@ -22,7 +20,7 @@ const inicioSesion = (dispatch) => async ({usuario, password}) =>{
     try {
         var credenciales = { correo: usuario, clave: password};
 
-        const response = await axios.post(`${baseURL}/users/auth`, 
+        const response = await settings.post('/users/auth', 
         JSON.stringify(credenciales), 
         {headers: {'Content-Type': "application/json"}}
         );
