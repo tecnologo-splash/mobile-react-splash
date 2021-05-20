@@ -10,6 +10,11 @@ const UsuarioContra = () => {
     const [secured, setSecured] = useState(true);
     const navigation = useNavigation();
 
+    const login = ()=>{
+        inicioSesion({usuario,password});
+        navigation.navigate("BottomTab");
+    }
+
     return (
         <View>
             <View>
@@ -35,7 +40,7 @@ const UsuarioContra = () => {
                 />
                 <Button
                     style={{margin: 10, borderWidth:0}}
-                    onPress={()=>inicioSesion({usuario,password})}
+                    onPress={()=>login()}
                     icon="account"
                     mode="outlined"
                     color="#fff"

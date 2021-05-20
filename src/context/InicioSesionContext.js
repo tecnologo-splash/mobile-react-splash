@@ -10,6 +10,8 @@ const InicioSesionReducer = (state,action) => {
             return {...state, error: action.payload.error}
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
+        case 'cerrarSesion':
+            return {...state, token: null, usuario: '', password:'', error:null};
         default:
             return state;
     }
@@ -25,7 +27,7 @@ const inicioSesion = (dispatch) => async ({usuario, password}) =>{
         {headers: {'Content-Type': "application/json"}}
         );
 
-        await AsyncStorage.setItem('token', response.data.token);
+        await AsyncStorage.setItem('tokenSplash', response.data.token);
         dispatch({type: 'inicioSesion', payload: {token:response.data.token}});
         console.log(response.data.token);
 
@@ -39,8 +41,19 @@ const cambiarValor = (dispatch) => ({variable,valor}) =>{
     dispatch({type: 'cambiarValor', payload: {variable, valor}})
 }
 
+const actualizarToken = (dispatch) => async() =>{
+    const tokenStorage = await AsyncStorage.getItem('tokenSplash');
+    if(tokenStorage){
+        dispatch({type: 'cambiarValor', payload: {variable: 'token', valor: tokenStorage}});
+    }
+}
+
+const cerrarSesion = (dispatch) => async () =>{
+    dispatch({type: 'cerrarSesion'});
+    await AsyncStorage.removeItem('tokenSplash');
+}
 export const {Context, Provider} = crearContext(
     InicioSesionReducer,
-    {inicioSesion, cambiarValor},
+    {inicioSesion, cambiarValor, actualizarToken, cerrarSesion},
     {usuario: '', password:'', error:'', token:''}
 );

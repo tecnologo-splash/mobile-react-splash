@@ -9,4 +9,4 @@ const Registro = () => {
   );
 }
 
-export default Registro;
+export {Registro};
