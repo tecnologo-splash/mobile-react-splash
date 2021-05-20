@@ -7,7 +7,7 @@ const FormularioInicioSesion = () => {
   return (
     <View style={styles.main}>
         <View style={styles.main2}>
-            <Image source={require("../../assets/logo_dark.png")} style={{height: 120, width: 360, alignSelf: 'center'}}/>
+            <Image source={require("../../../assets/logo_dark.png")} style={{height: 120, width: 360, alignSelf: 'center'}}/>
             <UsuarioContra/>
         </View>
     </View>

@@ -1,12 +1,14 @@
 import React, {useState, useContext} from 'react';
 import { Button, TextInput } from 'react-native-paper';
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ErrorFormulario from './ErrorFormulario';
-import {Context as InicioSesionContext} from '../context/InicioSesionContext';
+import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
+import RecuperarPassword from './RecuperarPassword';
+import ConfirmacionPasswordRecuperada from './ConfirmacionPasswordRecuperada';
 
 const UsuarioContra = () => {
-    const {state:{usuario, password}, cambiarValor, inicioSesion} = useContext(InicioSesionContext);
+    const {state:{usuario, password}, cambiarValor, inicioSesion, recuperarPassword} = useContext(InicioSesionContext);
     const [secured, setSecured] = useState(true);
     const navigation = useNavigation();
 
@@ -19,9 +21,9 @@ const UsuarioContra = () => {
         <View>
             <View>
                 <TextInput
-                    style={{margin:5}}
-                    label="Email"
-                    placeholder="ejemplo@ejemplo.com"
+                    style={styles.input}
+                    label="Email / Usuario"
+                    placeholder="ejemplo@ejemplo.com / username"
                     value={usuario}
                     onChangeText={text => cambiarValor({variable: 'usuario', valor: text})}
                     left={
@@ -29,7 +31,7 @@ const UsuarioContra = () => {
                     }
                 />
                 <TextInput
-                    style={{margin:5}}
+                    style={styles.input}
                     label="Password"
                     value={password}
                     secureTextEntry={secured}
@@ -39,7 +41,7 @@ const UsuarioContra = () => {
                     right={<TextInput.Icon name="eye" onPress={()=>setSecured(!secured)}/>}
                 />
                 <Button
-                    style={{margin: 10, borderWidth:0}}
+                    style={styles.button}
                     onPress={()=>login()}
                     icon="account"
                     mode="outlined"
@@ -48,7 +50,7 @@ const UsuarioContra = () => {
                     Iniciar Sesion
                 </Button>
                 <Button
-                    style={{margin: 10, borderWidth:0}}
+                    style={styles.button}
                     onPress={()=>navigation.navigate("Registro")}
                     icon="account-plus"
                     mode="outlined"
@@ -56,10 +58,32 @@ const UsuarioContra = () => {
                 >
                     Registrarse
                 </Button>
+               <Text style={styles.forgot}>¿Olvidaste tu contraseña?... <Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar', valor: true})}> ¡Haz click aquí para recuperarla!</Text></Text>
             </View>
             <ErrorFormulario/>
+            <ConfirmacionPasswordRecuperada/>
+            <RecuperarPassword/>
         </View>
       );
 }
+
+const styles = StyleSheet.create({
+    button:{
+        margin: 10, 
+        borderWidth:0
+    },
+    input:{
+        margin:5
+    },
+    forgot:{
+        color:'#fff',
+        fontSize: 12,
+        alignSelf:'center',
+        margin: 10
+    },
+    clickHere:{
+        fontWeight:'bold'
+    }
+})
 
 export default UsuarioContra;

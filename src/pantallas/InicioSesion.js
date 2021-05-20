@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import FormularioInicioSesion from '../componentes/FormularioInicioSesion';
+import FormularioInicioSesion from '../componentes/inicio-sesion/FormularioInicioSesion';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Context as InicioSesionContext} from '../context/InicioSesionContext'
 

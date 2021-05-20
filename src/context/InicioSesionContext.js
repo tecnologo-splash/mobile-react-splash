@@ -5,13 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const InicioSesionReducer = (state,action) => {
     switch(action.type){
         case 'inicioSesion':
-            return {...state, token: action.payload.token, error: ''};
+            return {...state, token: action.payload.token, error: null};
         case 'onError':
             return {...state, error: action.payload.error}
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
         case 'cerrarSesion':
-            return {...state, token: null, usuario: '', password:'', error:null};
+            return {...state, token: null, usuario: null, password:null, error:null};
+        case 'recuperarPassword':
+            return {...state, recuperado: !state.recuperado, recuperar:false};
         default:
             return state;
     }
@@ -56,8 +58,25 @@ const cerrarSesion = (dispatch) => async () =>{
     dispatch({type: 'cerrarSesion'});
     await AsyncStorage.removeItem('tokenSplash');
 }
+
+const recuperarPassword = (dispatch) => async (usuario) =>{
+    var correo = {correo: usuario};
+    try{
+        await settings.post('/users/recovery-password',
+        JSON.stringify(correo),
+        {headers: {'Content-Type': "application/json"}}
+        );
+        dispatch({type: 'recuperarPassword'});
+    }catch (e) {
+        console.log(e);
+        dispatch({type:'onError', payload: {error: e}});
+    }
+    
+    console.log('recuperarPassword');
+}
+
 export const {Context, Provider} = crearContext(
     InicioSesionReducer,
-    {inicioSesion, cambiarValor, actualizarToken, cerrarSesion},
-    {usuario: '', password:'', error:'', token:''}
+    {inicioSesion, cambiarValor, actualizarToken, cerrarSesion, recuperarPassword},
+    {usuario: null, password:null, error:null, token:null, recuperar:false, recuperado:false}
 );

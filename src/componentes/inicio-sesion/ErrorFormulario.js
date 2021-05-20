@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { Button, Paragraph, Dialog, Portal } from 'react-native-paper';
-import {Context as InicioSesionContext} from '../context/InicioSesionContext';
+import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
 
 const ErrorFormulario = () => {
   const {state:{error},cambiarValor} = useContext(InicioSesionContext);
