@@ -19,9 +19,13 @@ const InicioSesionReducer = (state,action) => {
 
 const inicioSesion = (dispatch) => async ({usuario, password}) =>{
 
-    try {
+    if(usuario.includes("@")){
         var credenciales = { correo: usuario, clave: password};
+    }else{
+        var credenciales = { usuario: usuario, clave: password};
+    }
 
+    try {
         const response = await settings.post('/users/auth', 
         JSON.stringify(credenciales), 
         {headers: {'Content-Type': "application/json"}}
