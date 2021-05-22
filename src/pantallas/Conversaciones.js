@@ -1,8 +1,12 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import NavBar from '../componentes/muro/NavBar';
 const Conversaciones = () => {
   return (
-    <Text>Conversaciones</Text>
+    <View>
+      <NavBar/>
+      <Text>Conversaciones</Text>
+    </View>
   );
 }
 

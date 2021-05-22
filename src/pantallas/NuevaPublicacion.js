@@ -1,9 +1,13 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import NavBar from '../componentes/muro/NavBar';
 
 const NuevaPublicacion = () => {
   return (
-    <Text>Camara</Text>
+    <View>
+      <NavBar/>
+      <Text>Camara</Text>
+    </View>
   );
 }
 

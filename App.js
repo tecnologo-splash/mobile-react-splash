@@ -77,7 +77,7 @@ export default function App() {
           <Stack.Navigator>
             <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
             <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
-            <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false, safeAreaInsets:{top: 20}}}/>
+            <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
           </Stack.Navigator>
 
         </NavigationContainer>
