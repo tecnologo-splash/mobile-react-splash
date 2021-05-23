@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const InicioSesionReducer = (state,action) => {
     switch(action.type){
         case 'inicioSesion':
-            return {...state, token: action.payload.token, error: null};
+            return {...state, token: action.payload.token, error: null, entrar:true};
         case 'onError':
             return {...state, error: action.payload.error}
         case 'cambiarValor':
@@ -20,12 +20,14 @@ const InicioSesionReducer = (state,action) => {
 }
 
 const inicioSesion = (dispatch) => async ({usuario, password}) =>{
-
-    if(usuario.includes("@")){
-        var credenciales = { correo: usuario, clave: password};
-    }else{
-        var credenciales = { usuario: usuario, clave: password};
+    if(usuario){
+        if(usuario.includes("@")){
+            var credenciales = { correo: usuario, clave: password};
+        }else{
+            var credenciales = { usuario: usuario, clave: password};
+        }
     }
+    
 
     try {
         const response = await settings.post('/users/auth', 
@@ -78,5 +80,5 @@ const recuperarPassword = (dispatch) => async (usuario) =>{
 export const {Context, Provider} = crearContext(
     InicioSesionReducer,
     {inicioSesion, cambiarValor, actualizarToken, cerrarSesion, recuperarPassword},
-    {usuario: null, password:null, error:null, token:null, recuperar:false, recuperado:false}
+    {usuario: null, password:null, error:null, token:null, recuperar:false, recuperado:false, entrar:false}
 );

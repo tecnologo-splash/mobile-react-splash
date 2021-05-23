@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -8,13 +8,18 @@ import RecuperarPassword from './RecuperarPassword';
 import ConfirmacionPasswordRecuperada from './ConfirmacionPasswordRecuperada';
 
 const UsuarioContra = () => {
-    const {state:{usuario, password}, cambiarValor, inicioSesion, recuperarPassword} = useContext(InicioSesionContext);
+    const {state:{usuario, password, entrar}, cambiarValor, inicioSesion} = useContext(InicioSesionContext);
     const [secured, setSecured] = useState(true);
     const navigation = useNavigation();
 
+    useEffect(()=>{
+        if(entrar){
+            navigation.navigate('BottomTab');
+        }
+    },[entrar])
+
     const login = ()=>{
         inicioSesion({usuario,password});
-        navigation.navigate("BottomTab");
     }
 
     return (

@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 
 
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {Provider as InicioSesionProvider} from './src/context/InicioSesionContext';
+import {Provider as CrearCuentaProvider} from './src/context/CrearCuentaContext';
 
 import {InicioSesion, Muro, Perfil, Registro, Conversaciones, NuevaPublicacion} from './src/pantallas';
 
@@ -69,20 +69,23 @@ const BottomNavigator = ()=> (
 );
 export default function App() {
   return (
+    
     <InicioSesionProvider>
-      <PaperProvider theme={theme}>
+    <PaperProvider theme={theme}>
+    <CrearCuentaProvider>
 
-        <NavigationContainer>
+      <NavigationContainer>
 
-          <Stack.Navigator>
-            <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
-            <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
-            <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
-          </Stack.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
+          <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
+          <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
+        </Stack.Navigator>
 
-        </NavigationContainer>
-
-      </PaperProvider>
+      </NavigationContainer>
+    </CrearCuentaProvider>
+    </PaperProvider>
     </InicioSesionProvider>
+
   );
 }
