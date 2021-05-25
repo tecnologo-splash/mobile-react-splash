@@ -8,6 +8,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {Provider as InicioSesionProvider} from './src/context/InicioSesionContext';
 import {Provider as CrearCuentaProvider} from './src/context/CrearCuentaContext';
+import {Provider as PerfilProvider} from './src/context/PerfilContext';
+
 
 import {InicioSesion, Muro, Perfil, Registro, Conversaciones, NuevaPublicacion} from './src/pantallas';
 
@@ -71,20 +73,22 @@ export default function App() {
   return (
     
     <InicioSesionProvider>
-    <PaperProvider theme={theme}>
-    <CrearCuentaProvider>
+      <PaperProvider theme={theme}>
+        <CrearCuentaProvider>
+          <PerfilProvider>
+            <NavigationContainer>
 
-      <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
+                <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
+                <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
+                <Stack.Screen name="Perfil" component={Perfil} options={{headerShown: true}}/>
+              </Stack.Navigator>
 
-        <Stack.Navigator>
-          <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
-          <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
-          <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
-        </Stack.Navigator>
-
-      </NavigationContainer>
-    </CrearCuentaProvider>
-    </PaperProvider>
+            </NavigationContainer>
+          </PerfilProvider>
+        </CrearCuentaProvider>
+      </PaperProvider>
     </InicioSesionProvider>
 
   );

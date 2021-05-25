@@ -1,9 +1,20 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, {useContext,useEffect} from 'react';
+import { Text, View } from 'react-native';
+import {Context as PerfilContext} from '../context/PerfilContext';
 
 const Perfil = () => {
+
+  const {state:{currentUser}, getInfo} = useContext(PerfilContext)
+
+  useEffect(()=>{
+    getInfo()
+  },[])
+
   return (
-    <Text>Perfil</Text>
+    <View>
+      <Text>Perfil</Text>
+      <Text>{currentUser.nombre}</Text>
+    </View>
   );
 }
 

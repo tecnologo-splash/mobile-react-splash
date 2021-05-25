@@ -4,13 +4,20 @@ import { Image, StyleSheet, View, TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Tooltip } from 'react-native-elements';
 import { Text } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const NavBar = () => {
   const [text, setText] = useState('');
+  const navigation = useNavigation();
+
   console.log(text);
   return (
     <Appbar.Header style={{backgroundColor: '#6F32C1'}}>
-        <Image  style={styles.image} source={require('../../../assets/icon_dark.png')}/>
+        <TouchableOpacity onPress={()=>navigation.navigate("Perfil")}>
+          <Image style={styles.image} source={require('../../../assets/perfilDefault.jpg')}/>
+        </TouchableOpacity>
         <View style={styles.searchBar}>
         <FontAwesome name="search" size={24} color="white" style={styles.magnify} />
         <TextInput

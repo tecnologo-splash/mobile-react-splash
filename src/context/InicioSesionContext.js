@@ -77,6 +77,7 @@ const recuperarPassword = (dispatch) => async (usuario) =>{
     console.log('recuperarPassword');
 }
 
+
 export const {Context, Provider} = crearContext(
     InicioSesionReducer,
     {inicioSesion, cambiarValor, actualizarToken, cerrarSesion, recuperarPassword},
