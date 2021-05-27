@@ -7,7 +7,7 @@ const Error = () => {
     if(error){
         return (
             <Portal>
-                <Dialog visible={error?true:false} onDismiss={()=>cambiarValor({variable: 'error', valor: null})}>
+                <Dialog visible={error.tipo?true:false} onDismiss={()=>cambiarValor({variable: 'error', valor: null})}>
                     <Dialog.Title>Error: {error.tipo}</Dialog.Title>
                     <Dialog.Content>
                         <Paragraph>{error.mensaje}</Paragraph>

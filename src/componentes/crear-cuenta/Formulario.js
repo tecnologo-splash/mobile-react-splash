@@ -6,24 +6,27 @@ import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Context as CrearCuentaContext} from '../../context/CrearCuentaContext';
 import Error from './Error';
+import Activacion from './Activacion';
+import { Ionicons } from '@expo/vector-icons'; 
 
 const Formulario = () => {
     const {state:{usuario, correo, nombre, apellido, clave, confirmar, fecha, genero}, cambiarFecha, cambiarValor, crearCuenta, validarPassword} = useContext(CrearCuentaContext);
     const [fechaSeleccionada, setFechaSeleccionada] = useState(false);
+    const [activar, setActivar] = useState(false);
+    const navigation = useNavigation();
 
     const onChangeFecha = (event, selectedDate) =>{
-        var fecha = selectedDate || fecha;
-        cambiarFecha(fecha);
+        var date = selectedDate || fecha;
+        cambiarFecha(date);
         setFechaSeleccionada(false);
     }
 
     const crear = ()=>{
         var coinciden= validarPassword({clave, confirmar});
         if(coinciden){
-            var mes = fecha.getMonth()<10 ? `0${fecha.getMonth()}`: fecha.getMonth();
-            var dia = fecha.getDay()<10 ? `0${fecha.getDay()}`: fecha.getDay();
-            var user = {usuario, correo, nombre, apellido, clave, fecha_nacimiento: `${fecha.getFullYear()}-${mes}-${dia}` , genero};
+            var user = {usuario, correo, nombre, apellido, clave, fecha_nacimiento: fecha.toISOString().split('T')[0] , genero};
             crearCuenta(user);
+            setActivar(true);
         }        
     }
 
@@ -78,16 +81,23 @@ const Formulario = () => {
                     placeholder="Perez"
                     onChangeText={text => cambiarValor({variable: 'apellido', valor: text})}
                 />
-                <Picker
-                    selectedValue={genero}
-                    onValueChange={(itemValue, itemIndex) =>
-                        cambiarValor({variable: 'genero', valor: itemValue})
-                    }>
-                    <Picker.Item label="HOMBRE" value="HOMBRE" />
-                    <Picker.Item label="MUJER" value="MUJER" />
-                    <Picker.Item label="OTRO" value="OTRO" />
-                </Picker>
-
+                <View style={styles.cont}>
+                    <View style={styles.pickerContainer}>
+                        <Ionicons name="md-transgender-sharp" size={15} color="white" />
+                        <Picker
+                            style={styles.picker}
+                            selectedValue={genero}
+                            dropdownIconColor='#ffffff'
+                            itemStyle={{alignSelf: 'center'}}
+                            onValueChange={(itemValue, itemIndex) =>
+                                cambiarValor({variable: 'genero', valor: itemValue})
+                            }>
+                            <Picker.Item label="HOMBRE" value="HOMBRE"  style={{alignSelf: 'center'}}/>
+                            <Picker.Item label="MUJER" value="MUJER" style={{alignSelf: 'center'}}/>
+                            <Picker.Item label="OTRO" value="OTRO" style={{alignSelf: 'center'}}/>
+                        </Picker>
+                    </View>
+                </View>
                 {fechaSeleccionada? 
                     <DateTimePicker
                     mode="date"
@@ -116,7 +126,6 @@ const Formulario = () => {
                 >
                     Crear Cuenta
                 </Button>
-
                 <Button
                     style={styles.button}
                     onPress={()=>navigation.navigate("InicioSesion")}
@@ -127,6 +136,7 @@ const Formulario = () => {
                     Cancelar
                 </Button>
             </View>
+            <Activacion activar={activar} setActivar={setActivar} />
             <Error/>
         </View>
     </ScrollView>
@@ -146,12 +156,29 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems:'center',
         marginLeft: 5,
-        marginRight:5
+        marginRight:5,
+        marginTop: 30
     },
     main2:{
         flex:1,
         flexDirection:'column'
     },
+    picker:{
+        color: '#fff',
+        fontWeight:'bold',
+        width: 200,
+        marginLeft: 0,
+        marginRight:0,
+        alignItems: 'center'
+    },
+    pickerContainer:{
+        flexDirection:'row',
+        alignItems: 'center'
+    },
+    cont:{
+        flex:1,
+        alignItems:'center'
+    }
 });
 
 export default Formulario;

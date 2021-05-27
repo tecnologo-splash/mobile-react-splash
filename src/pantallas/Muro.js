@@ -6,7 +6,6 @@ import NavBar from '../componentes/muro/NavBar';
 
 const Muro = ({navigation}) => {
   const {cerrarSesion} = useContext(InicioSesionContext);
-  //const navigation = useNavigation();
 
   const cerrar = ()=>{
     cerrarSesion()

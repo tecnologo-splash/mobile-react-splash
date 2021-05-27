@@ -3,6 +3,8 @@ import crearContext from "./crearContext";
 
 const CrearCuentaReducer = (state, action)=>{
     switch(action.type){
+        case 'crearCuenta':
+            return {...state, error:null}
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
         case 'cambiarFecha':
@@ -19,20 +21,18 @@ const crearCuenta = (dispatch) => async (usuario)=> {
         console.log(usuario);
         await settings.post('users/sign-up', JSON.stringify(usuario),
         {headers: {'Content-Type': "application/json"}});
-        
+        dispatch({type:'crearCuenta'});
     }catch(e){
-        dispatch({type: 'onError', payload: {error: {tipo:"USUARIO_EXISTENTE", mensaje: "El Correo o Nombre de usuario ya existe en otro usuario, por favor ingresa uno nuevo"}}});
+        dispatch({type: 'onError', payload: {error: {tipo:"USUARIO_EXISTENTE", mensaje: "El Correo o Nombre de usuario ya existe en otro usuario, por favor ingresa uno nuevo", activacion: null}}});
     }
     
 }
 
 const cambiarValor = (dispatch) => ({variable, valor}) =>{
-    console.log(variable, valor);
     dispatch({type: "cambiarValor", payload: {variable, valor}});
 }
 
 const cambiarFecha = (dispatch) => (date) =>{
-    console.log(`${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`);
     dispatch({type: "cambiarFecha",payload:{date}});
 }
 
@@ -42,12 +42,22 @@ const validarPassword = (dispatch) => ({clave, confirmar}) =>{
         return false;
     }
     return true;
-    
+}
+
+const activarCuenta = (dispatch) => async (activacion) =>{
+    try{
+        await settings.post('users/activation', JSON.stringify(activacion),
+        {headers: {'Content-Type': "application/json"}});
+        dispatch({type: "cambiarValor", payload: {variable:"error",valor: null}});
+        dispatch({type: "cambiarValor", payload: {variable:"entrar",valor: true}});
+    }catch(e){
+        dispatch({type: 'onError', payload: {error: e}});
+    }
 }
 
 export const {Context, Provider} = crearContext(
     CrearCuentaReducer,
-    {crearCuenta, cambiarValor, cambiarFecha, validarPassword},
+    {crearCuenta, cambiarValor, cambiarFecha, validarPassword, activarCuenta},
     {   
         usuario: null, 
         correo: null, 
@@ -57,6 +67,8 @@ export const {Context, Provider} = crearContext(
         confirmar: null, 
         fecha: new Date(),
         genero: 'OTRO',
-        error: null
+        error: null,
+        claveActivacion: null,
+        entrar:false
     }
 );
