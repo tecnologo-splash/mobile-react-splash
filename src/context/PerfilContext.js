@@ -21,7 +21,6 @@ const getInfo = (dispatch) => async () =>{
         const response = await settings.get('/users/info', {headers: {'Content-Type': "application/json"}} );
 
         dispatch({type: 'getInfo', payload: {userInfo:response.data}});
-        console.log(response);
 
     } catch (e) {
         console.log(e);
