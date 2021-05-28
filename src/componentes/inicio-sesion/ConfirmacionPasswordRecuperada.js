@@ -7,12 +7,12 @@ const ConfirmacionPasswordRecuperada = () => {
   return (
     <Portal>
     <Dialog visible={recuperado} onDismiss={()=>cambiarValor({variable: 'recuperado', valor: !recuperado})}>
-        <Dialog.Title>Se ha enviado un correo a su casilla</Dialog.Title>
+        <Dialog.Title>Su contraseña a sido a sido actualizada</Dialog.Title>
         <Dialog.Content>
-            <Paragraph>Continúa con los pasos mencionados en el correo para recuperar la contraseña.</Paragraph>
+            <Paragraph>Ya puede iniciar sesion con su nueva contraseña.</Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
-            <Button onPress={()=>cambiarValor({variable: 'recuperado', valor: !recuperado})}>Volver</Button>
+            <Button onPress={()=>cambiarValor({variable: 'recuperado', valor: !recuperado})}>Aceptar</Button>
         </Dialog.Actions>
     </Dialog>
 </Portal>

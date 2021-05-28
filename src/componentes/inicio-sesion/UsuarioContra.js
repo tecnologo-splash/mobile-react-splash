@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import ErrorFormulario from './ErrorFormulario';
 import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
 import RecuperarPassword from './RecuperarPassword';
+import RecuperarPassword2 from './RecuperarPassword2';
 import ConfirmacionPasswordRecuperada from './ConfirmacionPasswordRecuperada';
 
 const UsuarioContra = () => {
@@ -63,11 +64,12 @@ const UsuarioContra = () => {
                 >
                     Registrarse
                 </Button>
-               <Text style={styles.forgot}>¿Olvidaste tu contraseña?... <Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar', valor: true})}> ¡Haz click aquí para recuperarla!</Text></Text>
+               <Text style={styles.forgot}>¿Olvidaste tu contraseña?... <Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar', valor: true})}> ¡Haz click aquí para recuperarla!</Text><Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar2', valor: true})}> ...paso 2</Text></Text>
             </View>
             <ErrorFormulario/>
-            <ConfirmacionPasswordRecuperada/>
             <RecuperarPassword/>
+            <RecuperarPassword2/>
+            <ConfirmacionPasswordRecuperada/>
         </View>
       );
 }

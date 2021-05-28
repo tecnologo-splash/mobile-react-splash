@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { Button, Paragraph, Dialog, Portal, TextInput } from 'react-native-paper';
+import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
 
 const RecuperarPassword = () => {

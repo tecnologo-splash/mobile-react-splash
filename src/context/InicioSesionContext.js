@@ -7,16 +7,24 @@ const InicioSesionReducer = (state,action) => {
         case 'inicioSesion':
             return {...state, token: action.payload.token, error: null, entrar:true};
         case 'onError':
-            return {...state, error: action.payload.error}
+            return {...state, recuperar: false, recuperar2: false, error: action.payload.error}
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
         case 'cerrarSesion':
             return {...state, token: null, usuario: null, password:null, error:null};
         case 'recuperarPassword':
-            return {...state, recuperado: !state.recuperado, recuperar:false};
+            return {...state, recuperar2: !state.recuperar2, recuperar:false};
+        case 'recuperarPassword2':
+            return {...state, recuperado: false, recuperar2:false};
+        case 'borrarError':
+            return {...state, error:{titulo:null, cuerpo:null}};
         default:
             return state;
     }
+}
+
+const borrarError = (dispatch) => () =>{
+    dispatch({type: 'borrarError'});
 }
 
 const inicioSesion = (dispatch) => async ({usuario, password}) =>{
@@ -40,7 +48,7 @@ const inicioSesion = (dispatch) => async ({usuario, password}) =>{
         console.log(response.data.token);
 
     } catch (e) {
-        dispatch({type: 'onError', payload: {error: e}});
+        dispatch({type: 'onError', payload: {error: {titulo: 'Error al inicio de sesion', cuerpo: 'Usuario y/o Password incorrecto'}}});
     }
     
 }
@@ -64,6 +72,7 @@ const cerrarSesion = (dispatch) => async () =>{
 const recuperarPassword = (dispatch) => async (usuario) =>{
     var correo = {correo: usuario};
     try{
+        console.log(correo)
         await settings.post('/users/recovery-password',
         JSON.stringify(correo),
         {headers: {'Content-Type': "application/json"}}
@@ -71,15 +80,49 @@ const recuperarPassword = (dispatch) => async (usuario) =>{
         dispatch({type: 'recuperarPassword'});
     }catch (e) {
         console.log(e);
-        dispatch({type:'onError', payload: {error: e}});
+        dispatch({type:'onError', payload: {error: {titulo: 'Error en el correo', cuerpo: 'Error'}}});
     }
     
     console.log('recuperarPassword');
 }
 
+const recuperarPassword2 = (dispatch) => async (usuario, codigo, clave) =>{
+    var correo = {correo: usuario, codigo: codigo, clave: clave};
+    try{
+        console.log(correo)
+        await settings.post('/users/recovery-password',
+        JSON.stringify(correo),
+        {headers: {'Content-Type': "application/json"}}
+        );
+        dispatch({type: 'recuperarPassword2'});
+    }catch (e) {
+        console.log(e);
+        dispatch({type:'onError', payload: {error: {titulo: 'Error en el código', cuerpo: 'Error'}}});
+    }
+    
+    console.log('recuperarPassword2');
+}
+
+const validarPassword = () => ({clave, clave2}) =>{
+    if(clave!=clave2 || clave===null || clave===''){
+        return false;
+    }
+    return true;
+
+}
 
 export const {Context, Provider} = crearContext(
     InicioSesionReducer,
-    {inicioSesion, cambiarValor, actualizarToken, cerrarSesion, recuperarPassword},
-    {usuario: null, password:null, error:null, token:null, recuperar:false, recuperado:false, entrar:false}
+    {inicioSesion, cambiarValor, actualizarToken, cerrarSesion, recuperarPassword, recuperarPassword2, validarPassword, borrarError},
+    {
+        usuario: null,
+        password:null,
+        error:{titulo: null, cuerpo: null},
+        token:null,
+        recuperar:false,
+        recuperar2:false,
+        clave: null, 
+        clave2: null, 
+        recuperado:false,
+        entrar:false}
 );
