@@ -48,7 +48,6 @@ const RecuperarPassword2 = () => {
                 <Dialog.Actions>
                     <Button onPress={()=>enviar()}>Enviar</Button>
                 </Dialog.Actions>
-                {/*<Error/>*/}
             </Dialog>
         </Portal>
     );

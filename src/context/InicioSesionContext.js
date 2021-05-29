@@ -5,13 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const InicioSesionReducer = (state,action) => {
     switch(action.type){
         case 'inicioSesion':
-            return {...state, token: action.payload.token, error: null, entrar:true};
+            return {...state, token: action.payload.token, error: {titulo: null, cuerpo: null}, entrar:true};
         case 'onError':
             return {...state, recuperar: false, recuperar2: false, error: action.payload.error}
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
         case 'cerrarSesion':
-            return {...state, token: null, usuario: null, password:null, error:null};
+            return {...state, token: null, usuario: null, password:null, error:{titulo:null, cuerpo: null}};
         case 'recuperarPassword':
             return {...state, recuperar2: !state.recuperar2, recuperar:false};
         case 'recuperarPassword2':
