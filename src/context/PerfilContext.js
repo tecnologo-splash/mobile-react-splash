@@ -4,6 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PerfilReducer = (state,action) => {
     switch(action.type){
+        case 'getSeguidores':
+            return {...state, seguidores: action.payload.seguidores};
+        case 'getSeguidos':
+            return {...state, seguidos: action.payload.seguidos};
         case 'getInfo':
             return {...state, currentUser: action.payload.userInfo};
         default:
@@ -29,12 +33,32 @@ const getInfo = (dispatch) => async () =>{
     }
 }
 
+const getSeguidores = (dispatch) => async () =>{
+    try{
+        dispatch({type:'getSeguidores', payload:{ seguidores: []}})
+    }catch(e){
+        dispatch({type: 'onError', payload: {error: e}});
+    }
+}
+
+const getSeguidos = (dispatch) => async () =>{
+    try{
+        const response = await settings.get('/users/siguiendo');
+        console.log(response);
+        dispatch({type:'getSeguidos', payload:{ seguidos: response.data}})
+    }catch(e){
+        dispatch({type: 'onError', payload: {error: e}});
+    }
+}
+
 const initialState = {
-    currentUser: {}
+    currentUser: {},
+    seguidores:[],
+    seguidos:[]
 }
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo},
+    {getInfo, getSeguidores, getSeguidos},
     initialState
 );

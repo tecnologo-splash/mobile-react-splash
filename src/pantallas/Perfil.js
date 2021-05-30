@@ -5,14 +5,20 @@ import {Context as PerfilContext} from '../context/PerfilContext';
 
 const Perfil = ({navigation}) => {
 
-  const {state:{currentUser}, getInfo} = useContext(PerfilContext);
+  const {state:{currentUser, seguidores, seguidos}, getInfo, getSeguidores, getSeguidos} = useContext(PerfilContext);
 
   useEffect(()=>{
     getInfo();
+    getSeguidores();
+    getSeguidos();
   },[]);
   
   return (
-    <PerfilBody usuario={currentUser}/>
+    <PerfilBody 
+      usuario={currentUser} 
+      cantSeguidores={seguidores.length} 
+      cantSeguidos={seguidos.length}
+    />
   );
 }
 
