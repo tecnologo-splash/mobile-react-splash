@@ -30,12 +30,14 @@ const RecuperarPassword2 = () => {
                         label="Código"
                         placeholder="123456"
                         value={codigo}
+                        style={styles.input}
                         onChangeText={text => cambiarValor({variable: 'codigo', valor: text})}
                     />
                 <TextInput
                         label="Clave"
                         placeholder="Clave"
                         value={clave}
+                        style={styles.input}
                         onChangeText={text => cambiarValor({variable: 'clave', valor: text})}
                     />
                 <TextInput
@@ -57,5 +59,8 @@ const styles = StyleSheet.create({
     paragraph:{
         color: "red"
     },
+    input:{
+        marginBottom:8
+    }
 });
 export default RecuperarPassword2;

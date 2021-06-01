@@ -1,0 +1,1 @@
+export const filtroListadoUsuarios = {_nombre: "nombre", _apellido: "apellido", _usuario: "usuario", _correo: "correo"};
