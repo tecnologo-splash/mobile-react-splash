@@ -3,17 +3,17 @@ import { Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
 
 const ErrorFormulario = () => {
-  const {state:{error:{titulo, cuerpo}},borrarError} = useContext(InicioSesionContext);
+  const {state:{error:{titulo, cuerpo, anterior, styleError}},volverError} = useContext(InicioSesionContext);
 
   return (
     <Portal>
-        <Dialog visible={titulo?true:false} onDismiss={()=>borrarError()}>
+        <Dialog visible={titulo?true:false} onDismiss={()=>volverError(anterior)}>
             <Dialog.Title>{titulo}</Dialog.Title>
             <Dialog.Content>
-                <Paragraph>{cuerpo}</Paragraph>
+                <Paragraph style={styleError}>{cuerpo}</Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
-                <Button onPress={()=>borrarError()}>Volver</Button>
+                <Button onPress={()=>volverError(anterior)}>Volver</Button>
             </Dialog.Actions>
         </Dialog>
     </Portal>
