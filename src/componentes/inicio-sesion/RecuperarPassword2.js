@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import { StyleSheet } from 'react-native';
 import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
 

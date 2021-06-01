@@ -25,6 +25,28 @@ const listarUsuariosParaSeguir = dispatch => async ({filtro,valor}) => {
     }
 }
 
+const seguirUsuario = dispatch => async (idUsuarioASeguir) => {
+    try{
+        const endpoint = `/seguidores/seguir/${idUsuarioASeguir}`;
+        console.log(endpoint);
+        const response = await settings.put(`/seguidores/seguir/${idUsuarioASeguir}`);
+        console.log(response.data.content);
+    }catch(e){
+
+    }
+}
+
+const dejarDeSeguirUsuario = dispatch => async (idUsuarioADejarDeSeguir) => {
+    try{
+        const endpoint = `/seguidores/dejardeseguir/${idUsuarioADejarDeSeguir}`;
+        console.log(endpoint);
+        const response = await settings.delete(`/seguidores/dejardeseguir/${idUsuarioADejarDeSeguir}`);
+        console.log(response.data.content);
+    }catch(e){
+
+    }
+}
+
 const cambiarValor = (dispatch) => ({variable,valor}) =>{
     dispatch({type: 'cambiarValor', payload: {variable, valor}})
 }
@@ -37,6 +59,6 @@ const initialState = {
 
 export const {Context, Provider} = crearContext(
     ListarUsuariosReducer,
-    {listarUsuariosParaSeguir, cambiarValor},
+    {listarUsuariosParaSeguir, cambiarValor, seguirUsuario, dejarDeSeguirUsuario},
     initialState
 );

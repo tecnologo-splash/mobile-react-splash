@@ -8,7 +8,7 @@ const InicioSesionReducer = (state,action) => {
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
         case 'inicioSesion':
-            return {...state, token: action.payload.token, error: null, entrar:true};
+            return {...state, token: action.payload.token, error: {titulo:null, cuerpo:null}, entrar:true};
         case 'confirmErrorInicioSesion':
             return {...state, error:{titulo:null, cuerpo:null}};
         case 'cerrarSesion':
