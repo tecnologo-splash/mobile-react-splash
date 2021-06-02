@@ -9,7 +9,7 @@ import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {Provider as InicioSesionProvider} from './src/context/InicioSesionContext';
 import {Provider as CrearCuentaProvider} from './src/context/CrearCuentaContext';
 import {Provider as PerfilProvider} from './src/context/PerfilContext';
-
+import {Provider as ListarUsuariosProvider} from './src/context/ListarUsuariosContext';
 
 import {InicioSesion, Muro, Perfil, Registro, Conversaciones, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil} from './src/pantallas';
 
@@ -77,7 +77,8 @@ export default function App() {
       <PaperProvider theme={theme}>
         <CrearCuentaProvider>
           <PerfilProvider>
-            <NavigationContainer>
+            <ListarUsuariosProvider>
+              <NavigationContainer>
 
               <Stack.Navigator>
                 <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
@@ -89,7 +90,8 @@ export default function App() {
                 <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
               </Stack.Navigator>
 
-            </NavigationContainer>
+              </NavigationContainer>
+            </ListarUsuariosProvider>
           </PerfilProvider>
         </CrearCuentaProvider>
       </PaperProvider>

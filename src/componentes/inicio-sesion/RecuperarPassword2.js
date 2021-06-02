@@ -1,41 +1,28 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import { StyleSheet } from 'react-native';
-import { Button, Dialog, Paragraph, Portal, TextInput } from 'react-native-paper';
+import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
 
 const RecuperarPassword2 = () => {
-    const {state:{recuperar2, usuario, codigo, clave, clave2}, cambiarValor, validarPassword, recuperarPassword2} = useContext(InicioSesionContext);
-    const [errorMsg, setErrorMsq] = useState(false);
-
-    const enviar = ()=>{
-        var coinciden= validarPassword({clave, clave2});
-        
-        if(coinciden){
-            setErrorMsq(false)
-            recuperarPassword2(usuario, codigo, clave);
-        }else{
-            setErrorMsq(true)
-        }
-    }
+    const {state:{recuperar2, usuario, codigo, clave, clave2}, cambiarValor, recuperarPassword2} = useContext(InicioSesionContext);
 
     return (
         <Portal>
             <Dialog visible={recuperar2}>
                 <Dialog.Title> Ingrese el codigo enviado a su correo</Dialog.Title>
                 <Dialog.Content>
-                    {errorMsg?
-                    <Paragraph style={styles.paragraph}>Clave y confirmar no son iguales</Paragraph>
-                    :null}
                 <TextInput
                         label="Código"
                         placeholder="123456"
                         value={codigo}
+                        style={styles.input}
                         onChangeText={text => cambiarValor({variable: 'codigo', valor: text})}
                     />
                 <TextInput
                         label="Clave"
                         placeholder="Clave"
                         value={clave}
+                        style={styles.input}
                         onChangeText={text => cambiarValor({variable: 'clave', valor: text})}
                     />
                 <TextInput
@@ -46,16 +33,15 @@ const RecuperarPassword2 = () => {
                     />
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button onPress={()=>enviar()}>Enviar</Button>
+                    <Button onPress={()=>recuperarPassword2(usuario, codigo, clave, clave2)}>Enviar</Button>
                 </Dialog.Actions>
             </Dialog>
         </Portal>
     );
 }
-
 const styles = StyleSheet.create({
-    paragraph:{
-        color: "red"
-    },
+    input:{
+        marginBottom:8
+    }
 });
 export default RecuperarPassword2;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import { Appbar } from 'react-native-paper';
 import { Image, StyleSheet, View, TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,24 +7,24 @@ import { Text } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
 
 const NavBar = () => {
-  const [text, setText] = useState('');
   const navigation = useNavigation();
+  const {state:{buscar,filtro},cambiarValor, listarUsuariosParaSeguir} = useContext(ListarUsuariosContext);
 
-  console.log(text);
   return (
     <Appbar.Header style={{backgroundColor: '#6F32C1'}}>
         <TouchableOpacity onPress={()=>navigation.navigate("Perfil")}>
           <Image style={styles.image} source={require('../../../assets/perfilDefault.jpg')}/>
         </TouchableOpacity>
         <View style={styles.searchBar}>
-        <FontAwesome name="search" size={24} color="white" style={styles.magnify} />
+        <FontAwesome name="search" size={24} color="white" style={styles.magnify} onPress={()=>listarUsuariosParaSeguir({filtro: filtro, valor: buscar})} />
         <TextInput
         placeholder="Search"
         placeholderTextColor='#fff'
-        value={text}
-        onChangeText={text => setText(text)}
+        value={buscar}
+        onChangeText={text => cambiarValor({variable:"buscar", valor: text})}
         style={styles.input}
         />
         </View>
