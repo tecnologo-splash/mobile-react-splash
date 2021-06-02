@@ -1,9 +1,12 @@
 import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { filtroSeguidos } from "../componentes/filtros";
 
 const PerfilReducer = (state,action) => {
     switch(action.type){
+        case 'cambiarValor':
+            return {...state, [action.payload.variable]: action.payload.valor};
         case 'getSeguidores':
             return {...state, seguidores: action.payload.seguidores};
         case 'getSeguidos':
@@ -17,6 +20,10 @@ const PerfilReducer = (state,action) => {
 
 function getToken(){
     return AsyncStorage.getItem("tokenSplash");
+}
+
+const cambiarValor = dispatch => ({variable,valor})=> {
+    dispatch({type: 'cambiarValor', payload: {variable, valor}});
 }
 
 const getInfo = (dispatch) => async () =>{
@@ -35,18 +42,22 @@ const getInfo = (dispatch) => async () =>{
 
 const getSeguidores = (dispatch) => async () =>{
     try{
-        dispatch({type:'getSeguidores', payload:{ seguidores: []}})
+        
+        dispatch({type:'getSeguidores', payload:{ seguidores: []}});
     }catch(e){
         dispatch({type: 'onError', payload: {error: e}});
     }
 }
 
-const getSeguidos = (dispatch) => async () =>{
+const getSeguidos = (dispatch) => async ({filtro,valor}) =>{
     try{
-        const response = await settings.get('/users/siguiendo');
-        console.log(response);
-        dispatch({type:'getSeguidos', payload:{ seguidos: response.data}})
+        console.log("filtro en getSeguidos", filtro);
+        console.log(`/users/siguiendo?page=0&size=10&filtro=${filtro}&keywords=${valor}`);
+        const response= await settings.get(`/users/siguiendo?page=0&size=10&filtro=${filtro}&keywords=${valor}`);
+        console.log(response.data.length);
+        dispatch({type:'getSeguidos', payload:{ seguidos: response.data}});
     }catch(e){
+        console.log(e);
         dispatch({type: 'onError', payload: {error: e}});
     }
 }
@@ -54,11 +65,13 @@ const getSeguidos = (dispatch) => async () =>{
 const initialState = {
     currentUser: {},
     seguidores:[],
-    seguidos:[]
+    seguidos:[],
+    filtro:filtroSeguidos._usuario,
+    buscar:''
 }
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo, getSeguidores, getSeguidos},
+    {getInfo, getSeguidores, getSeguidos, cambiarValor},
     initialState
 );

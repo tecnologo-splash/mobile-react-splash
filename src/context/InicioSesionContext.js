@@ -12,7 +12,7 @@ const InicioSesionReducer = (state,action) => {
         case 'confirmErrorInicioSesion':
             return {...state, error:{titulo:null, cuerpo:null}};
         case 'cerrarSesion':
-            return {...state, token: null, usuario: null, password:null, error:null};
+            return {...state, token: null, usuario: null, password:null, error:{titulo:null, cuerpo:null}};
         case 'recuperarPassword':
             return {...state, recuperar2: true, recuperar:false};
         case 'confirmErrorRecuperarPassword':

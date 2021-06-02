@@ -1,4 +1,5 @@
 import React, {useContext,useEffect} from 'react';
+import { filtroSeguidos } from '../componentes/filtros';
 import PerfilBody from '../componentes/perfil/PerfilBody';
 import {Context as PerfilContext} from '../context/PerfilContext';
 
@@ -10,7 +11,7 @@ const Perfil = ({navigation}) => {
   useEffect(()=>{
     getInfo();
     getSeguidores();
-    getSeguidos();
+    getSeguidos({filtro: filtroSeguidos._usuario,valor:''});
   },[]);
   
   return (

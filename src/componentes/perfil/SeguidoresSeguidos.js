@@ -1,10 +1,17 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import ListadoSeguidores from './ListadoSeguidores';
+import ListaFiltros from './ListaFiltros';
+import SearchBar from './SearchBar';
+
 const SeguidoresSeguidos = ({lista}) => {
-    console.log(lista);
   return (
-        <View/>
+        <View>
+          <SearchBar/>
+          <ListaFiltros/>
+          <ListadoSeguidores usuarios={lista}/>
+        </View>
   );
 }
 

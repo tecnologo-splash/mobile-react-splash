@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList} from 'react-native';
 import {Avatar, ListItem} from 'react-native-elements';
 import ListaBotones from './ListaBotones';
@@ -12,9 +12,9 @@ const ListadoUsuarios = ({usuarios}) => {
       <ListaBotones/>
       <FlatList
         data={usuarios}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         renderItem={({item})=>(
-          <TouchableOpacity onPress={console.log("go to profile")}>
+          <TouchableOpacity onPress={()=>console.log("go to profile")}>
             <ListItem>
               <Avatar 
                 rounded 
@@ -27,9 +27,9 @@ const ListadoUsuarios = ({usuarios}) => {
                 <ListItem.Subtitle>{item.usuario}</ListItem.Subtitle>
               </ListItem.Content>
               {item.lo_sigo ?
-                  <Text onPress={()=>dejarDeSeguirUsuario(item.id)}>Dejar de seguir</Text>
+                  <Text style={{...styles.text, color: '#dd182f'}} onPress={()=>dejarDeSeguirUsuario(item.id)}>Dejar de seguir</Text>
                   :
-                  <Text onPress={()=>seguirUsuario(item.id)}>Seguir</Text>
+                  <Text style={{...styles.text, color: '#296fe8'}} onPress={()=>seguirUsuario(item.id)}>Seguir</Text>
               }
             </ListItem>
           </TouchableOpacity>
@@ -38,5 +38,12 @@ const ListadoUsuarios = ({usuarios}) => {
       </View>
   );
 }
+
+const styles = StyleSheet.create({
+  text:{
+    fontWeight:'600',
+    fontSize:15
+  }
+});
 
 export default ListadoUsuarios;

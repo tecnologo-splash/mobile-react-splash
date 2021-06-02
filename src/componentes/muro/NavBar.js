@@ -8,17 +8,10 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
-import { filtroListadoUsuarios } from '../filtros';
 
 const NavBar = () => {
   const navigation = useNavigation();
   const {state:{buscar,filtro},cambiarValor, listarUsuariosParaSeguir} = useContext(ListarUsuariosContext);
-
-  const buscarApi = (text) =>{
-    cambiarValor({variable:"buscar", valor: text});
-    console.log(text);
-    listarUsuariosParaSeguir({filtro: filtro, valor: buscar});
-  }
 
   return (
     <Appbar.Header style={{backgroundColor: '#6F32C1'}}>
@@ -31,7 +24,7 @@ const NavBar = () => {
         placeholder="Search"
         placeholderTextColor='#fff'
         value={buscar}
-        onChangeText={text => buscarApi(text)}
+        onChangeText={text => cambiarValor({variable:"buscar", valor: text})}
         style={styles.input}
         />
         </View>
