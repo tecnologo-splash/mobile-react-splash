@@ -2,6 +2,7 @@ import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { filtroSeguidos } from "../componentes/filtros";
+import { StyleSheet } from 'react-native';
 
 const PerfilReducer = (state,action) => {
     switch(action.type){
@@ -12,11 +13,13 @@ const PerfilReducer = (state,action) => {
         case 'getSeguidos':
             return {...state, seguidos: action.payload.seguidos};
         case 'getInfo':
-            return {...state, currentUser: action.payload.userInfo};
-        case 'cambiarValor':
-            return {...state, [action.payload.variable]: action.payload.valor};
+            return {...state, currentUser: action.payload.userInfo, biografia: action.payload.userInfo ? action.payload.userInfo.biografia : ""};
         case 'cambiarFecha':
             return {...state, fechaNac: action.payload.date};
+        case 'onError':
+            return {...state,  error: action.payload.error};
+        case 'editarPerfil':
+            return {...state, error:{titulo:null, cuerpo:null, anterior:null, styleError:null}};
         default:
             return state;
     }
@@ -44,12 +47,10 @@ const getInfo = (dispatch) => async () =>{
     }
 }
 
-const cambiarValor = (dispatch) => ({variable, valor}) =>{
-    dispatch({type: "cambiarValor", payload: {variable, valor}});
-}
-
 const cambiarFecha = (dispatch) => (date) =>{
     dispatch({type: "cambiarFecha",payload:{date}});
+}
+
 const getSeguidores = (dispatch) => async () =>{
     try{
         
@@ -72,6 +73,16 @@ const getSeguidos = (dispatch) => async ({filtro,valor}) =>{
     }
 }
 
+const editarPerfil = (dispatch) => async (userId, newPerfil)=> {
+    try{
+        await settings.put(`users/${userId}`, newPerfil);
+        
+        dispatch({type:'onError', payload: {error: {titulo: 'Exito en editar perfil', cuerpo: 'Se ha actualizado su perfil', anterior: 'EditarPerfil', styleError: styles.success}}});
+    }catch(e){
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo editar el perfil", activacion: null}}});
+    }
+}
+
 const initialState = {
     currentUser: {},
     nombre: "",
@@ -81,11 +92,22 @@ const initialState = {
     seguidores:[],
     seguidos:[],
     filtro:filtroSeguidos._usuario,
-    buscar:''
+    buscar:'',
+    error: {}
 }
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo, getSeguidores, getSeguidos, cambiarValor, cambiarFecha },
-    initialState
+    {getInfo, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil },
+    initialState,
 );
+
+
+const styles = StyleSheet.create({
+    error:{
+        color: "red"
+    },
+    success:{
+        color: "green"
+    },
+});
