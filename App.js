@@ -11,7 +11,7 @@ import {Provider as CrearCuentaProvider} from './src/context/CrearCuentaContext'
 import {Provider as PerfilProvider} from './src/context/PerfilContext';
 
 
-import {InicioSesion, Muro, Perfil, Registro, Conversaciones, NuevaPublicacion, Seguidores, Seguidos} from './src/pantallas';
+import {InicioSesion, Muro, Perfil, Registro, Conversaciones, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil} from './src/pantallas';
 
 import { FontAwesome } from '@expo/vector-icons'; 
 
@@ -86,6 +86,7 @@ export default function App() {
                 <Stack.Screen name="Perfil" component={Perfil} options={{...stackOptions, title:''}}/>
                 <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
                 <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
+                <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
               </Stack.Navigator>
 
             </NavigationContainer>

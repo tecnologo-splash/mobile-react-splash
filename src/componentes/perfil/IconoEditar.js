@@ -1,15 +1,19 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { FAB, Portal } from 'react-native-paper';
 
 const IconoEditar = () => {
+
+  const navigation = useNavigation();
+  
   return <Portal.Host> 
       <Portal>
         <FAB
             style={styles.fab}
             large
             icon="account-edit"
-            onPress={() => console.log('Editar Perfil')}
+            onPress={() => navigation.navigate("EditarPerfil")}
         />
       </Portal>
   </Portal.Host>;

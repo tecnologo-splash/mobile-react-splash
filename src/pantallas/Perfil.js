@@ -14,6 +14,7 @@ const Perfil = ({navigation}) => {
   return (
     <PerfilBody usuario={currentUser}/>
   );
+  
 }
 
 

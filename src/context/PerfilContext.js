@@ -6,6 +6,10 @@ const PerfilReducer = (state,action) => {
     switch(action.type){
         case 'getInfo':
             return {...state, currentUser: action.payload.userInfo};
+        case 'cambiarValor':
+            return {...state, [action.payload.variable]: action.payload.valor};
+        case 'cambiarFecha':
+            return {...state, fechaNac: action.payload.date};
         default:
             return state;
     }
@@ -29,12 +33,24 @@ const getInfo = (dispatch) => async () =>{
     }
 }
 
+const cambiarValor = (dispatch) => ({variable, valor}) =>{
+    dispatch({type: "cambiarValor", payload: {variable, valor}});
+}
+
+const cambiarFecha = (dispatch) => (date) =>{
+    dispatch({type: "cambiarFecha",payload:{date}});
+}
+
 const initialState = {
-    currentUser: {}
+    currentUser: {},
+    nombre: "",
+    apellido: "",
+    fechaNac: new Date(),
+    biografia:""
 }
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo},
+    {getInfo, cambiarValor, cambiarFecha},
     initialState
 );
