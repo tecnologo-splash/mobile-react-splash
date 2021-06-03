@@ -4,9 +4,11 @@ import { FlatList} from 'react-native';
 import {Avatar, ListItem} from 'react-native-elements';
 import ListaBotones from './ListaBotones';
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
+import {useNavigation} from '@react-navigation/native';
 
 const ListadoUsuarios = ({usuarios}) => {
   const{seguirUsuario,dejarDeSeguirUsuario}= useContext(ListarUsuariosContext);
+  const navigation = useNavigation();
   return (
     <View>
       <ListaBotones/>
@@ -14,7 +16,7 @@ const ListadoUsuarios = ({usuarios}) => {
         data={usuarios}
         keyExtractor={item => item.id.toString()}
         renderItem={({item})=>(
-          <TouchableOpacity onPress={()=>console.log("go to profile")}>
+          <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario: item})}>
             <ListItem>
               <Avatar 
                 rounded 
