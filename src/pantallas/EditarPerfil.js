@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TextInput, Button,Title } from 'react-native-paper';
+import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import {Context as PerfilContext} from '../context/PerfilContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ScrollView } from 'react-native';
@@ -19,18 +19,25 @@ const EditarPerfil = () => {
   }
 
   const onSubmit = () => {
-    console.log(currentUser)
-
     let formData = new FormData();
     formData.append('nombre', nombre);
     formData.append('apellido', apellido);
     //formData.append('fechaNac', fechaNac); descomentar para modificar la fecha
     formData.append('biografia', biografia);
 
-    // editarPerfil(currentUser.id, formData).then( data => getInfo()); descomentar para que funque
-    editarPerfil(77, formData).then( data => getInfo());// descomentar para que funque
+    editarPerfil(currentUser.id, formData).then( data => getInfo());
   }
 
+
+  const deleteAccount = () => {
+    let formData = new FormData();
+    formData.append('activo', false);
+    editarPerfil(currentUser.id, formData).then( data => {getInfo();hideDialog()});
+  }
+
+  const [visible, setVisible] = React.useState(false);
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
 
   return (
   <View style={styles.body}>
@@ -83,7 +90,30 @@ const EditarPerfil = () => {
       <Button
         style={styles.button}
         onPress={()=>onSubmit()}
-      > Guardar Datos</Button>
+        mode="contained"> 
+          Guardar Datos
+      </Button>
+      
+      <Button
+        style={styles.button}
+        //onPress={()=>onSubmit()}
+        mode="outlined"
+        color="red"> 
+          Eliminar Cuenta
+      </Button>
+
+
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>Alert</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>This is simple dialog</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
   </View>);
 }
 
