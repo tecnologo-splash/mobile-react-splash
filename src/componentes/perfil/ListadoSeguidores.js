@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList} from 'react-native';
 import {Avatar, ListItem} from 'react-native-elements';
 import {Context as PerfilContext} from '../../context/PerfilContext';
+import {useNavigation} from '@react-navigation/native';
 
 const ListadoSeguidores = ({usuarios}) => {
   return (
@@ -10,7 +11,7 @@ const ListadoSeguidores = ({usuarios}) => {
     data={usuarios}
     keyExtractor={item => item.usuario}
     renderItem={({item})=>(
-      <TouchableOpacity onPress={()=>console.log("go to profile")}>
+      <TouchableOpacity onPress={()=>useNavigation('PerfilExterno', {usuario:{...item, lo_sigo: true}})}>
         <ListItem>
           <Avatar 
             rounded 
