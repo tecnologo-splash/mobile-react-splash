@@ -6,12 +6,13 @@ import {Context as PerfilContext} from '../../context/PerfilContext';
 import {useNavigation} from '@react-navigation/native';
 
 const ListadoSeguidores = ({usuarios}) => {
+  const navigation = useNavigation();
   return (
     <FlatList
     data={usuarios}
     keyExtractor={item => item.usuario}
     renderItem={({item})=>(
-      <TouchableOpacity onPress={()=>useNavigation('PerfilExterno', {usuario:{...item, lo_sigo: true}})}>
+      <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario:{...item, lo_sigo: true}})}>
         <ListItem>
           <Avatar 
             rounded 
