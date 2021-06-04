@@ -26,7 +26,6 @@ const Muro = ({navigation}) => {
         :
         <View>
           <Text>Muro</Text>
-          <Button title="Cerrar Sesion" onPress={()=>cerrar()}/>
         </View>
       }
     </View>

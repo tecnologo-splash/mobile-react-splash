@@ -8,6 +8,7 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
+import MenuTooltip from './MenuTooltip';
 
 const NavBar = () => {
   const navigation = useNavigation();
@@ -36,7 +37,7 @@ const NavBar = () => {
         <Tooltip
             backgroundColor="#6d31bf"
             withOverlay= {false}
-            popover={<Text>Hola</Text>}>
+            popover={<MenuTooltip />}>
             <Appbar.Action icon="dots-vertical" color='#fff'/>
             </Tooltip>
     </Appbar.Header>
