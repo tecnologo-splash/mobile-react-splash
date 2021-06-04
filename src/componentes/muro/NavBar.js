@@ -13,6 +13,11 @@ const NavBar = () => {
   const navigation = useNavigation();
   const {state:{buscar,filtro},cambiarValor, listarUsuariosParaSeguir} = useContext(ListarUsuariosContext);
 
+  const _onChange = (text) => {
+    cambiarValor({variable:"buscar", valor: text});
+    navigation.navigate("Muro");
+  }
+
   return (
     <Appbar.Header style={{backgroundColor: '#6F32C1'}}>
         <TouchableOpacity onPress={()=>navigation.navigate("Perfil")}>
@@ -24,7 +29,7 @@ const NavBar = () => {
         placeholder="Search"
         placeholderTextColor='#fff'
         value={buscar}
-        onChangeText={text => cambiarValor({variable:"buscar", valor: text})}
+        onChangeText={text => _onChange(text)}
         style={styles.input}
         />
         </View>

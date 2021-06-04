@@ -36,14 +36,16 @@ const cambiarValor = dispatch => ({variable,valor})=> {
 const getInfo = (dispatch) => async () =>{
     
     try {
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         const response = await settings.get('/users/info', {headers: {'Content-Type': "application/json"}} );
 
         dispatch({type: 'getInfo', payload: {userInfo:response.data}});
-        console.log(response.data);
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
 
     } catch (e) {
         console.log(e);
         dispatch({type: 'onError', payload: {error: e}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
 
@@ -62,14 +64,15 @@ const getSeguidores = (dispatch) => async () =>{
 
 const getSeguidos = (dispatch) => async ({filtro,valor}) =>{
     try{
-        console.log("filtro en getSeguidos", filtro);
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         console.log(`/users/siguiendo?page=0&size=10&filtro=${filtro}&keywords=${valor}`);
         const response= await settings.get(`/users/siguiendo?page=0&size=10&filtro=${filtro}&keywords=${valor}`);
-        console.log(response.data.length);
         dispatch({type:'getSeguidos', payload:{ seguidos: response.data}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }catch(e){
         console.log(e);
         dispatch({type: 'onError', payload: {error: e}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
 
@@ -93,7 +96,8 @@ const initialState = {
     seguidos:[],
     filtro:filtroSeguidos._usuario,
     buscar:'',
-    error: {}
+    error: {},
+    cargando: false
 }
 
 export const {Context, Provider} = crearContext(

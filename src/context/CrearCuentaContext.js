@@ -18,12 +18,15 @@ const CrearCuentaReducer = (state, action)=>{
 
 const crearCuenta = (dispatch) => async (usuario)=> {
     try{
+        dispatch({type: "cambiarValor", payload: {variable:"cargando",valor: true}});
         console.log(usuario);
         await settings.post('users/sign-up', JSON.stringify(usuario),
         {headers: {'Content-Type': "application/json"}});
         dispatch({type:'crearCuenta'});
+        dispatch({type: "cambiarValor", payload: {variable:"cargando",valor: false}});
     }catch(e){
         dispatch({type: 'onError', payload: {error: {tipo:"USUARIO_EXISTENTE", mensaje: "El Correo o Nombre de usuario ya existe en otro usuario, por favor ingresa uno nuevo", activacion: null}}});
+        dispatch({type: "cambiarValor", payload: {variable:"cargando",valor: false}});
     }
     
 }
@@ -46,12 +49,15 @@ const validarPassword = (dispatch) => ({clave, confirmar}) =>{
 
 const activarCuenta = (dispatch) => async (activacion) =>{
     try{
+        dispatch({type: "cambiarValor", payload: {variable:"cargando",valor: true}});
         await settings.post('users/activation', JSON.stringify(activacion),
         {headers: {'Content-Type': "application/json"}});
         dispatch({type: "cambiarValor", payload: {variable:"error",valor: null}});
         dispatch({type: "cambiarValor", payload: {variable:"entrar",valor: true}});
+        dispatch({type: "cambiarValor", payload: {variable:"cargando",valor: false}});
     }catch(e){
         dispatch({type: 'onError', payload: {error: e}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
 
@@ -69,6 +75,7 @@ export const {Context, Provider} = crearContext(
         genero: 'OTRO',
         error: null,
         claveActivacion: null,
-        entrar:false
+        entrar:false,
+        cargando: false
     }
 );

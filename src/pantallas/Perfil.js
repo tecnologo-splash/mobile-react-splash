@@ -1,12 +1,15 @@
 import React, {useContext,useEffect} from 'react';
+import { View } from 'react-native';
+import Cargando from '../componentes/Cargando';
 import { filtroSeguidos } from '../componentes/filtros';
 import PerfilBody from '../componentes/perfil/PerfilBody';
+import { colores } from '../config/colores';
 import {Context as PerfilContext} from '../context/PerfilContext';
 
 
-const Perfil = ({navigation}) => {
+const Perfil = () => {
 
-  const {state:{currentUser, seguidores, seguidos}, getInfo, getSeguidores, getSeguidos} = useContext(PerfilContext);
+  const {state:{currentUser, cargando, seguidores, seguidos}, getInfo, getSeguidores, getSeguidos} = useContext(PerfilContext);
 
   useEffect(()=>{
     getInfo();
@@ -15,11 +18,14 @@ const Perfil = ({navigation}) => {
   },[]);
   
   return (
-    <PerfilBody 
-      usuario={currentUser} 
-      cantSeguidores={seguidores.length} 
-      cantSeguidos={seguidos.length}
-    />
+    <View style={{flex: 1}}>
+      <PerfilBody 
+        usuario={currentUser} 
+        cantSeguidores={seguidores.length} 
+        cantSeguidos={seguidos.length}
+      />
+      <Cargando estaCargando={cargando} color= {colores.appDefault} />
+    </View>
   );
   
 }

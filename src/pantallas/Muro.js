@@ -15,7 +15,7 @@ const Muro = ({navigation}) => {
     navigation.navigate('InicioSesion');
   }
   useEffect(()=>{
-    navigation.navigate('Muro')
+    navigation.navigate('Muro');
     listarUsuariosParaSeguir({filtro, valor:buscar});
   },[buscar, filtro])
   return (

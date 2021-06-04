@@ -1,9 +1,11 @@
 import React, {useContext} from 'react';
 import { Button, Dialog, Portal, TextInput } from 'react-native-paper';
+import { colores } from '../../config/colores';
 import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
+import Cargando from '../Cargando';
 
 const RecuperarPassword = () => {
-    const {state:{recuperar, usuario}, cambiarValor, recuperarPassword} = useContext(InicioSesionContext);
+    const {state:{recuperar, usuario, cargando}, cambiarValor, recuperarPassword} = useContext(InicioSesionContext);
   return (
     <Portal>
         <Dialog visible={recuperar} onDismiss={()=>cambiarValor({variable: 'recuperar', valor: !recuperar})}>
@@ -19,6 +21,7 @@ const RecuperarPassword = () => {
                     }
                 />
             </Dialog.Content>
+            <Cargando estaCargando={cargando} color={colores.appDefault} />
             <Dialog.Actions>
                 <Button onPress={()=>cambiarValor({variable: 'recuperar', valor: !recuperar})}>Volver</Button>
                 <Button onPress={()=>recuperarPassword(usuario)}>Enviar</Button>

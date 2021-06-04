@@ -5,9 +5,11 @@ import {Avatar, ListItem} from 'react-native-elements';
 import ListaBotones from './ListaBotones';
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
 import {useNavigation} from '@react-navigation/native';
+import Cargando from '../Cargando';
+import { colores } from '../../config/colores';
 
 const ListadoUsuarios = ({usuarios}) => {
-  const{seguirUsuario,dejarDeSeguirUsuario}= useContext(ListarUsuariosContext);
+  const{state:{cargando},seguirUsuario,dejarDeSeguirUsuario}= useContext(ListarUsuariosContext);
   const navigation = useNavigation();
   return (
     <View>
@@ -37,6 +39,7 @@ const ListadoUsuarios = ({usuarios}) => {
           </TouchableOpacity>
           )}
           />
+          <Cargando estaCargando={cargando} color={colores.appDefault} />
       </View>
   );
 }

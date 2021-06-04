@@ -23,13 +23,15 @@ const ListarUsuariosReducer = (state,action) => {
 
 const listarUsuariosParaSeguir = dispatch => async ({filtro,valor}) => {
     try{
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         const endpoint = `/users?activo=true&bloqueado=false&${filtro}=${valor}`;
         console.log(endpoint);
         const response = await settings.get(`/users?activo=true&bloqueado=false&${filtro}=${valor}`);
         dispatch({type:'listarUsuarios', payload: {usuarios: response.data.content}});
-        console.log(response.data.content.length);
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }catch(e){
         console.log(e);
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
 
@@ -62,7 +64,8 @@ const cambiarValor = (dispatch) => ({variable,valor}) =>{
 const initialState = {
     usuarios: [],
     buscar:'',
-    filtro: filtroListadoUsuarios._usuario
+    filtro: filtroListadoUsuarios._usuario,
+    cargando: false
 }
 
 export const {Context, Provider} = crearContext(

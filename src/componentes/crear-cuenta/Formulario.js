@@ -8,9 +8,11 @@ import {Context as CrearCuentaContext} from '../../context/CrearCuentaContext';
 import Error from './Error';
 import Activacion from './Activacion';
 import { Ionicons } from '@expo/vector-icons'; 
+import Cargando from '../Cargando';
+import { colores } from '../../config/colores';
 
 const Formulario = () => {
-    const {state:{usuario, correo, nombre, apellido, clave, confirmar, fecha, genero}, cambiarFecha, cambiarValor, crearCuenta, validarPassword} = useContext(CrearCuentaContext);
+    const {state:{usuario, cargando, correo, nombre, apellido, clave, confirmar, fecha, genero}, cambiarFecha, cambiarValor, crearCuenta, validarPassword} = useContext(CrearCuentaContext);
     const [fechaSeleccionada, setFechaSeleccionada] = useState(false);
     const [activar, setActivar] = useState(false);
     const navigation = useNavigation();
@@ -135,6 +137,7 @@ const Formulario = () => {
                 >
                     Cancelar
                 </Button>
+                <Cargando estaCargando={cargando} color={colores.blanco} />
             </View>
             <Activacion activar={activar} setActivar={setActivar} />
             <Error/>

@@ -41,6 +41,7 @@ const inicioSesion = (dispatch) => async ({usuario, password}) =>{
         }
     }
     try {
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         const response = await settings.post('/users/auth', 
         JSON.stringify(credenciales), 
         {headers: {'Content-Type': "application/json"}}
@@ -48,8 +49,10 @@ const inicioSesion = (dispatch) => async ({usuario, password}) =>{
 
         await AsyncStorage.setItem('tokenSplash', response.data.token);
         dispatch({type: 'inicioSesion', payload: {token:response.data.token}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     } catch (e) {
         dispatch({type: 'onError', payload: {error: {titulo: 'Error al inicio de sesion', cuerpo: 'Usuario y/o Password incorrecto', anterior: 'confirmErrorInicioSesion', styleError: styles.error}}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
 
@@ -62,19 +65,24 @@ const actualizarToken = (dispatch) => async() =>{
 
 const cerrarSesion = (dispatch) => async () =>{
     dispatch({type: 'cerrarSesion'});
+    dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
     await AsyncStorage.removeItem('tokenSplash');
+    dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
 }
 
 const recuperarPassword = (dispatch) => async (usuario) =>{
     var correo = {correo: usuario};
     try{
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         await settings.post('/users/recovery-password',
         JSON.stringify(correo),
         {headers: {'Content-Type': "application/json"}}
         );
         dispatch({type: 'recuperarPassword'});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }catch (e) {
         dispatch({type:'onError', payload: {error: {titulo: 'Error en el correo', cuerpo: 'Ese correo no se encuentra registrado', anterior: 'confirmErrorRecuperarPassword', styleError: styles.error}}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
 
@@ -90,13 +98,16 @@ const recuperarPassword2 = (dispatch) => async (usuario, codigo, clave, clave2) 
             }else{
                 var correo = {correo: usuario, codigo: codigo, clave: clave};
                 try{
+                    dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
                     await settings.post('/users/recovery-password',
                     JSON.stringify(correo),
                     {headers: {'Content-Type': "application/json"}}
                     );
                     dispatch({type:'onError', payload: {error: {titulo: 'Exito en recuperar contraseña', cuerpo: 'Su nueva contraseña a sido actualizada', anterior: 'recuperarPassword2', styleError: styles.success}}});
+                    dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
                 }catch (e) {
                     dispatch({type:'onError', payload: {error: {titulo: 'Error en el código', cuerpo: 'El código ingresado no es correcto', anterior: 'confirmErrorRecuperarPassword2', styleError: styles.error}}});
+                    dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
                 }
             }
         }
@@ -122,7 +133,9 @@ export const {Context, Provider} = crearContext(
         clave: null, 
         clave2: null, 
         recuperado:false,
-        entrar:false}
+        entrar:false,
+        cargando: false
+    }
 );
 
 const styles = StyleSheet.create({
