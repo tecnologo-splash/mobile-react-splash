@@ -5,10 +5,11 @@ import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext
 
 import NavBar from '../componentes/muro/NavBar';
 import ListadoUsuarios from '../componentes/listado-usuarios/ListadoUsuarios';
+import ListadoSugeridos from '../componentes/listado-sugeridos/ListadoSugeridos';
 
 const Muro = ({navigation}) => {
   const {cerrarSesion} = useContext(InicioSesionContext);
-  const {state:{filtro,buscar,usuarios},listarUsuariosParaSeguir} = useContext(ListarUsuariosContext);
+  const {state:{filtro,buscar,usuarios, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
 
   const cerrar = ()=>{
     cerrarSesion()
@@ -17,6 +18,7 @@ const Muro = ({navigation}) => {
   useEffect(()=>{
     navigation.navigate('Muro');
     listarUsuariosParaSeguir({filtro, valor:buscar});
+    listarUsuariosSugeridos();
   },[buscar, filtro])
   return (
     <View>
@@ -26,6 +28,7 @@ const Muro = ({navigation}) => {
         :
         <View>
           <Text>Muro</Text>
+          <ListadoSugeridos sugeridos={sugeridos}/>
         </View>
       }
     </View>
