@@ -30,11 +30,11 @@ const ListadoSugeridos = ({sugeridos}) => {
               <ListItem.Title>{item.nombre}</ListItem.Title>
               <ListItem.Title>{item.apellido}</ListItem.Title>
               <ListItem.Subtitle>{item.usuario}</ListItem.Subtitle>
-              {item.lo_sigo ?
+              {/*item.lo_sigo ?
                   <Text style={{...styles.text, color: '#dd182f'}} onPress={()=>dejarDeSeguirUsuarioSugerido(item.id)}>Dejar de seguir</Text>
                   :
                   <Text style={{...styles.text, color: '#296fe8'}} onPress={()=>seguirUsuarioSugerido(item.id)}>Seguir</Text>
-              }
+              */}
               </ListItem.Content>
             </ListItem>
           </TouchableOpacity>
