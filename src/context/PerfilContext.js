@@ -79,7 +79,7 @@ const getSeguidos = (dispatch) => async ({filtro,valor}) =>{
 const editarPerfil = (dispatch) => async (userId, newPerfil)=> {
     try{
         await settings.put(`users/${userId}`, newPerfil);
-        
+        console.log(newPerfil)
         dispatch({type:'onError', payload: {error: {titulo: 'Exito en editar perfil', cuerpo: 'Se ha actualizado su perfil', anterior: 'EditarPerfil', styleError: styles.success}}});
     }catch(e){
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo editar el perfil", activacion: null}}});

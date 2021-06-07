@@ -49,10 +49,10 @@ const listarUsuariosParaSeguir = dispatch => async ({filtro,valor}) => {
 const listarUsuariosSugeridos= dispatch => async () => {
     try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        const endpoint = `/users?activo=true&bloqueado=false`;
+        const endpoint = `/seguidores/recomendados?page=0&size=10`;
         console.log(endpoint);
-        const response = await settings.get(`/users?activo=true&bloqueado=false`);
-        dispatch({type:'listarSugeridos', payload: {sugeridos: response.data.content}});
+        const response = await settings.get(`/seguidores/recomendados?page=0&size=10`);
+        dispatch({type:'listarSugeridos', payload: {sugeridos: response.data}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }catch(e){
         console.log(e);

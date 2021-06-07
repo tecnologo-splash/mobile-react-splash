@@ -9,6 +9,7 @@ import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {Provider as InicioSesionProvider} from './src/context/InicioSesionContext';
 import {Provider as CrearCuentaProvider} from './src/context/CrearCuentaContext';
 import {Provider as PerfilProvider} from './src/context/PerfilContext';
+import {Provider as PublicacionProvider} from './src/context/PublicacionContext';
 import {Provider as ListarUsuariosProvider} from './src/context/ListarUsuariosContext';
 
 import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil} from './src/pantallas';
@@ -77,22 +78,24 @@ export default function App() {
       <PaperProvider theme={theme}>
         <CrearCuentaProvider>
           <PerfilProvider>
-            <ListarUsuariosProvider>
-              <NavigationContainer>
+            <PublicacionProvider>
+              <ListarUsuariosProvider>
+                <NavigationContainer>
 
-              <Stack.Navigator>
-                <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
-                <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
-                <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
-                <Stack.Screen name="Perfil" component={Perfil} options={{...stackOptions, title:''}}/>
-                <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
-                <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
-                <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
-                <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions}/>
-              </Stack.Navigator>
+                <Stack.Navigator>
+                  <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
+                  <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
+                  <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
+                  <Stack.Screen name="Perfil" component={Perfil} options={{...stackOptions, title:''}}/>
+                  <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
+                  <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
+                  <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
+                  <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions}/>
+                </Stack.Navigator>
 
-              </NavigationContainer>
-            </ListarUsuariosProvider>
+                </NavigationContainer>
+              </ListarUsuariosProvider>
+            </PublicacionProvider>
           </PerfilProvider>
         </CrearCuentaProvider>
       </PaperProvider>
