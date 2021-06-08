@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { FlatList} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, SafeAreaView } from 'react-native';
+import { FlatList } from "react-native-bidirectional-infinite-scroll";
 import {Avatar, ListItem} from 'react-native-elements';
 import ListaBotones from './ListaBotones';
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
@@ -8,15 +8,17 @@ import {useNavigation} from '@react-navigation/native';
 import Cargando from '../Cargando';
 import { colores } from '../../config/colores';
 
-const ListadoUsuarios = ({usuarios}) => {
+const ListadoUsuarios = ({usuarios, onEnd}) => {
   const{state:{cargando},seguirUsuario,dejarDeSeguirUsuario}= useContext(ListarUsuariosContext);
   const navigation = useNavigation();
   return (
-    <View>
+    <SafeAreaView >
       <ListaBotones/>
       <FlatList
         data={usuarios}
         keyExtractor={item => item.id.toString()}
+        onEndReached={()=>onEnd()}
+        onEndReachedThreshold={2}
         renderItem={({item})=>(
           <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario: item})}>
             <ListItem>
@@ -40,7 +42,7 @@ const ListadoUsuarios = ({usuarios}) => {
           )}
           />
           <Cargando estaCargando={cargando} color={colores.appDefault} />
-      </View>
+      </SafeAreaView>
   );
 }
 

@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import { FlatList } from 'react-native';    
-import { maximos } from '../maximos';
+import { maximos } from '../../config/maximos';
 
 const AddImagen = () => {
 

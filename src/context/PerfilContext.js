@@ -1,8 +1,8 @@
 import crearContext from "./crearContext";
 import settings from '../config/settings';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { filtroSeguidos } from "../componentes/filtros";
+import { filtroSeguidos } from "../config/filtros";
 import { StyleSheet } from 'react-native';
+import { requestSizeListarSeguidos } from "../config/maximos";
 
 const PerfilReducer = (state,action) => {
     switch(action.type){
@@ -11,7 +11,9 @@ const PerfilReducer = (state,action) => {
         case 'getSeguidores':
             return {...state, seguidores: action.payload.seguidores};
         case 'getSeguidos':
-            return {...state, seguidos: action.payload.seguidos};
+            return {...state, seguidos: action.payload.seguidos, cargando: false};
+        case 'appendSeguidos':
+            return {...state, seguidos: [...state.seguidos, ...action.payload.seguidos], cargando: false};
         case 'getInfo':
             return {...state, currentUser: action.payload.userInfo, biografia: action.payload.userInfo ? action.payload.userInfo.biografia : ""};
         case 'cambiarFecha':
@@ -24,11 +26,6 @@ const PerfilReducer = (state,action) => {
             return state;
     }
 }
-
-function getToken(){
-    return AsyncStorage.getItem("tokenSplash");
-}
-
 const cambiarValor = dispatch => ({variable,valor})=> {
     dispatch({type: 'cambiarValor', payload: {variable, valor}});
 }
@@ -62,13 +59,16 @@ const getSeguidores = (dispatch) => async () =>{
     }
 }
 
-const getSeguidos = (dispatch) => async ({filtro,valor}) =>{
+const getSeguidos = (dispatch) => async ({filtro,valor, page}) =>{
     try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        console.log(`/users/siguiendo?page=0&size=10&filtro=${filtro}&keywords=${valor}`);
-        const response= await settings.get(`/users/siguiendo?page=0&size=10&filtro=${filtro}&keywords=${valor}`);
-        dispatch({type:'getSeguidos', payload:{ seguidos: response.data}});
-        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
+        console.log(`/users/siguiendo?page=${page}&size=${requestSizeListarSeguidos}&filtro=${filtro}&keywords=${valor}`);
+        const response= await settings.get(`/users/siguiendo?page=${page}&size=${requestSizeListarSeguidos}&filtro=${filtro}&keywords=${valor}`);
+        if(page == 0){
+            dispatch({type:'getSeguidos', payload:{ seguidos: response.data}});
+        }else{
+            dispatch({type:'appendSeguidos', payload:{ seguidos: response.data}});
+        }        
     }catch(e){
         console.log(e);
         dispatch({type: 'onError', payload: {error: e}});

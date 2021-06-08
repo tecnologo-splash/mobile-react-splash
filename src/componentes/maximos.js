@@ -1,1 +1,0 @@
-export const maximos = {_imagen: 3, _video: 3};

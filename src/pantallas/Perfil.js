@@ -1,7 +1,7 @@
 import React, {useContext,useEffect} from 'react';
 import { View } from 'react-native';
 import Cargando from '../componentes/Cargando';
-import { filtroSeguidos } from '../componentes/filtros';
+import { filtroSeguidos } from '../config/filtros';
 import PerfilBody from '../componentes/perfil/PerfilBody';
 import { colores } from '../config/colores';
 import {Context as PerfilContext} from '../context/PerfilContext';
@@ -14,7 +14,7 @@ const Perfil = () => {
   useEffect(()=>{
     getInfo();
     getSeguidores();
-    getSeguidos({filtro: filtroSeguidos._usuario,valor:''});
+    getSeguidos({filtro: filtroSeguidos._usuario,valor:'',page:0});
   },[]);
   
   return (

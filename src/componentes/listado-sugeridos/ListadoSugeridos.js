@@ -1,26 +1,27 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { FlatList} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import { FlatList} from 'react-native-bidirectional-infinite-scroll';
 import {Avatar, ListItem} from 'react-native-elements';
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
 import {useNavigation} from '@react-navigation/native';
 import Cargando from '../Cargando';
 import { colores } from '../../config/colores';
 
-const ListadoSugeridos = ({sugeridos}) => {
+const ListadoSugeridos = ({sugeridos, onEnd}) => {
   const{state:{cargando},seguirUsuarioSugerido,dejarDeSeguirUsuarioSugerido}= useContext(ListarUsuariosContext);
   const navigation = useNavigation();
   return (
-    <View>
+    <ScrollView showsHorizontalScrollIndicator={false}>
       <FlatList
         data={sugeridos}
         horizontal={true}
         keyExtractor={item => item.usuario}
+        onEndReached={()=>onEnd()}
         renderItem={({item})=>(
-          <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario: item})}>
+          <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario: item})} style={{margin: 5}}>
             <ListItem>
               
-              <ListItem.Content>
+              <ListItem.Content style={{borderRadius: 20}}>
               <Avatar 
                 rounded 
                 source={item.url_perfil ? { uri: item.url_perfil } : require('../../../assets/perfilDefault.jpg')}
@@ -41,7 +42,7 @@ const ListadoSugeridos = ({sugeridos}) => {
           )}
           />
           <Cargando estaCargando={cargando} color={colores.appDefault} />
-      </View>
+      </ScrollView>
   );
 }
 

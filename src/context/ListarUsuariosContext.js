@@ -1,13 +1,16 @@
 import crearContext from "./crearContext";
 import settings from '../config/settings';
-import { filtroListadoUsuarios } from "../componentes/filtros";
+import { filtroListadoUsuarios } from "../config/filtros";
+import { requestSizeListarSeguidos, requestSizeListarSugeridos, requestSizeListarUsuarios } from "../config/maximos";
 
 const ListarUsuariosReducer = (state,action) => {
     switch(action.type){
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
         case 'listarUsuarios':
-            return {...state, usuarios: action.payload.usuarios}
+            return {...state, usuarios:[...state.usuarios, ...action.payload.usuarios], cargando: false};
+        case 'agregarUsuariosALista':
+            return {...state, usuarios: action.payload.usuarios, cargando:false}
         case 'listarSugeridos':
             return {...state, sugeridos: action.payload.sugeridos}
         case 'seguir':
@@ -23,7 +26,6 @@ const ListarUsuariosReducer = (state,action) => {
             var usuarioNoSeguido = state.usuarios.find(item=>item.id==action.payload);
             return {...state,usuarios: [...todosUsuarioMenosNoSeguido,{...usuarioNoSeguido, lo_sigo: false}]};
         case 'dejarDeSeguirSugerido':
-            console.log('llego')
             var todosUsuarioMenosNoSeguido = state.sugeridos.filter(item => item.id != action.payload);
             var usuarioNoSeguido = state.sugeridos.find(item=>item.id==action.payload);
             return {...state,sugeridos: [...todosUsuarioMenosNoSeguido,{...usuarioNoSeguido, lo_sigo: false}]};
@@ -32,26 +34,31 @@ const ListarUsuariosReducer = (state,action) => {
     }
 }
 
-const listarUsuariosParaSeguir = dispatch => async ({filtro,valor}) => {
+const listarUsuariosParaSeguir = dispatch => async ({filtro,valor, page}) => {
     try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        const endpoint = `/users?activo=true&bloqueado=false&${filtro}=${valor}`;
+        const endpoint = `/users?page=${page}&size=${requestSizeListarUsuarios}activo=true&bloqueado=false&${filtro}=${valor}`;
         console.log(endpoint);
-        const response = await settings.get(`/users?activo=true&bloqueado=false&${filtro}=${valor}`);
-        dispatch({type:'listarUsuarios', payload: {usuarios: response.data.content}});
-        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
+        const response = await settings.get(`/users?page=${page}&size=${requestSizeListarUsuarios}&activo=true&bloqueado=false&${filtro}=${valor}`);
+        console.log('response.data.content.length', response.data.content.length);
+        if(page==0){
+            dispatch({type:'agregarUsuariosALista', payload: {usuarios: response.data.content}});
+        }else{
+            dispatch({type:'listarUsuarios', payload: {usuarios: response.data.content}});
+        }
+        
     }catch(e){
         console.log(e);
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
 
-const listarUsuariosSugeridos= dispatch => async () => {
+const listarUsuariosSugeridos= dispatch => async ({page}) => {
     try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        const endpoint = `/seguidores/recomendados?page=0&size=10`;
+        const endpoint = `/seguidores/recomendados?page=${page}&size=${requestSizeListarSeguidos}`;
         console.log(endpoint);
-        const response = await settings.get(`/seguidores/recomendados?page=0&size=10`);
+        const response = await settings.get(`/seguidores/recomendados?page=${page}&size=${requestSizeListarSugeridos}`);
         dispatch({type:'listarSugeridos', payload: {sugeridos: response.data}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }catch(e){

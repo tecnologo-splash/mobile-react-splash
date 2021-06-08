@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
-import {filtroSeguidos} from '../filtros';
+import {filtroSeguidos} from '../../config/filtros';
 import {Context as PerfilContext} from '../../context/PerfilContext';
 import { StyleSheet } from 'react-native';
 

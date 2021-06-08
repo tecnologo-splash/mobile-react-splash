@@ -2,10 +2,7 @@ import React, {useContext} from 'react';
 import { Appbar } from 'react-native-paper';
 import { StyleSheet, View, TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import {Context as PerfilContext} from '../../context/PerfilContext';
-import {filtroSeguidos} from '../filtros';
-
 const SearchBar = () => {
     const {state:{buscar},cambiarValor} = useContext(PerfilContext);
   return (
