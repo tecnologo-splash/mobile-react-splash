@@ -8,3 +8,4 @@ export * from './Seguidores';
 export * from './Seguidos';
 export * from './EditarPerfil';
 export * from './PerfilExterno';
+export * from './Comentarios';

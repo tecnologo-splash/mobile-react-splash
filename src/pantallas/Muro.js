@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
 
@@ -36,11 +36,13 @@ const Muro = () => {
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
         :
-        <View>
+        <SafeAreaView>
+        <ScrollView>
           <Text>Muro</Text>
           <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(page)}/>
           <ListadoPublicaciones publicaciones = {publicaciones} />
-        </View>
+        </ScrollView>
+        </SafeAreaView>
       }
     </View>
   );

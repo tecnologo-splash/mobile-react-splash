@@ -5,6 +5,7 @@ import { Card} from 'react-native-paper';
 import { colores } from '../../config/colores';
 import { tipoMultimedia } from '../../config/tiposPublicacion';
 import {Video} from 'expo-av';
+import BotonesPublicacion from './BotonesPublicacion';
 
 const Publicacion = ({publicacion, usuario}) => {
     const [dots, setDots] = useState(0);
@@ -73,6 +74,7 @@ const Publicacion = ({publicacion, usuario}) => {
             inactiveDotScale={0.6}
           />
         </Card.Content>:null}
+        <BotonesPublicacion/>
   </Card>
   );
 }

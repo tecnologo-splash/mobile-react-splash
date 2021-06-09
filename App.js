@@ -12,7 +12,7 @@ import {Provider as PerfilProvider} from './src/context/PerfilContext';
 import {Provider as PublicacionProvider} from './src/context/PublicacionContext';
 import {Provider as ListarUsuariosProvider} from './src/context/ListarUsuariosContext';
 
-import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil} from './src/pantallas';
+import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil, Comentarios} from './src/pantallas';
 
 import { FontAwesome } from '@expo/vector-icons'; 
 
@@ -91,6 +91,7 @@ export default function App() {
                   <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
                   <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
                   <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions}/>
+                  <Stack.Screen name="Comentarios" component={Comentarios} options={stackOptions}/>
                 </Stack.Navigator>
 
                 </NavigationContainer>
