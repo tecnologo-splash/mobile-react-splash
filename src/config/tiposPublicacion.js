@@ -1,0 +1,1 @@
+export const tipoMultimedia = {_foto: "FOTO", _video: "VIDEO"};

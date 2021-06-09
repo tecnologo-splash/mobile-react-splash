@@ -1,10 +1,18 @@
 import React from 'react';
-import { View } from 'react-native';
+import { FlatList } from 'react-native-bidirectional-infinite-scroll';
+import Publicacion from './Publicacion';
 
-// import { Container } from './styles';
+const ListadoPublicaciones = ({publicaciones}) => {
 
-const ListadoPublicaciones = () => {
-  return <View />;
+  console.log('publicaciones',publicaciones.length);
+  return (
+    <FlatList
+    data={publicaciones}
+    keyExtractor={item=>item.id.toString()}
+    renderItem={({item})=>(
+      <Publicacion publicacion={item} usuario={item.usuario_comun} />
+    )}/>
+  );
 }
 
 export default ListadoPublicaciones;

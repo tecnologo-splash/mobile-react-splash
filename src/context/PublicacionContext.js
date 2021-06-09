@@ -22,6 +22,8 @@ const PublicacionReducer = (state,action) => {
             return {...state, imageU:null, imageW:null, imageH:null, videoU:null, videoW:null, videoH:null, texto : null, currentPublicacion: {}};
         case 'editarPublicacion':
             return {...state, currentPublicacion: action.payload.publicacionInfo};
+        case 'listarPublicacionesMuro':
+            return {...state, publicaciones: action.payload.publicaciones};
         default:
             return state;
     }
@@ -105,17 +107,27 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
     
 }
 
+const listarPublicacionesMuro = dispatch => async () =>{
+    try{
+        var response = await settings.get(`/posts?page=0&size=5&orders=fechaCreado:desc`);
+        console.log(response.data.content);
+        dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
+    }catch(e){
+        console.log(e);
+    }
+}
 const initialState = {
     currentPublicacion: {},
     imagenes: [],
     videos: [],
     texto: "",
     error: {},
-    cargando: false
+    cargando: false,
+    publicaciones: []
 }
 
 export const {Context, Provider} = crearContext(
     PublicacionReducer,
-    {cambiarValor, crearPublicacion, editarPublicacion , eliminarPublicacion, agregarImagen, cancelarImagen, agregarVideo, cancelarVideo},
+    {cambiarValor, crearPublicacion, editarPublicacion , eliminarPublicacion, agregarImagen, cancelarImagen, agregarVideo, cancelarVideo, listarPublicacionesMuro},
     initialState,
 );
