@@ -6,16 +6,24 @@ import IconoEditar from './IconoEditar';
 import InfoBasica from './InfoBasica';
 import InfoSeguidores from './InfoSeguidores';
 import MoreInfo from './MoreInfo';
+import EditFotoPerfil from '../../pantallas/EditFotoPerfil'
 
 const PerfilBody = ({usuario:{url_perfil,nombre,apellido,usuario,correo,fecha_nacimiento,biografia,genero},cantSeguidores, cantSeguidos}) => {
 
-    const url = url_perfil ? { uri: url_perfil } : require('../../../assets/perfilDefault.jpg');
-    const navigation = useNavigation();
-    useEffect(()=>{
-        if(usuario){
-          navigation.setOptions({ title: `${nombre} ${apellido}`});
-        }
-      },[usuario]);
+  const url = url_perfil ? { uri: url_perfil } : require('../../../assets/perfilDefault.jpg');
+  const navigation = useNavigation();
+  useEffect(()=>{
+    if(usuario){
+      navigation.setOptions({ title: `${nombre} ${apellido}`});
+    }
+  },[usuario]);
+
+
+  
+  const editarFotoPerfil = () => {
+    navigation.navigate("EditFotoPerfil")
+  }
+    
   return (
     <View style={styles.scroll}>
       <ScrollView>
@@ -24,13 +32,13 @@ const PerfilBody = ({usuario:{url_perfil,nombre,apellido,usuario,correo,fecha_na
             rounded 
             source={url}
             size="large"
-            onPress={()=> console.log("expand")} 
+            onPress={editarFotoPerfil} 
           >  
           <Avatar.Accessory
               name='pencil'  
               type='font-awesome' 
               size={24}
-              onPress={()=> console.log("changePhoto")}
+              onPress={editarFotoPerfil}
           />
           </Avatar>
           <InfoBasica nombre={nombre} usuario={usuario} apellido={apellido} correo={correo} />

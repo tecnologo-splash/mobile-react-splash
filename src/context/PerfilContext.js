@@ -20,6 +20,8 @@ const PerfilReducer = (state,action) => {
             return {...state,  error: action.payload.error};
         case 'editarPerfil':
             return {...state, error:{titulo:null, cuerpo:null, anterior:null, styleError:null}};
+        case 'getConfigNotif':
+            return {...state, configNotif: action.payload.configNotif};
         default:
             return state;
     }
@@ -83,6 +85,20 @@ const editarPerfil = (dispatch) => async (userId, newPerfil)=> {
     }
 }
 
+const getConfigNotif = (dispatch) => async () =>{
+    
+    try {
+        const response = await settings.get('/configuracion-notificaciones', {headers: {'Content-Type': "application/json"}} );
+
+        dispatch({type: 'getConfigNotif', payload: {configNotif:response.data}});
+        console.log(response.data);
+
+    } catch (e) {
+        console.log(e);
+        dispatch({type: 'onError', payload: {error: e}});
+    }
+}
+
 const initialState = {
     currentUser: {},
     nombre: "",
@@ -93,12 +109,13 @@ const initialState = {
     seguidos:[],
     filtro:filtroSeguidos._usuario,
     buscar:'',
-    error: {}
+    error: {},
+    configNotif: {}
 }
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil },
+    {getInfo, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil, getConfigNotif },
     initialState,
 );
 

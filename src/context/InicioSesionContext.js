@@ -61,8 +61,8 @@ const actualizarToken = (dispatch) => async() =>{
 }
 
 const cerrarSesion = (dispatch) => async () =>{
-    dispatch({type: 'cerrarSesion'});
     await AsyncStorage.removeItem('tokenSplash');
+    dispatch({type: 'cerrarSesion'});
 }
 
 const recuperarPassword = (dispatch) => async (usuario) =>{
