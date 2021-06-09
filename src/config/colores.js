@@ -1,0 +1,1 @@
+export const colores = { appDefault: "#6d31bf", blanco: "#ffffff", secundario: "#3c1053"};

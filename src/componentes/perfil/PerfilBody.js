@@ -10,7 +10,7 @@ import EditFotoPerfil from '../../pantallas/EditFotoPerfil'
 
 const PerfilBody = ({usuario:{url_perfil,nombre,apellido,usuario,correo,fecha_nacimiento,biografia,genero},cantSeguidores, cantSeguidos}) => {
 
-  const url = url_perfil ? { uri: url_perfil } : require('../../../assets/perfilDefault.jpg');
+  const url = url_perfil ? { uri: `https://splash.s3.amazonaws.com/api/files/${url_perfil}` } : require('../../../assets/perfilDefault.jpg');
   const navigation = useNavigation();
   useEffect(()=>{
     if(usuario){
@@ -26,6 +26,7 @@ const PerfilBody = ({usuario:{url_perfil,nombre,apellido,usuario,correo,fecha_na
     
   return (
     <View style={styles.scroll}>
+      
       <ScrollView>
       <ListItem>
           <Avatar 

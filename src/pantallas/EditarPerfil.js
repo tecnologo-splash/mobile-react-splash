@@ -50,9 +50,7 @@ const EditarPerfil = () => {
     formData.append('nombre', nombre);
     formData.append('apellido', apellido);
     formData.append('fechaNacimiento', fechaNac.toISOString().split("T")[0]);
-    console.log(fechaNac.toISOString().split("T")[0])
     formData.append('biografia', biografia);
-    console.log(formData)
     editarPerfil(currentUser.id, formData)
       .then( data => {
         editarNotif(newNotif)
@@ -88,7 +86,6 @@ const EditarPerfil = () => {
   <View style={styles.body}>
 
       <ScrollView style={styles.container}>
-        {console.log(configNotif)}
         <Title>Datos Personales</Title>
         <TextInput
           label={currentUser.nombre}
@@ -137,7 +134,6 @@ const EditarPerfil = () => {
         <Divider />
         
         <Title><Ionicons size={24} name="notifications-outline"/> Configurar Notificaciones</Title>
-        {console.log(newNotif)}
 
         {notificaciones.map((notificacion)=>{
           
@@ -167,29 +163,7 @@ const EditarPerfil = () => {
         }
 
 
-
-        {/* <View style={styles.cont}>
-          <View style={styles.pickerContainer}>
-              <Ionicons name="md-transgender-sharp" size={15} color="white" />
-              <Picker
-                  style={styles.picker}
-                  selectedValue={genero}
-                  dropdownIconColor='#ffffff'
-                  itemStyle={{alignSelf: 'center'}}
-                  onValueChange={(itemValue, itemIndex) =>
-                      cambiarValor({variable: 'genero', valor: itemValue})
-                  }>
-                  <Picker.Item label="HOMBRE" value="HOMBRE"  style={{alignSelf: 'center'}}/>
-                  <Picker.Item label="MUJER" value="MUJER" style={{alignSelf: 'center'}}/>
-                  <Picker.Item label="OTRO" value="OTRO" style={{alignSelf: 'center'}}/>
-              </Picker>
-          </View>
-      </View> */}
-
-
       </ScrollView>
-
-
 
       <Button
         style={styles.button}
@@ -205,11 +179,6 @@ const EditarPerfil = () => {
         color="red"> 
           Eliminar Cuenta
       </Button>
-
-
-
-
-
 
 
       <Portal>

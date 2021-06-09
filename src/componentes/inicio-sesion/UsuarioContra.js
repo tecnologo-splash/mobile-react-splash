@@ -7,9 +7,11 @@ import {Context as InicioSesionContext} from '../../context/InicioSesionContext'
 import RecuperarPassword from './RecuperarPassword';
 import RecuperarPassword2 from './RecuperarPassword2';
 import ConfirmacionPasswordRecuperada from './ConfirmacionPasswordRecuperada';
+import Cargando from '../Cargando';
+import { colores } from '../../config/colores';
 
 const UsuarioContra = () => {
-    const {state:{usuario, password, entrar}, cambiarValor, inicioSesion} = useContext(InicioSesionContext);
+    const {state:{usuario, password, entrar, cargando}, cambiarValor, inicioSesion} = useContext(InicioSesionContext);
     const [secured, setSecured] = useState(true);
     const navigation = useNavigation();
 
@@ -66,6 +68,7 @@ const UsuarioContra = () => {
                 </Button>
                <Text style={styles.forgot}>¿Olvidaste tu contraseña?... <Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar', valor: true})}> ¡Haz click aquí para recuperarla!</Text><Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar2', valor: true})}> ...paso 2</Text></Text>
             </View>
+            <Cargando estaCargando={cargando} color={colores.blanco} />
             <ErrorFormulario/>
             <RecuperarPassword/>
             <RecuperarPassword2/>
