@@ -24,6 +24,20 @@ const PublicacionReducer = (state,action) => {
             return {...state, currentPublicacion: action.payload.publicacionInfo};
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones};
+        case 'reaccionar':
+            var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
+            var publicacionReaccionada = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+            return {...state, publicaciones: [...publicacionesMenosReaccionada, 
+                                            {...publicacionReaccionada, 
+                                            resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}}]};
+        case 'eliminarReaccion':
+            var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
+            var publicacionReaccionada = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+            const retorno = {...state, publicaciones: [...publicacionesMenosReaccionada, 
+                {...publicacionReaccionada, 
+                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: null}}]}
+            console.log(retorno);
+            return retorno;
         default:
             return state;
     }
@@ -110,12 +124,36 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
 const listarPublicacionesMuro = dispatch => async () =>{
     try{
         var response = await settings.get(`/posts?page=0&size=5&orders=fechaCreado:desc`);
-        console.log(response.data.content);
+        console.log(response.data.content.length);
         dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
     }catch(e){
         console.log(e);
     }
 }
+
+const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) => {
+    try{
+        console.log(`/posts/${publicacionId}/reacciones`);
+        console.log(JSON.stringify({emoji: tipoReaccion}));
+        const response = await settings.post(`/posts/${publicacionId}/reacciones`,JSON.stringify({emoji: tipoReaccion}),
+        {headers: {'Content-Type': "application/json"}});
+        dispatch({type: "reaccionar", payload:{publicacionId, tipoReaccion}});
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const eliminarReaccion = dispatch => async ({publicacionId}) => {
+    try{
+        console.log(`/posts/${publicacionId}/reacciones`);
+        const response = await settings.delete(`/posts/${publicacionId}/reacciones`);
+        dispatch({type: "eliminarReaccion", payload:{publicacionId}});
+        console.log(response);
+    }catch(e){
+        console.log(e);
+    }
+}
+
 const initialState = {
     currentPublicacion: {},
     imagenes: [],
@@ -128,6 +166,17 @@ const initialState = {
 
 export const {Context, Provider} = crearContext(
     PublicacionReducer,
-    {cambiarValor, crearPublicacion, editarPublicacion , eliminarPublicacion, agregarImagen, cancelarImagen, agregarVideo, cancelarVideo, listarPublicacionesMuro},
+    {cambiarValor, 
+     crearPublicacion, 
+     editarPublicacion , 
+     eliminarPublicacion, 
+     agregarImagen, 
+     cancelarImagen, 
+     agregarVideo, 
+     cancelarVideo, 
+     listarPublicacionesMuro,
+     reaccionarPublicacion,
+     eliminarReaccion
+    },
     initialState,
 );

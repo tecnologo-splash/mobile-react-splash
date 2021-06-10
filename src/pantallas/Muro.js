@@ -38,7 +38,6 @@ const Muro = () => {
         :
         <SafeAreaView>
         <ScrollView>
-          <Text>Muro</Text>
           <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(page)}/>
           <ListadoPublicaciones publicaciones = {publicaciones} />
         </ScrollView>

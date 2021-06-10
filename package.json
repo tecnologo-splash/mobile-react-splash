@@ -19,7 +19,7 @@
     "@stream-io/flat-list-mvcp": "^0.10.1",
     "axios": "^0.21.1",
     "expo": "^41.0.1",
-    "expo-av": "^9.1.2",
+    "expo-av": "~9.1.2",
     "expo-image-manipulator": "~9.1.0",
     "expo-image-picker": "~10.1.4",
     "expo-linear-gradient": "~9.1.0",

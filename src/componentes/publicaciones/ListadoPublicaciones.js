@@ -8,7 +8,7 @@ const ListadoPublicaciones = ({publicaciones}) => {
   return (
     <FlatList
     data={publicaciones}
-    keyExtractor={item=>item.id.toString()}
+    keyExtractor={item=>item.id}
     renderItem={({item})=>(
       <Publicacion publicacion={item} usuario={item.usuario_comun} />
     )}/>

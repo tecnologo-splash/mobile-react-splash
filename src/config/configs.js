@@ -15,3 +15,11 @@ export const notificaciones = [
 //{ name: "CUENTA_ELIMINADA", text: "Cuenta Eliminada" },
 ]
 
+export const tiposReacciones = [
+    {id: 0, tipo: "ME_GUSTA", texto:"Me Gusta", icono: require("../../assets/reacciones/png/thumbs-up.png")},
+    {id: 1, tipo: "NO_ME_GUSTA", texto:"No me Gusta", icono: require("../../assets/reacciones/png/thumbs-down.png")},
+    {id: 2, tipo: "ME_DIVIERTE", texto:"Me Divierte", icono: require("../../assets/reacciones/png/grinning-face-with-smiling-eyes.png")},
+    {id: 3, tipo: "ME_ENOJA", texto:"Me Enoja", icono: require("../../assets/reacciones/png/middle-finger.png")},
+    {id: 4, tipo: "NO_ME_INTERESA", texto:"No me Interesa", icono: require("../../assets/reacciones/png/woman-shrugging.png")},
+    {id: 5, tipo: "ELIMINAR", texto:"No me Interesa", icono: require("../../assets/reacciones/png/1f6ab.png")}
+]

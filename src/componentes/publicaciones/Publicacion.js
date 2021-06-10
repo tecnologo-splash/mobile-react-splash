@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text } from 'react-native';
 import { Card} from 'react-native-paper';
 import { colores } from '../../config/colores';
 import { tipoMultimedia } from '../../config/tiposPublicacion';
-import {Video} from 'expo-av';
+import { Video } from 'expo-av';
 import BotonesPublicacion from './BotonesPublicacion';
 
 const Publicacion = ({publicacion, usuario}) => {
@@ -12,13 +12,14 @@ const Publicacion = ({publicacion, usuario}) => {
 
     const renderItem = (item)=>{
         if(item.tipo===tipoMultimedia._foto){
-            console.log("imagen");
+            console.log('imagen',`https://splash.s3.amazonaws.com/api/files/${item.url}`);
             return <Image source={{uri: `https://splash.s3.amazonaws.com/api/files/${item.url}`}} style={{height: 300}}/>;
         }
         else if (item.tipo===tipoMultimedia._video){
-            console.log("video");
+            var vid = `https://splash.s3.amazonaws.com/api/files/${item.url}`;
+            console.log(vid);
             return <Video 
-            source={{uri: `https://splash.s3.amazonaws.com/api/files/${item.url}`}} 
+            source={{uri: vid}} 
             style={styles.backgroundVideo}
             rate={1.0}
             volume={1.0}
@@ -43,7 +44,7 @@ const Publicacion = ({publicacion, usuario}) => {
       <Image {...props} style={{height: 50, width: 50, borderRadius: 50}} source={usuario.url_perfil ? {uri: usuario.url_perfil}:require("../../../assets/perfilDefault.jpg")}/>
     }
     />
-    <Card.Content>
+    <Card.Content style={styles.text}>
           <Text>{publicacion.texto}</Text>
     </Card.Content>
     {publicacion.multimedia.length != 0 ?
@@ -74,20 +75,23 @@ const Publicacion = ({publicacion, usuario}) => {
             inactiveDotScale={0.6}
           />
         </Card.Content>:null}
-        <BotonesPublicacion/>
+        <BotonesPublicacion publicacion={publicacion}/>
   </Card>
   );
 }
 
 const styles = StyleSheet.create({
     backgroundVideo: {
-      position: 'absolute',
+      position: 'relative',
       top: 0,
       left: 0,
       bottom: 0,
       right: 0,
       width:300,
       height:300
+    },
+    text:{
+      margin:10
     },
     content:{
         alignItems: 'center',
