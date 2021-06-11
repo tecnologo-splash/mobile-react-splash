@@ -18,15 +18,11 @@ const Reacciones = ({setIndex, publicacionId}) => {
     }
     return (
         <View style={styles.card}>
-            <FlatList
-            horizontal
-            data={tiposReacciones}
-            keyExtractor={item=>item.id}
-            renderItem={({item})=>(
-                <TouchableOpacity onPress={()=>reaccionar(item.id)} >
-                    <Image source={item.icono} style={styles.image}/>
+            {tiposReacciones.map((reaccion)=>(
+                <TouchableOpacity onPress={()=>reaccionar(reaccion.id)} >
+                    <Image source={reaccion.icono} style={styles.image}/>
                 </TouchableOpacity>
-                )}/>
+            ))}
         </View>
     );
   
@@ -34,14 +30,16 @@ const Reacciones = ({setIndex, publicacionId}) => {
 
 const styles = StyleSheet.create({
     image:{
-        height: 25,
-        width: 25
+        height: 20,
+        width: 20
     },
     card:{
         alignItems:'center',
         flex: 1,
         flexDirection:'row',
-        justifyContent:'space-between'
+        justifyContent:'space-around',
+        alignItems: 'center',
+        margin: 5
     }
 });
 

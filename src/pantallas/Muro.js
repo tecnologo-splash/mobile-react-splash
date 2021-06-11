@@ -13,6 +13,7 @@ const Muro = () => {
   const [page, setPage] = useState(0);
   const {state:{filtro,buscar,usuarios, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
   const {state:{publicaciones}, listarPublicacionesMuro} = useContext(PublicacionContext);
+  console.log("publicacion muro",publicaciones.length);
   useEffect(()=>{
     listarUsuarios(0);
     listarSugeridos(0);

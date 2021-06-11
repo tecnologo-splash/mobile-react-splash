@@ -4,15 +4,18 @@ import Publicacion from './Publicacion';
 
 const ListadoPublicaciones = ({publicaciones}) => {
 
-  console.log('publicaciones',publicaciones.length);
-  return (
-    <FlatList
-    data={publicaciones}
-    keyExtractor={item=>item.id}
-    renderItem={({item})=>(
-      <Publicacion publicacion={item} usuario={item.usuario_comun} />
-    )}/>
-  );
+  console.log('publicaciones',publicaciones);
+  if(publicaciones){
+    return (
+      <FlatList
+      data={publicaciones}
+      keyExtractor={item=>item.id}
+      renderItem={({item})=>(
+        <Publicacion publicacion={item}/>
+      )}/>
+    );
+  }
+  return null;
 }
 
 export default ListadoPublicaciones;

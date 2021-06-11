@@ -26,25 +26,21 @@ const PublicacionReducer = (state,action) => {
             return {...state, publicaciones: action.payload.publicaciones};
         case 'reaccionar':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
-            var publicacionReaccionada = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
-            return {...state, publicaciones: [...publicacionesMenosReaccionada, 
-                                            {...publicacionReaccionada, 
-                                            resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}}]};
+            var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+            var kk = {...state, publicaciones: [...publicacionesMenosReaccionada, 
+                {...publicacionReaccionada, 
+                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}}]};
+            return kk;
         case 'eliminarReaccion':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
-            var publicacionReaccionada = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
-            const retorno = {...state, publicaciones: [...publicacionesMenosReaccionada, 
+            var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+            var retorno = {...state, publicaciones: [...publicacionesMenosReaccionada, 
                 {...publicacionReaccionada, 
                 resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: null}}]}
-            console.log(retorno);
             return retorno;
         default:
             return state;
     }
-}
-
-function getToken(){
-    return AsyncStorage.getItem("tokenSplash");
 }
 
 const cambiarValor = dispatch => ({variable,valor})=> {
@@ -112,7 +108,7 @@ const editarPublicacion = (dispatch) => async (pubId, publicacion)=> {
 const eliminarPublicacion = (dispatch) => async (pubId)=> {
     try{
         console.log('eliminarPublicacion');
-        const response = await settings.delete(`posts/${pubId}`);
+        await settings.delete(`posts/${pubId}`);
         dispatch({type:'crearPublicacion'});
     }catch(e){
         console.log(e);
@@ -123,8 +119,9 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
 
 const listarPublicacionesMuro = dispatch => async () =>{
     try{
+
         var response = await settings.get(`/posts?page=0&size=5&orders=fechaCreado:desc`);
-        console.log(response.data.content.length);
+        console.log("response",response.data.content.length);
         dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
     }catch(e){
         console.log(e);
@@ -134,7 +131,6 @@ const listarPublicacionesMuro = dispatch => async () =>{
 const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) => {
     try{
         console.log(`/posts/${publicacionId}/reacciones`);
-        console.log(JSON.stringify({emoji: tipoReaccion}));
         const response = await settings.post(`/posts/${publicacionId}/reacciones`,JSON.stringify({emoji: tipoReaccion}),
         {headers: {'Content-Type': "application/json"}});
         dispatch({type: "reaccionar", payload:{publicacionId, tipoReaccion}});
@@ -146,9 +142,8 @@ const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) 
 const eliminarReaccion = dispatch => async ({publicacionId}) => {
     try{
         console.log(`/posts/${publicacionId}/reacciones`);
-        const response = await settings.delete(`/posts/${publicacionId}/reacciones`);
+        await settings.delete(`/posts/${publicacionId}/reacciones`);
         dispatch({type: "eliminarReaccion", payload:{publicacionId}});
-        console.log(response);
     }catch(e){
         console.log(e);
     }

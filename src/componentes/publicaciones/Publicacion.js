@@ -7,9 +7,9 @@ import { tipoMultimedia } from '../../config/tiposPublicacion';
 import { Video } from 'expo-av';
 import BotonesPublicacion from './BotonesPublicacion';
 
-const Publicacion = ({publicacion, usuario}) => {
+const Publicacion = ({publicacion}) => {
     const [dots, setDots] = useState(0);
-
+    const usuario = publicacion.usuario_comun;
     const renderItem = (item)=>{
         if(item.tipo===tipoMultimedia._foto){
             console.log('imagen',`https://splash.s3.amazonaws.com/api/files/${item.url}`);
@@ -34,50 +34,53 @@ const Publicacion = ({publicacion, usuario}) => {
             return null;
         }
     }
-
-  return (
-    <Card style={{margin: 10}}>
-    <Card.Title
-    title={usuario.usuario}
-    subtitle={`${usuario.nombre} ${usuario.apellido}`}
-    left={(props)=>
-      <Image {...props} style={{height: 50, width: 50, borderRadius: 50}} source={usuario.url_perfil ? {uri: usuario.url_perfil}:require("../../../assets/perfilDefault.jpg")}/>
-    }
-    />
-    <Card.Content style={styles.text}>
-          <Text>{publicacion.texto}</Text>
-    </Card.Content>
-    {publicacion.multimedia.length != 0 ?
-        <Card.Content style={styles.content}>
-          <Carousel
-          layout='stack'
-          data={publicacion.multimedia}
-          renderItem={({item})=> renderItem(item)}
-          sliderWidth={300}
-          itemWidth={300}
-          onSnapToItem={(index)=> setDots(index)}
-          />
-          <Pagination
-            dotsLength={publicacion.multimedia.length}
-            activeDotIndex={dots}
-            containerStyle={{ backgroundColor: colores.blanco }}
-            dotStyle={{
-                width: 10,
-                height: 10,
-                borderRadius: 5,
-                marginHorizontal: 8,
-                backgroundColor: colores.appDefault
-            }}
-            inactiveDotStyle={{
-                // Define styles for inactive dots here
-            }}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-          />
-        </Card.Content>:null}
-        <BotonesPublicacion publicacion={publicacion}/>
-  </Card>
-  );
+  if(publicacion && usuario){
+    return (
+      <Card style={{margin: 10}}>
+      <Card.Title
+      title={usuario.usuario}
+      subtitle={`${usuario.nombre} ${usuario.apellido}`}
+      left={(props)=>
+        <Image {...props} style={{height: 50, width: 50, borderRadius: 50}} source={usuario.url_perfil ? {uri: usuario.url_perfil}:require("../../../assets/perfilDefault.jpg")}/>
+      }
+      />
+      <Card.Content style={styles.text}>
+            <Text>{publicacion.texto}</Text>
+      </Card.Content>
+      {publicacion.multimedia.length != 0 ?
+          <Card.Content style={styles.content}>
+            <Carousel
+            layout='stack'
+            data={publicacion.multimedia}
+            renderItem={({item})=> renderItem(item)}
+            sliderWidth={300}
+            itemWidth={300}
+            onSnapToItem={(index)=> setDots(index)}
+            />
+            <Pagination
+              dotsLength={publicacion.multimedia.length}
+              activeDotIndex={dots}
+              containerStyle={{ backgroundColor: colores.blanco }}
+              dotStyle={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  marginHorizontal: 8,
+                  backgroundColor: colores.appDefault
+              }}
+              inactiveDotStyle={{
+                  // Define styles for inactive dots here
+              }}
+              inactiveDotOpacity={0.4}
+              inactiveDotScale={0.6}
+            />
+          </Card.Content>:null}
+          <BotonesPublicacion publicacion={publicacion}/>
+    </Card>
+    );
+  }else{
+    return null;
+  }
 }
 
 const styles = StyleSheet.create({
