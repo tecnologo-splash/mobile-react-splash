@@ -1,5 +1,5 @@
-import React, {useContext, useState } from 'react';
-import {StyleSheet, Image, View, Text, Dimensions} from 'react-native';
+import React, {useContext} from 'react';
+import {StyleSheet, Image, View, Text} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
@@ -8,10 +8,7 @@ import { maximos } from '../../config/maximos';
 
 const AddImagen = () => {
 
-    const {state:{ imagenes }, cambiarValor, agregarImagen, cancelarImagen } = useContext(PublicacionContext);
-    
-    const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
+    const {state:{ imagenes }, agregarImagen, cancelarImagen } = useContext(PublicacionContext);
 
     const OpenGalleryAsync = async () => {
         const PermissionGallery =  await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -48,9 +45,7 @@ const AddImagen = () => {
         ).then((data) => {
             return data
         });
-        cambiarValor({variable: 'imageU', valor: manipResult.uri});
-        cambiarValor({variable: 'imageW', valor: manipResult.width});
-        cambiarValor({variable: 'imageH', valor: manipResult.height});
+        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
     }
 
     const _rotate270 = async () => {
@@ -58,12 +53,10 @@ const AddImagen = () => {
             imageU,
             [{ rotate: 270 }],
             { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-            ).then((data) => {
-                return data
-            });
-            cambiarValor({variable: 'imageU', valor: manipResult.uri});
-            cambiarValor({variable: 'imageW', valor: manipResult.width});
-            cambiarValor({variable: 'imageH', valor: manipResult.height});
+        ).then((data) => {
+            return data
+        });
+        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
     }
       
     const _flipV = async () => {
@@ -71,12 +64,10 @@ const AddImagen = () => {
             imageU,
             [{ flip: ImageManipulator.FlipType.Vertical }],
             { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-            ).then((data) => {
-                return data
-            });
-            cambiarValor({variable: 'imageU', valor: manipResult.uri});
-            cambiarValor({variable: 'imageW', valor: manipResult.width});
-            cambiarValor({variable: 'imageH', valor: manipResult.height});
+        ).then((data) => {
+            return data
+        });
+        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
     }
 
     const _flipH = async () => {
@@ -84,12 +75,10 @@ const AddImagen = () => {
             imageU,
             [{ flip: ImageManipulator.FlipType.Horizontal }],
             { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-            ).then((data) => {
-                return data
-            });
-            cambiarValor({variable: 'imageU', valor: manipResult.uri});
-            cambiarValor({variable: 'imageW', valor: manipResult.width});
-            cambiarValor({variable: 'imageH', valor: manipResult.height});
+        ).then((data) => {
+            return data
+        });
+        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
     }
 
     return (
@@ -106,6 +95,9 @@ const AddImagen = () => {
                 }
                 <View>
                     <View>
+                        {
+                        console.log("imagenes", imagenes)
+                        }
                         <FlatList
                             data={imagenes}
                             keyExtractor={item=>item.uri}
