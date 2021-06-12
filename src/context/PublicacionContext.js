@@ -126,10 +126,10 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
     
 }
 
-const listarPublicacionesMuro = dispatch => async ({page}) =>{
+const listarPublicacionesMuro = dispatch => async ({page, orden, asc}) =>{
     try{
-        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
-        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
+        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
+        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
         console.log("response",response.data.content.length);
         if(page === 0){
             dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
@@ -180,7 +180,8 @@ const initialState = {
     error: {},
     cargando: false,
     publicaciones: [],
-    publicacionesUsuario: []
+    publicacionesUsuario: [],
+    tipoOrden: tipoOrdenPublicacion[0]
 }
 
 export const {Context, Provider} = crearContext(
