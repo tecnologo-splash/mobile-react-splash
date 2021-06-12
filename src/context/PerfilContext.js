@@ -37,7 +37,6 @@ const getInfo = (dispatch) => async () =>{
     try {
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         const response = await settings.get('/users/info', {headers: {'Content-Type': "application/json"}} );
-        console.log(response.data);
         dispatch({type: 'getInfo', payload: {userInfo:response.data}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
 
@@ -52,13 +51,21 @@ const cambiarFecha = (dispatch) => (date) =>{
     dispatch({type: "cambiarFecha",payload:{date}});
 }
 
-const getSeguidores = (dispatch) => async () =>{
-    try{
-        
-        dispatch({type:'getSeguidores', payload:{ seguidores: []}});
+const getSeguidores = (dispatch) => async ({filtro,valor, page}) =>{
+    /*try{
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
+        console.log(`/users/seguidores?page=${page}&size=${requestSizeListarSeguidores}&filtro=${filtro}&keywords=${valor}`);
+        const response= await settings.get(`/users/seguidores?page=${page}&size=${requestSizeListarSeguidores}&filtro=${filtro}&keywords=${valor}`);
+        if(page == 0){
+            dispatch({type:'getSeguidores', payload:{ seguidores: response.data}});
+        }else{
+            dispatch({type:'appendSeguidores', payload:{ seguidores: response.data}});
+        }        
     }catch(e){
+        console.log(e);
         dispatch({type: 'onError', payload: {error: e}});
-    }
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
+    }*/
 }
 
 const getSeguidos = (dispatch) => async ({filtro,valor, page}) =>{
@@ -81,9 +88,11 @@ const getSeguidos = (dispatch) => async ({filtro,valor, page}) =>{
 const editarPerfil = (dispatch) => async (userId, newPerfil)=> {
     try{
         await settings.put(`users/${userId}`, newPerfil);
-        console.log(newPerfil)
+        console.log("foto de perfil",newPerfil);
+        console.log(`users/${userId}`);
         dispatch({type:'onError', payload: {error: {titulo: 'Exito en editar perfil', cuerpo: 'Se ha actualizado su perfil', anterior: 'EditarPerfil', styleError: styles.success}}});
     }catch(e){
+        console.log(e);
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo editar el perfil", activacion: null}}});
     }
 }

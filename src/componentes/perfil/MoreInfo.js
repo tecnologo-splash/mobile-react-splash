@@ -16,7 +16,7 @@ const MoreInfo = ({genero,biografia,fecha_nacimiento, publicaciones}) => {
                 {getGenero(genero)}
             </View>
         <List.Accordion title="Biografia">
-            <List.Item title={`${biografia ? biografia : '-'}`} />
+            <Text multiline style={styles.biografia}>{`${biografia ? biografia : '-'}`}</Text>
         </List.Accordion>
         </List.Accordion>
         <List.Accordion title="Publicaciones">
@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
       fontSize: 16,
       marginTop:2,
       marginRight:5
+    },
+    biografia:{
+      margin: 10
     }
   })
 
