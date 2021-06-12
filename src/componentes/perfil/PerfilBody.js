@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import { ScrollView, View, StyleSheet, Text } from 'react-native';
 import {Avatar, ListItem, Divider} from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
@@ -6,15 +6,19 @@ import IconoEditar from './IconoEditar';
 import InfoBasica from './InfoBasica';
 import InfoSeguidores from './InfoSeguidores';
 import MoreInfo from './MoreInfo';
-import EditFotoPerfil from '../../pantallas/EditFotoPerfil'
+import EditFotoPerfil from '../../pantallas/EditFotoPerfil';
+import { baseUriMultimedia } from '../../config/configs';
+import {Context as PublicacionContext} from '../../context/PublicacionContext';
 
-const PerfilBody = ({usuario:{url_perfil,nombre,apellido,usuario,correo,fecha_nacimiento,biografia,genero},cantSeguidores, cantSeguidos}) => {
+const PerfilBody = ({usuario:{id,url_perfil,nombre,apellido,usuario,correo,fecha_nacimiento,biografia,genero},cantSeguidores, cantSeguidos}) => {
 
-  const url = url_perfil ? { uri: `https://splash.s3.amazonaws.com/api/files/${url_perfil}` } : require('../../../assets/perfilDefault.jpg');
+  const url = url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}` } : require('../../../assets/perfilDefault.jpg');
   const navigation = useNavigation();
+  const {state:{publicacionesUsuario}, listarPublicacionesUsuario} = useContext(PublicacionContext);
   useEffect(()=>{
     if(usuario){
       navigation.setOptions({ title: `${nombre} ${apellido}`});
+      listarPublicacionesUsuario({userId: id});
     }
   },[usuario]);
 
@@ -47,7 +51,11 @@ const PerfilBody = ({usuario:{url_perfil,nombre,apellido,usuario,correo,fecha_na
         <Divider style={{ backgroundColor: '#6F32C1' }} />
         <View>
           <InfoSeguidores cantSeguidores= {cantSeguidores} cantSeguidos={cantSeguidos} />
-          <MoreInfo genero={genero} fecha_nacimiento={fecha_nacimiento} biografia={biografia} />
+          <MoreInfo 
+            genero={genero} 
+            fecha_nacimiento={fecha_nacimiento} 
+            biografia={biografia} 
+            publicaciones={publicacionesUsuario}/>
         </View>
       </ScrollView>
       <IconoEditar/>

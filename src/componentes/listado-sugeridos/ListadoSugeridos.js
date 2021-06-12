@@ -6,6 +6,7 @@ import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosCont
 import {useNavigation} from '@react-navigation/native';
 import Cargando from '../Cargando';
 import { colores } from '../../config/colores';
+import { baseUriMultimedia } from '../../config/configs';
 
 const ListadoSugeridos = ({sugeridos, onEnd}) => {
   const{state:{cargando},seguirUsuarioSugerido,dejarDeSeguirUsuarioSugerido}= useContext(ListarUsuariosContext);
@@ -24,7 +25,7 @@ const ListadoSugeridos = ({sugeridos, onEnd}) => {
               <ListItem.Content style={{borderRadius: 20}}>
               <Avatar 
                 rounded 
-                source={item.url_perfil ? { uri: item.url_perfil } : require('../../../assets/perfilDefault.jpg')}
+                source={item.url_perfil ? { uri: `${baseUriMultimedia}${item.url_perfil}` } : require('../../../assets/perfilDefault.jpg')}
                 size="large"
               >
               </Avatar>

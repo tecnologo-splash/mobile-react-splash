@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import { Image, StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Card} from 'react-native-paper';
 import { colores } from '../../config/colores';
 import { tipoMultimedia } from '../../config/tiposPublicacion';
 import { Video } from 'expo-av';
 import BotonesPublicacion from './BotonesPublicacion';
+import { baseUriMultimedia } from '../../config/configs';
 
 const Publicacion = ({publicacion}) => {
     const [dots, setDots] = useState(0);
     const usuario = publicacion.usuario_comun;
     const renderItem = (item)=>{
         if(item.tipo===tipoMultimedia._foto){
-            console.log('imagen',`https://splash.s3.amazonaws.com/api/files/${item.url}`);
-            return <Image source={{uri: `https://splash.s3.amazonaws.com/api/files/${item.url}`}} style={{height: 300}}/>;
+            console.log('imagen',`${baseUriMultimedia}${item.url}`);
+            return <Image source={{uri: `${baseUriMultimedia}${item.url}`}} style={{height: 300}}/>;
         }
         else if (item.tipo===tipoMultimedia._video){
             var vid = `https://splash.s3.amazonaws.com/api/files/${item.url}`;
@@ -41,7 +42,7 @@ const Publicacion = ({publicacion}) => {
       title={usuario.usuario}
       subtitle={`${usuario.nombre} ${usuario.apellido}`}
       left={(props)=>
-        <Image {...props} style={{height: 50, width: 50, borderRadius: 50}} source={usuario.url_perfil ? {uri: usuario.url_perfil}:require("../../../assets/perfilDefault.jpg")}/>
+        <Image {...props} style={{height: 50, width: 50, borderRadius: 50}} source={usuario.url_perfil ? {uri: `${baseUriMultimedia}${usuario.url_perfil}`}:require("../../../assets/perfilDefault.jpg")}/>
       }
       />
       <Card.Content style={styles.text}>
@@ -75,6 +76,9 @@ const Publicacion = ({publicacion}) => {
               inactiveDotScale={0.6}
             />
           </Card.Content>:null}
+          <View style={styles.fechaContainer} >
+            <Text style={styles.fecha}>{publicacion.fecha_creado}</Text>
+          </View>
           <BotonesPublicacion publicacion={publicacion}/>
     </Card>
     );
@@ -92,6 +96,14 @@ const styles = StyleSheet.create({
       right: 0,
       width:300,
       height:300
+    },
+    fechaContainer:{
+      alignItems:'flex-end',
+      margin:10
+    },
+    fecha:{
+        color: colores.gris,
+        fontSize: 11
     },
     text:{
       margin:10

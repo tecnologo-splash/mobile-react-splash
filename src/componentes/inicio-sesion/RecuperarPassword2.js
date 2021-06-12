@@ -25,12 +25,14 @@ const RecuperarPassword2 = () => {
                         placeholder="Clave"
                         value={clave}
                         style={styles.input}
+                        secureTextEntry
                         onChangeText={text => cambiarValor({variable: 'clave', valor: text})}
                     />
                 <TextInput
                         label="Repetir clave"
                         placeholder="Repetir clave"
                         value={clave2}
+                        secureTextEntry
                         onChangeText={text => cambiarValor({variable: 'clave2', valor: text})}
                     />
                 <Cargando estaCargando={cargando} color={colores.appDefault} />

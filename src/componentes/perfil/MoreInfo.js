@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { getFecha, getGenero } from './getDatos';
 import { List } from 'react-native-paper';
+import ListadoPublicaciones from '../publicaciones/ListadoPublicaciones';
 
 
-const MoreInfo = ({genero,biografia,fecha_nacimiento}) => {
+const MoreInfo = ({genero,biografia,fecha_nacimiento, publicaciones}) => {
   return (
     <List.Section>
         <List.Accordion
@@ -19,7 +20,7 @@ const MoreInfo = ({genero,biografia,fecha_nacimiento}) => {
         </List.Accordion>
         </List.Accordion>
         <List.Accordion title="Publicaciones">
-            <List.Item title="Publicaciones" />
+          <ListadoPublicaciones publicaciones = {publicaciones} />
         </List.Accordion>
   </List.Section>
   );

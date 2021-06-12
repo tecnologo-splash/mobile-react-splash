@@ -23,3 +23,5 @@ export const tiposReacciones = [
     {id: 4, tipo: "NO_ME_INTERESA", texto:"No me Interesa", icono: require("../../assets/reacciones/png/woman-shrugging.png")},
     {id: 5, tipo: "ELIMINAR", texto:"No me Interesa", icono: require("../../assets/reacciones/png/1f6ab.png")}
 ]
+
+export const baseUriMultimedia = "https://splash.s3.amazonaws.com/api/files/";

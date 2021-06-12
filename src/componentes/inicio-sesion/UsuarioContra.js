@@ -66,7 +66,7 @@ const UsuarioContra = () => {
                 >
                     Registrarse
                 </Button>
-               <Text style={styles.forgot}>¿Olvidaste tu contraseña?... <Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar', valor: true})}> ¡Haz click aquí para recuperarla!</Text><Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar2', valor: true})}> ...paso 2</Text></Text>
+               <Text style={styles.forgot}>¿Olvidaste tu contraseña?... <Text style={styles.clickHere} onPress={()=>cambiarValor({variable: 'recuperar', valor: true})}> ¡Haz click aquí para recuperarla!</Text></Text>
             </View>
             <Cargando estaCargando={cargando} color={colores.blanco} />
             <ErrorFormulario/>

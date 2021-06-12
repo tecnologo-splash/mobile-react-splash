@@ -22,21 +22,27 @@ const PublicacionReducer = (state,action) => {
             return {...state, imageU:null, imageW:null, imageH:null, videoU:null, videoW:null, videoH:null, texto : null, currentPublicacion: {}};
         case 'editarPublicacion':
             return {...state, currentPublicacion: action.payload.publicacionInfo};
+            case 'listarPublicacionesUsuario':
+            return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones};
         case 'reaccionar':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
             var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+
             var kk = {...state, publicaciones: [...publicacionesMenosReaccionada, 
                 {...publicacionReaccionada, 
                 resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}}]};
+
             return kk;
         case 'eliminarReaccion':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
             var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+
             var retorno = {...state, publicaciones: [...publicacionesMenosReaccionada, 
                 {...publicacionReaccionada, 
-                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: null}}]}
+                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: null}}]};
+
             return retorno;
         default:
             return state;
@@ -128,6 +134,16 @@ const listarPublicacionesMuro = dispatch => async () =>{
     }
 }
 
+const listarPublicacionesUsuario = dispatch => async ({userId}) =>{
+    try{
+        console.log(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
+        var response = await settings.get(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
+        console.log("response listarPublicacionesUsuario",response.data.content);
+        dispatch({type: 'listarPublicacionesUsuario', payload: {publicacionesUsuario: response.data.content}})
+    }catch(e){
+        console.log(e);
+    }
+}
 const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) => {
     try{
         console.log(`/posts/${publicacionId}/reacciones`);
@@ -156,7 +172,8 @@ const initialState = {
     texto: "",
     error: {},
     cargando: false,
-    publicaciones: []
+    publicaciones: [],
+    publicacionesUsuario: []
 }
 
 export const {Context, Provider} = crearContext(
@@ -171,7 +188,8 @@ export const {Context, Provider} = crearContext(
      cancelarVideo, 
      listarPublicacionesMuro,
      reaccionarPublicacion,
-     eliminarReaccion
+     eliminarReaccion,
+     listarPublicacionesUsuario
     },
     initialState,
 );

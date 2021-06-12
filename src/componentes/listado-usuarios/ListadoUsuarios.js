@@ -7,6 +7,7 @@ import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosCont
 import {useNavigation} from '@react-navigation/native';
 import Cargando from '../Cargando';
 import { colores } from '../../config/colores';
+import { baseUriMultimedia } from '../../config/configs';
 
 const ListadoUsuarios = ({usuarios, onEnd}) => {
   const{state:{cargando},seguirUsuario,dejarDeSeguirUsuario}= useContext(ListarUsuariosContext);
@@ -24,7 +25,7 @@ const ListadoUsuarios = ({usuarios, onEnd}) => {
             <ListItem>
               <Avatar 
                 rounded 
-                source={item.url_perfil ? { uri: item.url_perfil } : require('../../../assets/perfilDefault.jpg')}
+                source={item.url_perfil ? { uri: `${baseUriMultimedia}${item.url_perfil}`} : require('../../../assets/perfilDefault.jpg')}
                 size="medium"
               >
               </Avatar>

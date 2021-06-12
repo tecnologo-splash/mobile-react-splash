@@ -6,10 +6,11 @@ import { StyleSheet, ScrollView, View } from 'react-native';
 import InfoSeguidores from '../InfoSeguidores';
 import MoreInfo from '../MoreInfo';
 import { Text } from 'react-native';
+import { baseUriMultimedia } from '../../../config/configs';
 
 const PerfilExternoBody = ({usuario:{nombre, apellido, usuario, correo, url_perfil, genero, fecha_nacimiento, biografia, lo_sigo}}) => {
 
-    const url = url_perfil ? { uri: url_perfil } : require('../../../../assets/perfilDefault.jpg');
+    const url = url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}`} : require('../../../../assets/perfilDefault.jpg');
     const navigation = useNavigation();
 
     useEffect(()=>{

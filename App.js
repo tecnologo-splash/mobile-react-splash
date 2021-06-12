@@ -35,11 +35,16 @@ const colors = {
   }
 
 const BottomNavigator = ()=> (
-    <BottomTab.Navigator barStyle={{backgroundColor:'#6F32C1'}} tabBarOptions={colors} shifting> 
+    <BottomTab.Navigator 
+    barStyle={{backgroundColor:'#6F32C1'}} 
+    tabBarOptions={colors}
+    sceneAnimationEnabled
+    keyboardHidesNavigationBar
+    initialRouteName="Muro" 
+    shifting> 
       <BottomTab.Screen 
       name="Conversaciones" 
       component={Conversaciones}
-      
       options={{
         tabBarLabel: 'Chat',
         tabBarIcon: ({ color }) => (
@@ -50,7 +55,6 @@ const BottomNavigator = ()=> (
       <BottomTab.Screen 
       name="Muro" 
       component={Muro}
-
       options={{
         tabBarLabel: 'Muro',
         tabBarIcon: ({ color }) => (
@@ -61,7 +65,7 @@ const BottomNavigator = ()=> (
       <BottomTab.Screen 
       name="NuevaPublicacion" 
       component={NuevaPublicacion}
-
+      sceneAnimationEnabled
       options={{
         tabBarLabel: 'Publicar',
         tabBarIcon: ({ color }) => (
