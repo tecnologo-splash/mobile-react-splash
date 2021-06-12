@@ -62,7 +62,7 @@ const listarUsuariosSugeridos= dispatch => async ({page}) => {
         dispatch({type:'listarSugeridos', payload: {sugeridos: response.data}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }catch(e){
-        console.log("error en listar usuarios sugeridos",e);
+        console.log(e);
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
 }
@@ -71,8 +71,19 @@ const seguirUsuario = dispatch => async (idUsuarioASeguir) => {
     try{
         const endpoint = `/seguidores/seguir/${idUsuarioASeguir}`;
         console.log(endpoint);
-        const response = await settings.put(`/seguidores/seguir/${idUsuarioASeguir}?page=0&size=${requestSizeListarSugeridos}`);
+        const response = await settings.put(`/seguidores/seguir/${idUsuarioASeguir}`);
         dispatch({type: "seguir", payload: idUsuarioASeguir});
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const seguirUsuarioSugerido = dispatch => async (idUsuarioASeguir) => {
+    try{
+        const endpoint = `/seguidores/seguir/${idUsuarioASeguir}`;
+        console.log(endpoint);
+        const response = await settings.put(`/seguidores/seguir/${idUsuarioASeguir}`);
+        dispatch({type: "seguirSugerido", payload: idUsuarioASeguir});
     }catch(e){
         console.log(e);
     }
@@ -84,6 +95,17 @@ const dejarDeSeguirUsuario = dispatch => async (idUsuarioADejarDeSeguir) => {
         console.log(endpoint);
         const response = await settings.delete(`/seguidores/dejardeseguir/${idUsuarioADejarDeSeguir}`);
         dispatch({type: "dejarDeSeguir", payload: idUsuarioADejarDeSeguir});
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const dejarDeSeguirUsuarioSugerido = dispatch => async (idUsuarioADejarDeSeguir) => {
+    try{
+        const endpoint = `/seguidores/dejardeseguir/${idUsuarioADejarDeSeguir}`;
+        console.log(endpoint);
+        const response = await settings.delete(`/seguidores/dejardeseguir/${idUsuarioADejarDeSeguir}`);
+        dispatch({type: "dejarDeSeguirSugerido", payload: idUsuarioADejarDeSeguir});
     }catch(e){
         console.log(e);
     }
@@ -103,6 +125,6 @@ const initialState = {
 
 export const {Context, Provider} = crearContext(
     ListarUsuariosReducer,
-    {listarUsuariosParaSeguir, listarUsuariosSugeridos, cambiarValor, seguirUsuario, dejarDeSeguirUsuario},
+    {listarUsuariosParaSeguir, listarUsuariosSugeridos, cambiarValor, seguirUsuario, dejarDeSeguirUsuario, seguirUsuarioSugerido, dejarDeSeguirUsuarioSugerido},
     initialState
 );

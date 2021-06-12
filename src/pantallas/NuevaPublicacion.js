@@ -5,23 +5,42 @@
     import {Context as PublicacionContext} from '../context/PublicacionContext';
     import AddImagen from '../componentes/publicaciones/AddImagen';
     import AddVideo from '../componentes/publicaciones/AddVideo';
+    import AddEnlace from '../componentes/publicaciones/AddEnlace';
+    import AddEncuesta from '../componentes/publicaciones/AddEncuesta';
     import { ScrollView } from 'react-native';
 
     const NuevaPublicacion = () => {
 
-      const {state:{currentPublicacion, texto, imagenes, videos }, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
-      const [video, setVideo] = useState(false);
+      const {state:{currentPublicacion, texto, imagenes, videos , enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
+      const [tipo, setTipo] = useState(0);
 
       const crear = () => {
         if ( texto === null || texto === ''){
           console.log("error vacio")
         } 
         else{
-          var formData = { texto }
-          if (video){
-            crearPublicacion(formData, videos); 
-          }else{
-            crearPublicacion(formData, imagenes); 
+          console.log(tipo)
+          switch (tipo) {
+            case 1:
+              var formData = { texto }
+              crearPublicacion(formData, imagenes);
+              break;
+            case 2:
+              var formData = { texto }
+              crearPublicacion(formData, videos);
+              break;
+            case 3:
+              var formData = { texto, enlaces }
+              crearPublicacion(formData, videos);
+              break;
+            case 4:
+              var encuesta = { duracion: 10, unidad: "HOURS", opciones}
+              var formData = { texto, encuesta }
+              crearPublicacion(formData, []);
+              break;
+            default:
+              null
+              break;
           }
         }
       }
@@ -54,24 +73,43 @@
             />
             <View style = { styles.horizontalView }>
             <Button 
-              mode={video? "outlined":"contained"} 
-              onPress={()=>setVideo(false)}
+              mode={tipo===1? "contained":"outlined"} 
+              onPress={()=>setTipo(1)}
               style={styles.button}
               >
                   Imagen
               </Button>
               <Button 
-              mode={video? "contained":"outlined"} 
-              onPress={()=>setVideo(true)}
+              mode={tipo===2? "contained":"outlined"} 
+              onPress={()=>setTipo(2)}
               style={styles.button}
               >
                   Video
               </Button>
+              <Button 
+              mode={tipo===3? "contained":"outlined"} 
+              onPress={()=>setTipo(3)}
+              style={styles.button}
+              >
+                  Enlace
+              </Button>
+              <Button 
+              mode={tipo===4? "contained":"outlined"} 
+              onPress={()=>setTipo(4)}
+              style={styles.button}
+              >
+                  Encuesta
+              </Button>
             </View>
-            { video ?
-              <AddVideo />
-              :
+            { tipo===1 ?
               <AddImagen />
+              : tipo===2 ?
+                <AddVideo />
+                : tipo===3 ?
+                  <AddEnlace />
+                  : tipo===4 ?
+                    <AddEncuesta />
+                    : null
             }
           </ScrollView>
           {currentPublicacion.id ?

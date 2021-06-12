@@ -1,7 +1,6 @@
 import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { requestSizeListarPublicaciones } from "../config/maximos";
 
 const PublicacionReducer = (state,action) => {
     switch(action.type){
@@ -17,18 +16,26 @@ const PublicacionReducer = (state,action) => {
         case 'cancelarVideo':
             var todosVideosMenosCancelado = state.videos.filter(item => item.uri != action.payload.uri);
             return {...state, videos: todosVideosMenosCancelado};
+        case 'agregarOpcion':
+            return {...state, opciones: [...state.opciones, action.payload.opcion], opcion: null};
+        case 'cancelarOpcion':
+            var todasOpcionesMenosCancelada = state.opciones.filter(item => item.texto != action.payload.uri);
+            return {...state, opciones: todasOpcionesMenosCancelada };
+        case 'agregarEnlace':
+            return {...state, enlaces: [...state.enlaces, action.payload.enlace], enlace: null};
+        case 'cancelarEnlace':
+            var todosEnlacesMenosCancelado = state.enlaces.filter(item => item.uri != action.payload.uri);
+            return {...state, enlaces: todosEnlacesMenosCancelado };
         case 'onError':
             return {...state,  error: action.payload.error};
         case 'crearPublicacion':
-            return {...state, imageU:null, imageW:null, imageH:null, videoU:null, videoW:null, videoH:null, texto : null, currentPublicacion: {}};
+            return {...state, imagenes: [], videos: [], opciones: [], texto : null, currentPublicacion: {}};
         case 'editarPublicacion':
             return {...state, currentPublicacion: action.payload.publicacionInfo};
             case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones};
-        case 'appendPublicacionesMuro':
-            return {...state, publicaciones: [...state.publicaciones, ...action.payload.publicaciones]};
         case 'reaccionar':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
             var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
@@ -71,11 +78,28 @@ const agregarVideo = dispatch => (video) => {
 const cancelarVideo = dispatch => (uri) =>{
     dispatch({type: 'cancelarVideo', payload: {uri}});
 }
+const agregarOpcion = dispatch => (opcion) => {
+    dispatch({type: 'agregarOpcion', payload: {opcion}});
+}
+
+const cancelarOpcion = dispatch => (uri) =>{
+    console.log('cancelarOpcion')
+    console.log(uri)
+    console.log(enlaces)
+    dispatch({type: 'cancelarOpcion', payload: {uri}});
+}
+
+const agregarEnlace = dispatch => (enlace) => {
+    dispatch({type: 'agregarEnlace', payload: {enlace}});
+}
+
+const cancelarEnlace = dispatch => (uri) =>{
+    dispatch({type: 'cancelarEnlace', payload: {uri}});
+}
 
 const crearPublicacion = (dispatch) => async (publicacion, multimedias)=> {
     try{
-        console.log('crearPublicacion');
-        const response = await settings.post(`posts`, publicacion);
+        const response = await settings.post(`posts`, JSON.stringify(publicacion), {headers: {"Content-Type":"application/json"}});
         for(var i = 0; i < multimedias.length; i++){
             var multimedia = multimedias[i];
             var file = {
@@ -86,16 +110,13 @@ const crearPublicacion = (dispatch) => async (publicacion, multimedias)=> {
             var formData = new FormData();
             formData.append("file", file);
             try{
-                console.log('subirMultimedia');
                 await settings.post(`/posts/${response.data.id}/multimedia`, formData);
             }catch(e){
-                console.log(e);
                 dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo subir el multimedia", activacion: null}}});
             }
         }
         dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
     }catch(e){
-        console.log(e);
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
     
@@ -103,12 +124,9 @@ const crearPublicacion = (dispatch) => async (publicacion, multimedias)=> {
 
 const editarPublicacion = (dispatch) => async (pubId, publicacion)=> {
     try{
-        console.log('editarPublicacion');
         const response = await settings.patch(`posts/${pubId}`, publicacion);
-        console.log(response);
         dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
     }catch(e){
-        console.log(e);
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
     
@@ -116,11 +134,9 @@ const editarPublicacion = (dispatch) => async (pubId, publicacion)=> {
 
 const eliminarPublicacion = (dispatch) => async (pubId)=> {
     try{
-        console.log('eliminarPublicacion');
         await settings.delete(`posts/${pubId}`);
         dispatch({type:'crearPublicacion'});
     }catch(e){
-        console.log(e);
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
     
@@ -137,15 +153,12 @@ const listarPublicacionesMuro = dispatch => async ({page, orden, asc}) =>{
             dispatch({type: 'appendPublicacionesMuro', payload: {publicaciones: response.data.content}})
         }
     }catch(e){
-        console.log(e);
     }
 }
 
 const listarPublicacionesUsuario = dispatch => async ({userId}) =>{
     try{
-        console.log(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
         var response = await settings.get(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
-        console.log("response listarPublicacionesUsuario",response.data.content);
         dispatch({type: 'listarPublicacionesUsuario', payload: {publicacionesUsuario: response.data.content}})
     }catch(e){
         console.log(e);
@@ -153,7 +166,6 @@ const listarPublicacionesUsuario = dispatch => async ({userId}) =>{
 }
 const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) => {
     try{
-        console.log(`/posts/${publicacionId}/reacciones`);
         const response = await settings.post(`/posts/${publicacionId}/reacciones`,JSON.stringify({emoji: tipoReaccion}),
         {headers: {'Content-Type': "application/json"}});
         dispatch({type: "reaccionar", payload:{publicacionId, tipoReaccion}});
@@ -164,7 +176,6 @@ const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) 
 
 const eliminarReaccion = dispatch => async ({publicacionId}) => {
     try{
-        console.log(`/posts/${publicacionId}/reacciones`);
         await settings.delete(`/posts/${publicacionId}/reacciones`);
         dispatch({type: "eliminarReaccion", payload:{publicacionId}});
     }catch(e){
@@ -176,6 +187,8 @@ const initialState = {
     currentPublicacion: {},
     imagenes: [],
     videos: [],
+    opciones: [],
+    enlaces: [],
     texto: "",
     error: {},
     cargando: false,
@@ -194,6 +207,10 @@ export const {Context, Provider} = crearContext(
      cancelarImagen, 
      agregarVideo, 
      cancelarVideo, 
+     agregarOpcion, 
+     cancelarOpcion,
+     agregarEnlace, 
+     cancelarEnlace,
      listarPublicacionesMuro,
      reaccionarPublicacion,
      eliminarReaccion,

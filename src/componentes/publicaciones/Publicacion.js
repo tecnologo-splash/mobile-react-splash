@@ -13,10 +13,12 @@ const Publicacion = ({publicacion}) => {
     const usuario = publicacion.usuario_comun;
     const renderItem = (item)=>{
         if(item.tipo===tipoMultimedia._foto){
+            console.log('imagen',`${baseUriMultimedia}${item.url}`);
             return <Image source={{uri: `${baseUriMultimedia}${item.url}`}} style={{height: 300}}/>;
         }
         else if (item.tipo===tipoMultimedia._video){
-            var vid = `${baseUriMultimedia}${item.url}`;
+            var vid = `https://splash.s3.amazonaws.com/api/files/${item.url}`;
+            console.log(vid);
             return <Video 
             source={{uri: vid}} 
             style={styles.backgroundVideo}
@@ -46,11 +48,6 @@ const Publicacion = ({publicacion}) => {
       <Card.Content style={styles.text}>
             <Text>{publicacion.texto}</Text>
       </Card.Content>
-      {publicacion.enlace_externo.length > 0 ?
-        publicacion.enlace_externo.map(enlace=>(<EnlaceExterno enlace={enlace}/>))
-        :
-        null
-      }
       {publicacion.multimedia.length != 0 ?
           <Card.Content style={styles.content}>
             <Carousel
@@ -78,12 +75,7 @@ const Publicacion = ({publicacion}) => {
               inactiveDotOpacity={0.4}
               inactiveDotScale={0.6}
             />
-          </Card.Content>:
-          
-          publicacion.encuesta?
-              <Encuesta encuesta={publicacion.encuesta}/>:
-          null
-        }
+          </Card.Content>:null}
           <View style={styles.fechaContainer} >
             <Text style={styles.fecha}>{publicacion.fecha_creado}</Text>
           </View>

@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import {Context as ComentariosContext} from '../context/ComentariosContext';
 
+// import { Container } from './styles';
 
-const Comentarios = ({route}) => {
-  return <View/>;
+const Comentarios = () => {
+  return <View />;
 }
 
 export {Comentarios};

@@ -1,19 +1,16 @@
 import React, {useContext, useState, useRef } from 'react';
-import {StyleSheet, Image, View, Text, Dimensions } from 'react-native';
+import {StyleSheet, View, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import { FlatList } from 'react-native';    
 import { maximos } from '../../config/maximos';
 
 const AddVideo = () => {
-    const {state:{ videos }, cambiarValor, agregarVideo, cancelarVideo } = useContext(PublicacionContext);
+    const {state:{ videos }, agregarVideo, cancelarVideo } = useContext(PublicacionContext);
 
     const video = useRef(null);
     const [ status, setStatus ] = useState();
-
-    const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
 
     const OpenGalleryAsync = async () => {
         const PermissionGallery =  await ImagePicker.requestMediaLibraryPermissionsAsync();
