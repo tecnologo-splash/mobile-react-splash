@@ -1,6 +1,7 @@
 import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { requestSizeListarPublicaciones } from "../config/maximos";
 
 const PublicacionReducer = (state,action) => {
     switch(action.type){
@@ -26,6 +27,8 @@ const PublicacionReducer = (state,action) => {
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones};
+        case 'appendPublicacionesMuro':
+            return {...state, publicaciones: [...state.publicaciones, ...action.payload.publicaciones]};
         case 'reaccionar':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
             var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
@@ -123,12 +126,16 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
     
 }
 
-const listarPublicacionesMuro = dispatch => async () =>{
+const listarPublicacionesMuro = dispatch => async ({page}) =>{
     try{
-
-        var response = await settings.get(`/posts?page=0&size=5&orders=fechaCreado:desc`);
+        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
+        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
         console.log("response",response.data.content.length);
-        dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
+        if(page === 0){
+            dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
+        }else{
+            dispatch({type: 'appendPublicacionesMuro', payload: {publicaciones: response.data.content}})
+        }
     }catch(e){
         console.log(e);
     }
