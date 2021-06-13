@@ -28,7 +28,7 @@ export const baseUriMultimedia = "https://splash.s3.amazonaws.com/api/files/";
 
 export const tipoOrdenPublicacion = 
 [
-    {tipo: "Cantidad la Fecha de Creacion", url: "fechaCreado"}, 
+    {tipo: "Fecha de Creacion", url: "fechaCreado"}, 
     {tipo: "Cantidad de No Me Gusta", url: "resumenReaccion.cantidadNoMeGusta"},
     {tipo: "Cantidad de No Me Interesa", url: "resumenReaccion.cantidadNoMeInteresa"},
     {tipo: "Cantidad de Me Divierte", url: "resumenReaccion.cantidadMeDivierte"},

@@ -1,17 +1,12 @@
 import React from 'react';
-import { FlatList } from 'react-native-bidirectional-infinite-scroll';
 import Publicacion from './Publicacion';
 
-const ListadoPublicaciones = ({publicaciones, onEnd}) => {
+const ListadoPublicaciones = ({publicaciones}) => {
 
   return (
-    <FlatList
-    data={publicaciones}
-    keyExtractor={item=>item.id.toString()}
-    onEndReached={()=>onEnd()}
-    renderItem={({item})=>(
-      <Publicacion publicacion={item}/>
-    )}/>
+    publicaciones.map(publicacion=>(
+      <Publicacion publicacion={publicacion}/>
+    ))
   );
 }
 

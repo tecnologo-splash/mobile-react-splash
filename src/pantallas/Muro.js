@@ -43,13 +43,13 @@ const Muro = () => {
   }
 
   return (
-    <View style={{marginBottom:150}}>
+    <View>
       <NavBar/>
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
         :
         <View>
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 160}} onMomentumScrollEnd={()=>listarPublicaciones(pagePublicaciones)}>
           <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
           <ListadoPublicaciones 
           publicaciones = {publicaciones}
