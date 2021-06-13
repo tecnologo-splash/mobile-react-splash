@@ -2,18 +2,26 @@ import React, {useContext} from 'react';
 import {StyleSheet, View, Text, TextInput, Linking } from 'react-native';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import { FlatList } from 'react-native';    
-//import { getLinkPreview, getPreviewFromContent } from 'link-preview-js';
+import { getLinkPreview, getPreviewFromContent } from 'link-preview-js';
 import { maximos } from '../../config/maximos';
 
 const AddEnlace = () => {
 
     const {state:{currentPublicacion, enlace, enlaces }, cambiarValor, agregarEnlace, cancelarEnlace } = useContext(PublicacionContext);
     
-    const _abrirEnlace = async (url) => {
-        // Ver un preview
-        // getLinkPreview('https://www.youtube.com/watch?v=MejbOFk7H6c')
-        // .then((data) => console.debug(data));
+    const _agregarEnlaceDesdePreview = async (url) => {
+        const data = await getLinkPreview(url);
+        if(data.images.length > 0)
+        {
+            var imagen_url = data.images[0];
+        }
+                                
+        var enlaceObj = {url: url, titulo: data.title, descripcion: data.description, imagen_url: imagen_url}
+        console.log("enlace", enlaceObj)
+        agregarEnlace(enlaceObj)
+    }
 
+    const _abrirEnlace = async (url) => {
         // Abrir en navegador
         const supported = await Linking.canOpenURL(url);
         if (supported) {
@@ -40,7 +48,7 @@ const AddEnlace = () => {
                             />
                         }
                         { enlace ?
-                                <Text style = {styles.buttonText} onPress = {() =>agregarEnlace({uri: enlace})}>Guardar enlace</Text>
+                                <Text style = {styles.buttonText} onPress = {() =>_agregarEnlaceDesdePreview(enlace)}>Guardar enlace</Text>
                             :
                             null
                         }
@@ -53,14 +61,14 @@ const AddEnlace = () => {
                     <View>
                         <FlatList
                             data={enlaces}
-                            keyExtractor={item=>item.enlace}
+                            keyExtractor={item=>item.url}
                             renderItem={({item})=>(
                                 <View>
-                                    <Text style = {styles.linkText} onPress={()=>_abrirEnlace(item.uri)}>{ item.uri }</Text> 
+                                    <Text style = {styles.linkText} onPress={()=>_abrirEnlace(item.url)}>{ item.url }</Text> 
                                     {currentPublicacion.id? 
                                         null
                                         :
-                                        <Text style = {styles.buttonText} onPress={()=>cancelarEnlace(item.uri)}>Cancelar</Text>
+                                        <Text style = {styles.buttonText} onPress={()=>cancelarEnlace(item.url)}>Cancelar</Text>
                                     }
                                 </View>
                             )}

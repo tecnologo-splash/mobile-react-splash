@@ -30,8 +30,9 @@
               crearPublicacion(formData, videos);
               break;
             case 3:
-              var formData = { texto, enlaces }
-              crearPublicacion(formData, videos);
+              var formData = { texto, enlaces_externos: enlaces }
+              console.log(formData)
+              crearPublicacion(formData, []);
               break;
             case 4:
               var encuesta = { duracion: 10, unidad: "HOURS", opciones}

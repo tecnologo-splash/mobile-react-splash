@@ -7,6 +7,7 @@ import { tipoMultimedia } from '../../config/tiposPublicacion';
 import { Video } from 'expo-av';
 import BotonesPublicacion from './BotonesPublicacion';
 import { baseUriMultimedia } from '../../config/configs';
+import Encuesta from './Encuesta';
 
 const Publicacion = ({publicacion}) => {
     const [dots, setDots] = useState(0);

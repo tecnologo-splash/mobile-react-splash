@@ -2,6 +2,7 @@ import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestSizeListarPublicaciones } from "../config/maximos";
+import { tipoOrdenPublicacion } from "../config/configs";
 
 const PublicacionReducer = (state,action) => {
     switch(action.type){
@@ -30,10 +31,21 @@ const PublicacionReducer = (state,action) => {
         case 'onError':
             return {...state,  error: action.payload.error};
         case 'crearPublicacion':
-            return {...state, imagenes: [], videos: [], opciones: [], texto : null, currentPublicacion: {}};
+            return {...state, currentPublicacion: {}, imagenes: [], videos: [], enlaces: [], opciones: [], texto : null};
         case 'editarPublicacion':
-            return {...state, currentPublicacion: action.payload.publicacionInfo};
-            case 'listarPublicacionesUsuario':
+            var opcionesCurrentPublicacion = []
+            if(action.payload.publicacionInfo.encuesta != null)
+            {
+                action.payload.publicacionInfo.encuesta.opciones.map((data)=>opcionesCurrentPublicacion.push({texto: data.texto}))
+            }
+            var enlacesCurrentPublicacion = []
+            console.log(action.payload.publicacionInfo)
+            if(action.payload.publicacionInfo.enlace_externo != null)
+            {
+                action.payload.publicacionInfo.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
+            }
+            return {...state, currentPublicacion: action.payload.publicacionInfo, imagenes: [], videos: [], enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+        case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones};
@@ -145,17 +157,10 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
     
 }
 
-<<<<<<< Updated upstream
 const listarPublicacionesMuro = dispatch => async ({page, orden, asc}) =>{
     try{
         console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
         var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
-=======
-const listarPublicacionesMuro = dispatch => async ({page}) =>{
-    try{
-        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
-        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
->>>>>>> Stashed changes
         console.log("response",response.data.content.length);
         if(page === 0){
             dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
