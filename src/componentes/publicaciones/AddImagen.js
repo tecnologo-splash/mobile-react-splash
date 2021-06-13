@@ -8,7 +8,7 @@ import { maximos } from '../../config/maximos';
 
 const AddImagen = () => {
 
-    const {state:{ imagenes }, agregarImagen, cancelarImagen } = useContext(PublicacionContext);
+    const {state:{currentPublicacion, imagenes }, agregarImagen, cancelarImagen, borrarImagen } = useContext(PublicacionContext);
 
     const OpenGalleryAsync = async () => {
         const PermissionGallery =  await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -104,13 +104,15 @@ const AddImagen = () => {
                             renderItem={({item})=>(
                                 <View>
                                     <Image source = {{ uri: item.uri}} style={{ width: item.width/2, height: item.height/2}}/>
-                                    <View style = { styles.horizontalView }>
+                                    {currentPublicacion.id ?
+                                        <Text style = {styles.buttonText} onPress={()=>borrarImagen(item.uri)}>Borrar</Text>
+                                        :
                                         <Text style = {styles.buttonText} onPress={()=>cancelarImagen(item.uri)}>Cancelar</Text>
-                                        {/*<Text style = {styles.buttonText} onPress={_rotate90}>90º</Text>
-                                        <Text style = {styles.buttonText} onPress={_rotate270}>270º</Text>
-                                        <Text style = {styles.buttonText} onPress={_flipH}>Flip V.</Text>
-                                        <Text style = {styles.buttonText} onPress={_flipV}>Flip H.</Text>*/}
-                                    </View>
+                                    }
+                                    {/*<Text style = {styles.buttonText} onPress={_rotate90}>90º</Text>
+                                    <Text style = {styles.buttonText} onPress={_rotate270}>270º</Text>
+                                    <Text style = {styles.buttonText} onPress={_flipH}>Flip V.</Text>
+                                    <Text style = {styles.buttonText} onPress={_flipV}>Flip H.</Text>*/}
                                 </View>
                             )}
                         />

@@ -2,7 +2,7 @@ import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestSizeListarPublicaciones } from "../config/maximos";
-import { ordenPublicacion, tipoOrdenPublicacion } from "../config/configs";
+import { baseUriMultimedia, ordenPublicacion, tipoOrdenPublicacion } from "../config/configs";
 
 const PublicacionReducer = (state,action) => {
     switch(action.type){
@@ -33,8 +33,13 @@ const PublicacionReducer = (state,action) => {
         case 'crearPublicacion':
             return {...state, currentPublicacion: {}, texto : null, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'editarPublicacion':
-            var duracionCurrentPublicacion = 0
-            var unidadCurrentPublicacion = "HOURS"
+            var imagenesCurrentPublicacion = []
+            //Maldito git me cago esto
+            if (action.payload.publicacionInfo.multimedia.length > 0)
+            {
+                action.payload.publicacionInfo.multimedia.filter(item => item.tipo === "FOTO").map((data)=>imagenesCurrentPublicacion.push({uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+            }           
+            //Fin de maldito git
             var opcionesCurrentPublicacion = []
             if(action.payload.publicacionInfo.encuesta != null)
             {
@@ -46,7 +51,7 @@ const PublicacionReducer = (state,action) => {
             {
                 action.payload.publicacionInfo.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
             }
-            return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+            return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", imagenes: imagenesCurrentPublicacion, videos: [], enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
         case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
@@ -85,6 +90,10 @@ const agregarImagen = dispatch => (imagen) => {
 }
 
 const cancelarImagen = dispatch => (uri) =>{
+    dispatch({type: 'cancelarImagen', payload: {uri}});
+}
+
+const borrarImagen = dispatch => (uri) =>{
     dispatch({type: 'cancelarImagen', payload: {uri}});
 }
 
@@ -132,6 +141,7 @@ const crearPublicacion = (dispatch) => async (publicacion, multimedias)=> {
                 dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo subir el multimedia", activacion: null}}});
             }
         }
+        console.log(response.data);
         dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
     }catch(e){
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
@@ -233,7 +243,8 @@ export const {Context, Provider} = crearContext(
      editarPublicacion , 
      eliminarPublicacion, 
      agregarImagen, 
-     cancelarImagen, 
+     cancelarImagen,
+     borrarImagen,
      agregarVideo, 
      cancelarVideo, 
      agregarOpcion, 
