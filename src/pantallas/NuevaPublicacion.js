@@ -1,6 +1,6 @@
     import React, {useContext, useState} from 'react';
     import NavBar from '../componentes/muro/NavBar';
-    import { View, Text, StyleSheet } from 'react-native';
+    import { Alert, View, Text, StyleSheet } from 'react-native';
     import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
     import {Context as PublicacionContext} from '../context/PublicacionContext';
     import AddImagen from '../componentes/publicaciones/AddImagen';
@@ -11,14 +11,15 @@
 
     const NuevaPublicacion = () => {
 
-      const {state:{currentPublicacion, texto, imagenes, videos , enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
+      const {state:{currentPublicacion, texto, duracion, unidad, imagenes, videos , enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
       const [tipo, setTipo] = useState(0);
 
       const crear = () => {
         if ( texto === null || texto === ''){
-          console.log("error vacio")
+          mostrarAlerta("Error", "La publicación no puede ser vacia")
         } 
-        else{
+        else
+        {
           console.log(tipo)
           switch (tipo) {
             case 1:
@@ -30,13 +31,34 @@
               crearPublicacion(formData, videos);
               break;
             case 3:
-              var formData = { texto, enlaces }
-              crearPublicacion(formData, videos);
+              if ( enlaces.length == 0 )
+              {
+                mostrarAlerta("Error", "La publicación no tiene enlaces ingresados")
+              }
+              else
+              {
+                var formData = { texto, enlaces_externos: enlaces }
+                crearPublicacion(formData, []);
+              }
               break;
             case 4:
-              var encuesta = { duracion: 10, unidad: "HOURS", opciones}
-              var formData = { texto, encuesta }
-              crearPublicacion(formData, []);
+              if ( duracion === 0 )
+              {
+                mostrarAlerta("Error", "La encuesta no puede tener duración 0")
+              }
+              else
+              {
+                if ( opciones.length < 2 )
+                {
+                  mostrarAlerta("Error", "La encuesta no tiene el minimo de dos opciones")
+                }
+                else
+                {
+                  var encuesta = { duracion, unidad, opciones}
+                  var formData = { texto, encuesta }
+                  crearPublicacion(formData, []);
+                }
+              }
               break;
             default:
               null
@@ -44,6 +66,9 @@
           }
         }
       }
+
+      const mostrarAlerta = (titulo, descripcion) =>
+        Alert.alert(titulo, descripcion, [{ text: "OK"}]);
 
       const editar = () => {
         if ( texto === null || texto === ''){

@@ -2,6 +2,7 @@ import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestSizeListarPublicaciones } from "../config/maximos";
+import { tipoOrdenPublicacion } from "../config/configs";
 
 const PublicacionReducer = (state,action) => {
     switch(action.type){
@@ -30,10 +31,23 @@ const PublicacionReducer = (state,action) => {
         case 'onError':
             return {...state,  error: action.payload.error};
         case 'crearPublicacion':
-            return {...state, imagenes: [], videos: [], opciones: [], texto : null, currentPublicacion: {}};
+            return {...state, currentPublicacion: {}, texto : null, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'editarPublicacion':
-            return {...state, currentPublicacion: action.payload.publicacionInfo};
-            case 'listarPublicacionesUsuario':
+            var duracionCurrentPublicacion = 0
+            var unidadCurrentPublicacion = "HOURS"
+            var opcionesCurrentPublicacion = []
+            if(action.payload.publicacionInfo.encuesta != null)
+            {
+                action.payload.publicacionInfo.encuesta.opciones.map((data)=>opcionesCurrentPublicacion.push({texto: data.texto}))
+            }
+            var enlacesCurrentPublicacion = []
+            console.log(action.payload.publicacionInfo)
+            if(action.payload.publicacionInfo.enlace_externo != null)
+            {
+                action.payload.publicacionInfo.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
+            }
+            return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+        case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones};
@@ -193,6 +207,8 @@ const initialState = {
     opciones: [],
     enlaces: [],
     texto: "",
+    duracion: 0,
+    unidad: "HOURS",
     error: {},
     cargando: false,
     publicaciones: [],
