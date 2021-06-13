@@ -145,17 +145,10 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
     
 }
 
-<<<<<<< Updated upstream
 const listarPublicacionesMuro = dispatch => async ({page, orden, asc}) =>{
     try{
         console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
         var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
-=======
-const listarPublicacionesMuro = dispatch => async ({page}) =>{
-    try{
-        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
-        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=fechaCreado:desc`);
->>>>>>> Stashed changes
         console.log("response",response.data.content.length);
         if(page === 0){
             dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
