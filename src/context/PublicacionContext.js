@@ -2,7 +2,7 @@ import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestSizeListarPublicaciones } from "../config/maximos";
-import { tipoOrdenPublicacion } from "../config/configs";
+import { ordenPublicacion, tipoOrdenPublicacion } from "../config/configs";
 
 const PublicacionReducer = (state,action) => {
     switch(action.type){
@@ -159,10 +159,10 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
     
 }
 
-const listarPublicacionesMuro = dispatch => async ({page, orden, asc}) =>{
+const listarPublicacionesMuro = dispatch => async ({page, orden, tipoOrden}) =>{
     try{
-        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
-        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
+        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
+        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
         console.log("response",response.data.content.length);
         if(page === 0){
             dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
@@ -213,7 +213,8 @@ const initialState = {
     cargando: false,
     publicaciones: [],
     publicacionesUsuario: [],
-    tipoOrden: tipoOrdenPublicacion[0]
+    tipoOrden: tipoOrdenPublicacion[0],
+    orden: ordenPublicacion._desc
 }
 
 export const {Context, Provider} = crearContext(

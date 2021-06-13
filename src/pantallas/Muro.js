@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
 
@@ -10,6 +10,7 @@ import ListadoPublicaciones from '../componentes/publicaciones/ListadoPublicacio
 import Cargando from '../componentes/Cargando';
 import { colores } from '../config/colores';
 import { List } from 'react-native-paper';
+import BotonOrden from '../componentes/muro/BotonOrden';
 
 const Muro = () => {
 
@@ -17,14 +18,14 @@ const Muro = () => {
   const [pageSugeridos, setPageSugeridos] = useState(0);
   const[pagePublicaciones, setPagePublicaciones] = useState(0);
   const {state:{filtro,buscar,usuarios, cargando, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
-  const {state:{publicaciones}, listarPublicacionesMuro} = useContext(PublicacionContext);
+  const {state:{publicaciones, orden, tipoOrden}, listarPublicacionesMuro} = useContext(PublicacionContext);
   console.log("publicacion muro",publicaciones.length);
 
   useEffect(()=>{
     listarUsuarios(0);
     listarSugeridos(0);
     listarPublicaciones(0);
-  },[buscar, filtro]);
+  },[buscar, filtro, orden, tipoOrden]);
 
   const listarUsuarios = async (pagina)=>{
     await listarUsuariosParaSeguir({filtro, valor:buscar, page: pagina});
@@ -37,21 +38,24 @@ const Muro = () => {
   }
   
   const listarPublicaciones = async (pagina) =>{
-    await listarPublicacionesMuro({page: pagina});
+    await listarPublicacionesMuro({page: pagina, orden: orden, tipoOrden: tipoOrden});
     setPagePublicaciones(pagina+1);
   }
 
   return (
-    <View>
+    <View style={{marginBottom:150}}>
       <NavBar/>
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
         :
         <View>
+          <ScrollView>
           <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
           <ListadoPublicaciones 
           publicaciones = {publicaciones}
           onEnd={()=>listarPublicaciones(pagePublicaciones)} />
+          </ScrollView>
+          <BotonOrden/>
           <Cargando estaCargando={cargando} color={colores.appDefault} />
         </View>
       }
