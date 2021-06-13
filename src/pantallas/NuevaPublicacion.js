@@ -72,7 +72,7 @@
 
       const editar = () => {
         if ( texto === null || texto === ''){
-          console.log("error vacio")
+          mostrarAlerta("Error", "La publicación no puede ser vacia")
         } 
         else{
           var formData = { texto }
@@ -164,17 +164,6 @@
             null
           }
 
-          <Portal>
-            <Dialog visible={visible} onDismiss={hideDialog}>
-              <Dialog.Title>Alert</Dialog.Title>
-              <Dialog.Content>
-                <Paragraph>This is simple dialog</Paragraph>
-              </Dialog.Content>
-              <Dialog.Actions>
-                <Button onPress={hideDialog}>Done</Button>
-              </Dialog.Actions>
-            </Dialog>
-          </Portal>
       </View>);
     }
 

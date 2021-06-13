@@ -13,8 +13,9 @@ import {Provider as PublicacionProvider} from './src/context/PublicacionContext'
 import {Provider as ListarUsuariosProvider} from './src/context/ListarUsuariosContext';
 import {Provider as NotificacionesProvider} from './src/context/NotificacionesContext';
 import {Provider as ComentariosProvider} from './src/context/ComentariosContext'; 
+import {Provider as ConversacionProvider} from './src/context/ConversacionContext'; 
 
-import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil, EditFotoPerfil, Comentarios} from './src/pantallas';
+import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil, EditFotoPerfil, Comentarios, NuevaConversacion} from './src/pantallas';
 
 import { FontAwesome } from '@expo/vector-icons'; 
 
@@ -86,26 +87,29 @@ export default function App() {
           <PerfilProvider>
             <ListarUsuariosProvider>
               <NotificacionesProvider>
-                <PublicacionProvider>
-                  <ComentariosProvider>
-                    <NavigationContainer>
+                <ConversacionProvider>
+                  <PublicacionProvider>
+                    <ComentariosProvider>
+                      <NavigationContainer>
 
-                      <Stack.Navigator>
-                        <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
-                        <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
-                        <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
-                        <Stack.Screen name="Perfil" component={Perfil} options={{...stackOptions, title:''}}/>
-                        <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
-                        <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
-                        <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
-                        <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions}/>
-                        <Stack.Screen name="Comentarios" component={Comentarios} options={stackOptions}/>
-                        <Stack.Screen name="EditFotoPerfil" component={EditFotoPerfil} options={stackOptions}/>
-                      </Stack.Navigator>
+                        <Stack.Navigator>
+                          <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
+                          <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
+                          <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
+                          <Stack.Screen name="Perfil" component={Perfil} options={{...stackOptions, title:''}}/>
+                          <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
+                          <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
+                          <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
+                          <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions}/>
+                          <Stack.Screen name="Comentarios" component={Comentarios} options={stackOptions}/>
+                          <Stack.Screen name="EditFotoPerfil" component={EditFotoPerfil} options={stackOptions}/>
+                          <Stack.Screen name="NuevaConversacion" component={NuevaConversacion} options={stackOptions}/>
+                        </Stack.Navigator>
 
-                    </NavigationContainer>
-                  </ComentariosProvider>
-                </PublicacionProvider>    
+                      </NavigationContainer>
+                    </ComentariosProvider>
+                  </PublicacionProvider>    
+                </ConversacionProvider>
               </NotificacionesProvider>
             </ListarUsuariosProvider>
           </PerfilProvider>
