@@ -3,16 +3,36 @@ import {StyleSheet, View, Text, TextInput } from 'react-native';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import { FlatList } from 'react-native';    
 import { maximos } from '../../config/maximos';
+import {Picker} from '@react-native-picker/picker';
 
 const AddEncuesta = () => {
 
-    const {state:{currentPublicacion, opcion, opciones }, cambiarValor, agregarOpcion, cancelarOpcion } = useContext(PublicacionContext);
+    const {state:{currentPublicacion, duracion, unidad, opcion, opciones }, cambiarValor, agregarOpcion, cancelarOpcion } = useContext(PublicacionContext);
     
     return (
         <View style={styles.main}>
             <View style={styles.main2}>
+                {currentPublicacion.id ?
+                    <Text>Finaliza el: {currentPublicacion.encuesta.fecha_cierre}</Text>
+                    :
+                    <View>
+                        <TextInput
+                            label={"Duracion"}
+                            value={duracion}
+                            style = {styles.imputText}
+                            onChangeText={text => cambiarValor({variable: 'duracion', valor: text})}
+                        />
+                        <Picker
+                            selectedValue={unidad}
+                            onValueChange={(itemValue, itemIndex) =>
+                                cambiarValor({variable: 'unidad', valor: itemValue})
+                            }>
+                            <Picker.Item label="HOURS" value="HOURS"/>
+                        </Picker>
+                    </View>
+                }
                 {opciones.length < maximos._opciones ?
-                    <View style = { styles.horizontalView }>
+                    <View>
                         {currentPublicacion.id ?
                             null
                             :

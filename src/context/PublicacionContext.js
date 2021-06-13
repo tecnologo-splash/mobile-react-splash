@@ -31,8 +31,10 @@ const PublicacionReducer = (state,action) => {
         case 'onError':
             return {...state,  error: action.payload.error};
         case 'crearPublicacion':
-            return {...state, currentPublicacion: {}, imagenes: [], videos: [], enlaces: [], opciones: [], texto : null};
+            return {...state, currentPublicacion: {}, texto : null, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'editarPublicacion':
+            var duracionCurrentPublicacion = 0
+            var unidadCurrentPublicacion = "HOURS"
             var opcionesCurrentPublicacion = []
             if(action.payload.publicacionInfo.encuesta != null)
             {
@@ -44,7 +46,7 @@ const PublicacionReducer = (state,action) => {
             {
                 action.payload.publicacionInfo.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
             }
-            return {...state, currentPublicacion: action.payload.publicacionInfo, imagenes: [], videos: [], enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+            return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
         case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
@@ -159,8 +161,9 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
 
 const listarPublicacionesMuro = dispatch => async ({page, orden, asc}) =>{
     try{
-        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
-        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${orden}:${asc}`);
+        console.log('entro')
+        console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}`);
+        var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}`);
         console.log("response",response.data.content.length);
         if(page === 0){
             dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
@@ -205,6 +208,8 @@ const initialState = {
     opciones: [],
     enlaces: [],
     texto: "",
+    duracion: 0,
+    unidad: "HOURS",
     error: {},
     cargando: false,
     publicaciones: [],
