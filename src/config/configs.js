@@ -33,6 +33,7 @@ export const tipoOrdenPublicacion =
     {tipo: "Cantidad de No Me Interesa", url: "resumenReaccion.cantidadNoMeInteresa"},
     {tipo: "Cantidad de Me Divierte", url: "resumenReaccion.cantidadMeDivierte"},
     {tipo: "Cantidad de Me Enoja", url: "resumenReaccion.cantidadMeEnoja"},
+    {tipo: "Cantidad de Me Gusta", url: "resumenReaccion.cantidadMeGusta"},
 ];
 
 export const ordenPublicacion = {_asc: "asc", _desc:"desc"};

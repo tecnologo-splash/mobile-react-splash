@@ -74,16 +74,13 @@ const Publicacion = ({publicacion}) => {
                   marginHorizontal: 8,
                   backgroundColor: colores.appDefault
               }}
-              inactiveDotStyle={{
-                  // Define styles for inactive dots here
-              }}
               inactiveDotOpacity={0.4}
               inactiveDotScale={0.6}
             />
           </Card.Content>:
           
           publicacion.encuesta?
-              <Encuesta encuesta={publicacion.encuesta}/>:
+              <Encuesta encuesta={publicacion.encuesta} publicacionId={publicacion.id}/>:
           null
         }
           <View style={styles.fechaContainer} >

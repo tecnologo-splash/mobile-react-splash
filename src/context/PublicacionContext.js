@@ -200,6 +200,15 @@ const eliminarReaccion = dispatch => async ({publicacionId}) => {
     }
 }
 
+const votar = dispatch => async ({opcion, publicacionId})=>{
+    try{
+        console.log(`/posts/${publicacionId}/opciones/${opcion.id}`);
+        await settings.post(`/posts/${publicacionId}/opciones/${opcion.id}`);
+    }catch(e){
+        console.log(e);
+    }
+}
+
 const initialState = {
     currentPublicacion: {},
     imagenes: [],
@@ -234,7 +243,8 @@ export const {Context, Provider} = crearContext(
      listarPublicacionesMuro,
      reaccionarPublicacion,
      eliminarReaccion,
-     listarPublicacionesUsuario
+     listarPublicacionesUsuario,
+     votar
     },
     initialState,
 );

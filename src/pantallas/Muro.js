@@ -55,7 +55,7 @@ const Muro = () => {
           publicaciones = {publicaciones}
           onEnd={()=>listarPublicaciones(pagePublicaciones)} />
           </ScrollView>
-          <BotonOrden/>
+          
           <Cargando estaCargando={cargando} color={colores.appDefault} />
         </View>
       }

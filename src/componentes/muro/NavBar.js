@@ -49,7 +49,7 @@ const NavBar = () => {
         <Tooltip
             backgroundColor="#6d31bf"
             withOverlay= {false}
-            height={150}
+            height={200}
             width={300}
             popover={<MenuTooltip />}>
             <Appbar.Action icon="dots-vertical" color='#fff'/>

@@ -34,7 +34,8 @@ const MenuTooltip = () => {
 
 const styles = StyleSheet.create({
     text:{
-        color:colores.blanco
+        color:colores.blanco,
+        margin:2
     }
 })
 export default MenuTooltip;
