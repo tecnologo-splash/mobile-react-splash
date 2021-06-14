@@ -21,13 +21,12 @@ const Muro = () => {
   const {state:{filtro,buscar,usuarios, cargando, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
   const {state:{publicaciones, orden, tipoOrden}, listarPublicacionesMuro} = useContext(PublicacionContext);
   const {state:{currentUser}}= useContext(PerfilContext);
-  console.log("publicacion muro",publicaciones.length);
 
   useEffect(()=>{
     listarUsuarios(0);
     listarSugeridos(0);
     listarPublicaciones(0);
-  },[buscar, filtro, orden, tipoOrden]);
+  },[buscar, filtro, orden, tipoOrden, currentUser]);
 
   const listarUsuarios = async (pagina)=>{
     await listarUsuariosParaSeguir({filtro, valor:buscar, page: pagina, currentUserId: currentUser.id});
@@ -35,7 +34,7 @@ const Muro = () => {
   }
 
   const listarSugeridos = async (pagina) =>{
-    await listarUsuariosSugeridos({page: pagina});
+    await listarUsuariosSugeridos({page: pagina, currentUser: currentUser.usuario});
     setPageSugeridos(pagina+1);
   }
   
