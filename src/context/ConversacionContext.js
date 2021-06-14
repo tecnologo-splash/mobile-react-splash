@@ -1,6 +1,7 @@
 import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { requestSizeListarUsuarios } from "../config/maximos";
 
 const ConversacionReducer = (state,action) => {
     switch(action.type){
@@ -14,6 +15,8 @@ const ConversacionReducer = (state,action) => {
             return {...state, conversacionesUsuario: action.payload.conversacionesUsuario};
         case 'editarMensaje':
             return {...state, mensaje : "", tipoMensajeEnum: "TEXTO"};
+        case 'listarUsuariosParaConversar':
+            return {...state, usuariosParaConversar: action.payload.usuariosParaConversar}
         case 'listarMensajesConversacion':
             return {...state, mensajesConversacion: action.payload.mensajesConversacion};
         default:
@@ -67,13 +70,25 @@ const listarMensajesConversacion = dispatch => async (chat_id) =>{
     }
 }
 
+const listarUsuariosParaConversar = dispatch => async ({filtro,valor}) => {
+    try{
+        const endpoint = `/users?page=0&size=${requestSizeListarUsuarios}activo=true&bloqueado=false&${filtro}=${valor}`;
+        const response = await settings.get(`/users?page=0&size=${requestSizeListarUsuarios}&activo=true&bloqueado=false&${filtro}=${valor}`);
+        dispatch({type:'listarUsuariosParaConversar', payload: {usuariosParaConversar: response.data.content}});
+    }catch(e){
+        console.log(e);
+    }
+}
+
 const initialState = {
     error: {},
+    usuario: "",
     to_usuario_id: "",
     mensaje: "",
     tipoMensajeEnum: "TEXTO",
     cargando: false,
     conversacionesUsuario: [],
+    usuariosParaConversar: [],
     mensajesConversacion: []
 }
 
@@ -84,7 +99,8 @@ export const {Context, Provider} = crearContext(
         crearConversacion,
         listarConversacionesUsuario,
         crearMensaje,
-        listarMensajesConversacion
+        listarMensajesConversacion,
+        listarUsuariosParaConversar
     },
     initialState,
 );

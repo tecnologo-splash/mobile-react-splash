@@ -21,14 +21,13 @@ const Conversaciones = ({navigation}) => {
   return (
     <View>
       <NavBar/>
-      <Text>Conversaciones</Text>
-        <ListadoConversaciones conversaciones={conversacionesUsuario}/> 
-        <Button
+      <Button
             style={styles.button}
             mode="contained"
             onPress={()=>navigation.navigate('NuevaConversacion')}> 
               Nueva conversacion
         </Button>
+        <ListadoConversaciones conversaciones={conversacionesUsuario}/> 
     </View>
   );
 }
