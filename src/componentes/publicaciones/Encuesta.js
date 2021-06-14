@@ -9,6 +9,8 @@ const Encuesta = ({encuesta, publicacionId}) => {
     const { votar } = useContext(PublicacionContext);
     const fechaCierre = new Date(encuesta.fecha_cierre);
     const fechaActual = Date.now();
+
+    console.log("encuesta",encuesta);
     const encuestaVigente=()=>{
       return fechaActual<fechaCierre;
     }
@@ -23,8 +25,8 @@ const Encuesta = ({encuesta, publicacionId}) => {
           <Checkbox
           color={colores.appDefault}
           uncheckedColor={colores.gris}
-          status={encuesta.id_votada? encuesta.opcion_id_votada===opcion.id ? 'checked' : 'unchecked':'unchecked'}
-          disabled={encuestaVigente()&&encuesta.id_votada==null?false:true}
+          status={encuesta.opcion_id_votada? encuesta.opcion_id_votada===opcion.id ? 'checked' : 'unchecked':'unchecked'}
+          disabled={encuestaVigente()&&encuesta.opcion_id_votada==null?false:true}
           onPress={() => chequear(opcion.id)}/>
           <Text style={{margin: 8}}>{opcion.texto} ({opcion.cantidad_votos})</Text>
         </View>
