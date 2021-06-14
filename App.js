@@ -15,7 +15,7 @@ import {Provider as NotificacionesProvider} from './src/context/NotificacionesCo
 import {Provider as ComentariosProvider} from './src/context/ComentariosContext'; 
 import {Provider as ConversacionProvider} from './src/context/ConversacionContext'; 
 
-import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil, EditFotoPerfil, Comentarios, NuevaConversacion} from './src/pantallas';
+import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil, EditFotoPerfil, Comentarios, NuevaConversacion, MensajesConversacion} from './src/pantallas';
 
 import { FontAwesome } from '@expo/vector-icons'; 
 import { colores } from './src/config/colores';
@@ -105,6 +105,7 @@ export default function App() {
                           <Stack.Screen name="Comentarios" component={Comentarios} options={stackOptions}/>
                           <Stack.Screen name="EditFotoPerfil" component={EditFotoPerfil} options={stackOptions}/>
                           <Stack.Screen name="NuevaConversacion" component={NuevaConversacion} options={stackOptions}/>
+                          <Stack.Screen name="MensajesConversacion" component={MensajesConversacion} options={stackOptions}/>
                         </Stack.Navigator>
 
                       </NavigationContainer>

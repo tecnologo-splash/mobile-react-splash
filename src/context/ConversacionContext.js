@@ -12,6 +12,10 @@ const ConversacionReducer = (state,action) => {
             return {...state, to_usuario_id: "",  mensaje : "", tipoMensajeEnum: "TEXTO"};
         case 'listarConversacionesUsuario':
             return {...state, conversacionesUsuario: action.payload.conversacionesUsuario};
+        case 'editarMensaje':
+            return {...state, mensaje : "", tipoMensajeEnum: "TEXTO"};
+        case 'listarMensajesConversacion':
+            return {...state, mensajesConversacion: action.payload.mensajesConversacion};
         default:
             return state;
     }
@@ -22,11 +26,9 @@ const cambiarValor = dispatch => ({variable,valor})=> {
 }
 
 const crearConversacion = (dispatch) => async (conversacion)=> {
-    console.log('entró')
     try{
         const response = await settings.post(`chat/individual/crear`, JSON.stringify(conversacion), {headers: {"Content-Type":"application/json"}});      
         console.log(response)
-        dispatch({type:'editarConversacion'});
     }catch(e){
         console.log(e)
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
@@ -34,12 +36,32 @@ const crearConversacion = (dispatch) => async (conversacion)=> {
     
 }
 
-const listarConversacionesUsuario = dispatch => async ({page}) =>{
-    console.log('llego')
+const listarConversacionesUsuario = dispatch => async () =>{
     try{
-        var response = await settings.get(`/chat/obtener-chats?page=0&size=5&orders=fechaCreado:desc`);
+        var response = await settings.get(`/chat/obtener-chats?page=0&size=5`);
+        dispatch({type: 'listarConversacionesUsuario', payload: {conversacionesUsuario: response.data}})
+    }catch(e){
+        console.log(e);
+    }
+}
+
+const crearMensaje = (dispatch) => async (mensaje)=> {
+    console.log('entró')
+    try{
+        const response = await settings.post(`/chat/individual/enviar-mensaje`, JSON.stringify(mensaje), {headers: {"Content-Type":"application/json"}});      
         console.log(response)
-        dispatch({type: 'listarConversacionesUsuario', payload: {conversacionesUsuario: response.data.content}})
+        dispatch({type:'editarMensaje'});
+    }catch(e){
+        console.log(e)
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
+    }
+    
+}
+
+const listarMensajesConversacion = dispatch => async (chat_id) =>{
+    try{
+        var response = await settings.get(`/chat/obtener-mensajes?chatId=${chat_id}&page=0&size=5`);
+        dispatch({type: 'listarMensajesConversacion', payload: {mensajesConversacion: response.data}})
     }catch(e){
         console.log(e);
     }
@@ -52,14 +74,17 @@ const initialState = {
     tipoMensajeEnum: "TEXTO",
     cargando: false,
     conversacionesUsuario: [],
+    mensajesConversacion: []
 }
 
 export const {Context, Provider} = crearContext(
     ConversacionReducer,
     {
         cambiarValor, 
+        crearConversacion,
         listarConversacionesUsuario,
-        crearConversacion
+        crearMensaje,
+        listarMensajesConversacion
     },
     initialState,
 );

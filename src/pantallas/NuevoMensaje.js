@@ -3,23 +3,18 @@ import {StyleSheet, View, Text } from 'react-native';
 import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import {Context as ConversacionContext} from '../context/ConversacionContext';
 
-const NuevaConversacion = () => {
+const NuevoMensaje = ({chat_id}) => {
 
-    const {state:{to_usuario_id, mensaje }, cambiarValor , crearConversacion} = useContext(ConversacionContext);
+    const {state:{ mensaje }, cambiarValor , crearMensaje} = useContext(ConversacionContext);
     
     const enviar = () => {
-        var formData = { to_usuario_id, mensaje, tipoMensajeEnum: "TEXTO" }
-        crearConversacion(formData);
+        var formData = { chat_id, mensaje, tipo_mensaje: "TEXTO" }
+        crearMensaje(formData);
     }
 
     return (
         <View style={styles.body}>
-            <Text>Nueva conversación</Text>
-                <TextInput
-                    label={"Usuario"}
-                    value={to_usuario_id}
-                    onChangeText={text => cambiarValor({variable: 'to_usuario_id', valor: text})}
-                />
+            <Text>Escriba el mensaje</Text>
                 <TextInput
                     label={"Mensaje"}
                     value={mensaje}
@@ -56,4 +51,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export {NuevaConversacion};
+export default NuevoMensaje;

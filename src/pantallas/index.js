@@ -11,3 +11,4 @@ export * from './PerfilExterno';
 export * from './EditFotoPerfil';
 export * from './Comentarios';
 export * from './NuevaConversacion';
+export * from './MensajesConversacion'
