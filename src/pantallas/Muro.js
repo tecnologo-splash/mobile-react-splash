@@ -11,6 +11,7 @@ import Cargando from '../componentes/Cargando';
 import { colores } from '../config/colores';
 import { List } from 'react-native-paper';
 import BotonOrden from '../componentes/muro/BotonOrden';
+import {Context as PerfilContext} from '../context/PerfilContext';
 
 const Muro = () => {
 
@@ -19,6 +20,7 @@ const Muro = () => {
   const[pagePublicaciones, setPagePublicaciones] = useState(0);
   const {state:{filtro,buscar,usuarios, cargando, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
   const {state:{publicaciones, orden, tipoOrden}, listarPublicacionesMuro} = useContext(PublicacionContext);
+  const {state:{currentUser}}= useContext(PerfilContext);
   console.log("publicacion muro",publicaciones.length);
 
   useEffect(()=>{
@@ -28,7 +30,7 @@ const Muro = () => {
   },[buscar, filtro, orden, tipoOrden]);
 
   const listarUsuarios = async (pagina)=>{
-    await listarUsuariosParaSeguir({filtro, valor:buscar, page: pagina});
+    await listarUsuariosParaSeguir({filtro, valor:buscar, page: pagina, currentUserId: currentUser.id});
     setPage(pagina+1);
   }
 

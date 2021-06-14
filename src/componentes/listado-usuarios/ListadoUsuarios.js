@@ -11,6 +11,7 @@ import { baseUriMultimedia } from '../../config/configs';
 
 const ListadoUsuarios = ({usuarios, onEnd}) => {
   const{state:{cargando},seguirUsuario,dejarDeSeguirUsuario}= useContext(ListarUsuariosContext);
+
   const navigation = useNavigation();
   return (
     <SafeAreaView >

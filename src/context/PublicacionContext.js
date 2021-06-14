@@ -210,10 +210,10 @@ const eliminarReaccion = dispatch => async ({publicacionId}) => {
     }
 }
 
-const votar = dispatch => async ({opcion, publicacionId})=>{
+const votar = dispatch => async ({opcionId, publicacionId})=>{
     try{
-        console.log(`/posts/${publicacionId}/opciones/${opcion.id}`);
-        await settings.post(`/posts/${publicacionId}/opciones/${opcion.id}`);
+        console.log(`/posts/${publicacionId}/opciones/${opcionId}`);
+        await settings.post(`/posts/${publicacionId}/opciones/${opcionId}`);
     }catch(e){
         console.log(e);
     }

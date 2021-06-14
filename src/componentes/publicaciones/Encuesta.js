@@ -7,6 +7,7 @@ import { Context as PublicacionContext} from '../../context/PublicacionContext';
 
 const Encuesta = ({encuesta, publicacionId}) => {
     const { votar } = useContext(PublicacionContext);
+
     const chequear = (opcionId)=>{
       votar({ opcionId, publicacionId })
     }
@@ -18,7 +19,7 @@ const Encuesta = ({encuesta, publicacionId}) => {
           color={colores.appDefault}
           uncheckedColor={colores.gris}
           status={encuesta.id_votada? encuesta.opcion_id_votada===opcion.id ? 'checked' : 'unchecked':'unchecked'}
-          disabled={encuesta.id_votada?false:true}
+          disabled={encuesta.id_votada?true:false}
           onPress={() => chequear(opcion.id)}/>
           <Text style={{margin: 8}}>{opcion.texto} ({opcion.cantidad_votos})</Text>
         </View>

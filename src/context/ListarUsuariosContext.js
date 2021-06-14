@@ -34,7 +34,7 @@ const ListarUsuariosReducer = (state,action) => {
     }
 }
 
-const listarUsuariosParaSeguir = dispatch => async ({filtro,valor, page}) => {
+const listarUsuariosParaSeguir = dispatch => async ({filtro,valor, page, currentUserId}) => {
     try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         const endpoint = `/users?page=${page}&size=${requestSizeListarUsuarios}activo=true&bloqueado=false&${filtro}=${valor}`;
@@ -42,9 +42,9 @@ const listarUsuariosParaSeguir = dispatch => async ({filtro,valor, page}) => {
         const response = await settings.get(`/users?page=${page}&size=${requestSizeListarUsuarios}&activo=true&bloqueado=false&${filtro}=${valor}`);
         console.log('response.data.content.length', response.data.content.length);
         if(page==0){
-            dispatch({type:'agregarUsuariosALista', payload: {usuarios: response.data.content}});
+            dispatch({type:'agregarUsuariosALista', payload: {usuarios: response.data.content.filter(user=>user.id!=currentUserId)}});
         }else{
-            dispatch({type:'listarUsuarios', payload: {usuarios: response.data.content}});
+            dispatch({type:'listarUsuarios', payload: {usuarios: response.data.content.filter(user=>user.id!=currentUserId)}});
         }
         
     }catch(e){
