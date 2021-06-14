@@ -10,7 +10,6 @@ const ListadoPublicaciones = ({publicaciones}) => {
     {publicaciones.map(publicacion=>(
       <Publicacion publicacion={publicacion}/>
     ))}
-    <BotonOrden/>
     </View>
   );
 }

@@ -8,7 +8,7 @@ const SearchBar = () => {
   return (
     <Appbar style={{backgroundColor: '#6F32C1'}}>
         <View style={styles.searchBar}>
-            <FontAwesome name="search" size={24} color="white" style={styles.magnify} onPress={()=>cambiarValor({variable: "buscar", valor: text})} />
+            <FontAwesome name="search" size={24} color="white" style={styles.magnify} onPress={()=>cambiarValor({variable: "buscar", valor: buscar})} />
             <TextInput
             placeholder="Search"
             placeholderTextColor='#fff'

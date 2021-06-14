@@ -43,13 +43,13 @@ const Muro = () => {
   }
 
   return (
-    <View>
+    <View style={{ paddingBottom: 160}}>
       <NavBar/>
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
         :
         <View>
-          <ScrollView contentContainerStyle={{ paddingBottom: 160}} onMomentumScrollEnd={()=>listarPublicaciones(pagePublicaciones)}>
+          <ScrollView  onScrollEndDrag={()=>listarPublicaciones(pagePublicaciones)}>
           <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
           <ListadoPublicaciones 
           publicaciones = {publicaciones}
@@ -59,6 +59,8 @@ const Muro = () => {
           <Cargando estaCargando={cargando} color={colores.appDefault} />
         </View>
       }
+      <BotonOrden/>
+
     </View>
   );
 }

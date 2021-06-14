@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import {Context as PerfilContext} from '../../context/PerfilContext';
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
 import MenuTooltip from './MenuTooltip';
+import { baseUriMultimedia } from '../../config/configs';
 
 const NavBar = () => {
   const navigation = useNavigation();
@@ -31,7 +32,7 @@ const NavBar = () => {
           <Image 
             style={styles.image} 
             source={currentUser.url_perfil 
-              ? { uri: `https://splash.s3.amazonaws.com/api/files/${currentUser.url_perfil}` } 
+              ? { uri: `${baseUriMultimedia}${currentUser.url_perfil}` } 
               : require('../../../assets/perfilDefault.jpg')
             }
           />

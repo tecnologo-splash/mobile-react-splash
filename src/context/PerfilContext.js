@@ -2,14 +2,14 @@ import crearContext from "./crearContext";
 import settings from '../config/settings';
 import { filtroSeguidos } from "../config/filtros";
 import { StyleSheet } from 'react-native';
-import { requestSizeListarSeguidos } from "../config/maximos";
+import { requestSizeListarSeguidores, requestSizeListarSeguidos } from "../config/maximos";
 
 const PerfilReducer = (state,action) => {
     switch(action.type){
         case 'cambiarValor':
             return {...state, [action.payload.variable]: action.payload.valor};
         case 'getSeguidores':
-            return {...state, seguidores: action.payload.seguidores};
+            return {...state, seguidores: action.payload.seguidores, cargando: false};
         case 'getSeguidos':
             return {...state, seguidos: action.payload.seguidos, cargando: false};
         case 'appendSeguidos':
@@ -24,6 +24,8 @@ const PerfilReducer = (state,action) => {
             return {...state, error:{titulo:null, cuerpo:null, anterior:null, styleError:null}};
         case 'getConfigNotif':
             return {...state, configNotif: action.payload.configNotif};
+        case 'amigos':
+            return {...state, amigos: action.payload.amigos};
         default:
             return state;
     }
@@ -36,12 +38,14 @@ const getInfo = (dispatch) => async () =>{
     
     try {
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        const response = await settings.get('/users/info', {headers: {'Content-Type': "application/json"}} );
+        console.log('/users/info');
+        const response = await settings.get('/users/info' );
         dispatch({type: 'getInfo', payload: {userInfo:response.data}});
+        console.log("getInfo:",response.data);
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
 
     } catch (e) {
-        console.log(e);
+        console.log("error en getInfo",e);
         dispatch({type: 'onError', payload: {error: e}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
     }
@@ -52,36 +56,48 @@ const cambiarFecha = (dispatch) => (date) =>{
 }
 
 const getSeguidores = (dispatch) => async ({filtro,valor, page}) =>{
-    /*try{
+    try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        console.log(`/users/seguidores?page=${page}&size=${requestSizeListarSeguidores}&filtro=${filtro}&keywords=${valor}`);
-        const response= await settings.get(`/users/seguidores?page=${page}&size=${requestSizeListarSeguidores}&filtro=${filtro}&keywords=${valor}`);
+        console.log(`/users/me-siguen?page=${page}&size=${requestSizeListarSeguidores}&filtro=${filtro}&keywords=${valor}`);
+        const response= await settings.get(`/users/me-siguen?page=${page}&size=${requestSizeListarSeguidores}&filtro=${filtro}&keywords=${valor}`);
         if(page == 0){
             dispatch({type:'getSeguidores', payload:{ seguidores: response.data}});
         }else{
             dispatch({type:'appendSeguidores', payload:{ seguidores: response.data}});
         }        
+        console.log("seguidores:", response.data);
     }catch(e){
-        console.log(e);
+        console.log("error en getSeguidores",e);
         dispatch({type: 'onError', payload: {error: e}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
-    }*/
+    }
 }
 
 const getSeguidos = (dispatch) => async ({filtro,valor, page}) =>{
     try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        console.log(`/users/siguiendo?page=${page}&size=${requestSizeListarSeguidos}&filtro=${filtro}&keywords=${valor}`);
-        const response= await settings.get(`/users/siguiendo?page=${page}&size=${requestSizeListarSeguidos}&filtro=${filtro}&keywords=${valor}`);
+        console.log(`/users/yo-sigo?page=${page}&size=${requestSizeListarSeguidos}&filtro=${filtro}&keywords=${valor}`);
+        const response= await settings.get(`/users/yo-sigo?page=${page}&size=${requestSizeListarSeguidos}&filtro=${filtro}&keywords=${valor}`);
         if(page == 0){
             dispatch({type:'getSeguidos', payload:{ seguidos: response.data}});
         }else{
             dispatch({type:'appendSeguidos', payload:{ seguidos: response.data}});
         }        
     }catch(e){
-        console.log(e);
+        console.log("error en seguidos",e);
         dispatch({type: 'onError', payload: {error: e}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
+    }
+}
+
+const getCantAmigos = dispatch => async ({usuarioId}) =>{
+    try{
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
+        console.log(`/users/cantidad-amigos/${usuarioId}`);
+        const response= await settings.get(`/users/cantidad-amigos/${usuarioId}`);
+        dispatch({type:"amigos", payload:{amigos: response.data}})
+    }catch(e){
+        console.log("error en cant amigos",e);
     }
 }
 
@@ -123,12 +139,13 @@ const initialState = {
     buscar:'',
     error: {},
     configNotif: {},
-    cargando: false
+    cargando: false,
+    amigos: {}
 }
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil, getConfigNotif },
+    {getInfo, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil, getConfigNotif, getCantAmigos },
     initialState,
 );
 

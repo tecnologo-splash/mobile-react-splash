@@ -18,6 +18,7 @@ import {Provider as ConversacionProvider} from './src/context/ConversacionContex
 import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, NuevaPublicacion, Seguidores, Seguidos, EditarPerfil, EditFotoPerfil, Comentarios, NuevaConversacion} from './src/pantallas';
 
 import { FontAwesome } from '@expo/vector-icons'; 
+import { colores } from './src/config/colores';
 
 const theme = {
   ...DefaultTheme,
@@ -38,7 +39,7 @@ const colors = {
 
 const BottomNavigator = ()=> (
     <BottomTab.Navigator 
-    barStyle={{backgroundColor:'#6F32C1'}} 
+    barStyle={{backgroundColor:colores.appDefault}} 
     tabBarOptions={colors}
     sceneAnimationEnabled
     keyboardHidesNavigationBar
