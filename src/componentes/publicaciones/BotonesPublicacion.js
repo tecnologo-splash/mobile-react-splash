@@ -47,7 +47,7 @@ const BotonesPublicacion = ({publicacion}) => {
             <Button 
             mode="outlined"
             style={{borderWidth:0}} 
-            onPress={() => navigation.navigate("Comentarios")}
+            onPress={() => navigation.navigate("Comentarios",{publicacionId: publicacion.id})}
             icon={()=>(<MaterialIcons name="insert-comment" size={22} color={colores.appDefault} />)}>
                 Comentar
             </Button>
