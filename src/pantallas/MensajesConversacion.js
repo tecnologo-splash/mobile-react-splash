@@ -12,7 +12,7 @@ const MensajesConversacion = ({route, navigation}) => {
   
   useEffect(()=>{
     listarMensajes();
-  }, []);
+  }, [mensajesConversacion]);
 
   const listarMensajes = async () =>{
     await listarMensajesConversacion(chat_id);

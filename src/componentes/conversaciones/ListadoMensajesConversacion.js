@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   horizontalBlueView: {
     backgroundColor: 'lightblue',
     flexDirection: 'row',
+    alignSelf: 'flex-end',
     flex: 1
   }
 });

@@ -8,26 +8,28 @@ import ListadoConversaciones from '../componentes/conversaciones/ListadoConversa
 
 const Conversaciones = ({navigation}) => {
   
+  const [page, setPage] = useState(0);
   const {state:{conversacionesUsuario}, listarConversacionesUsuario} = useContext(ConversacionContext);
 
   useEffect(()=>{
-    listarConversaciones();
+    listarConversaciones(0);
   }, []);
 
-  const listarConversaciones = async () =>{
-    await listarConversacionesUsuario();
+  const listarConversaciones = async (pagina) =>{
+    await listarConversacionesUsuario({page: pagina});
+    setPage(pagina+1);
   }
 
   return (
-    <View>
+    <View style={{ paddingBottom: 160}}>
       <NavBar/>
       <Button
-            style={styles.button}
-            mode="contained"
-            onPress={()=>navigation.navigate('NuevaConversacion')}> 
-              Nueva conversacion
-        </Button>
-        <ListadoConversaciones conversaciones={conversacionesUsuario}/> 
+          style={styles.button}
+          mode="contained"
+          onPress={()=>navigation.navigate('NuevaConversacion')}> 
+            Nueva conversacion
+      </Button>
+      <ListadoConversaciones conversaciones={conversacionesUsuario} onEnd={()=>listarConversaciones(page)}/> 
     </View>
   );
 }

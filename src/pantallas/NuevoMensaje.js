@@ -5,11 +5,12 @@ import {Context as ConversacionContext} from '../context/ConversacionContext';
 
 const NuevoMensaje = ({chat_id}) => {
 
-    const {state:{ mensaje }, cambiarValor , crearMensaje} = useContext(ConversacionContext);
+    const {state:{ mensaje }, cambiarValor , crearMensaje, listarMensajesConversacion} = useContext(ConversacionContext);
     
     const enviar = () => {
         var formData = { chat_id, mensaje, tipo_mensaje: "TEXTO" }
         crearMensaje(formData);
+        listarMensajesConversacion(chat_id);
     }
 
     return (
