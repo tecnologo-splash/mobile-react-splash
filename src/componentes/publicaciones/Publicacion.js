@@ -80,7 +80,10 @@ const Publicacion = ({publicacion}) => {
           </Card.Content>:
           
           publicacion.encuesta?
-              <Encuesta encuesta={publicacion.encuesta} publicacionId={publicacion.id}/>:
+              <Encuesta 
+              encuesta={publicacion.encuesta} 
+              publicacionId={publicacion.id} 
+              usuarioId={usuario.id}/>:
           null
         }
           <View style={styles.fechaContainer} >

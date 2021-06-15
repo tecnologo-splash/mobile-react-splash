@@ -4,15 +4,24 @@ import { Checkbox } from 'react-native-paper';
 import { Text } from 'react-native';
 import { colores } from '../../config/colores';
 import { Context as PublicacionContext} from '../../context/PublicacionContext';
+import { Context as PerfilContext} from '../../context/PerfilContext';
 
-const Encuesta = ({encuesta, publicacionId}) => {
+const Encuesta = ({encuesta, publicacionId, usuarioId}) => {
     const { votar } = useContext(PublicacionContext);
+    const {state:{currentUser}} = useContext(PerfilContext);
+
     const fechaCierre = new Date(encuesta.fecha_cierre);
     const fechaActual = Date.now();
 
-    console.log("encuesta",encuesta);
     const encuestaVigente=()=>{
       return fechaActual<fechaCierre;
+    }
+
+    const deshabilitada = ()=>{
+      if((!encuestaVigente() || encuesta.opcion_id_votada==null)|| currentUser.id === usuarioId){
+        return true;
+      }
+      return false;
     }
 
     const chequear = (opcionId)=>{
@@ -26,7 +35,7 @@ const Encuesta = ({encuesta, publicacionId}) => {
           color={colores.appDefault}
           uncheckedColor={colores.gris}
           status={encuesta.opcion_id_votada? encuesta.opcion_id_votada===opcion.id ? 'checked' : 'unchecked':'unchecked'}
-          disabled={encuestaVigente()&&encuesta.opcion_id_votada==null?false:true}
+          disabled={deshabilitada()}
           onPress={() => chequear(opcion.id)}/>
           <Text style={{margin: 8}}>{opcion.texto} ({opcion.cantidad_votos})</Text>
         </View>
