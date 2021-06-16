@@ -9,7 +9,7 @@ import { Context as PerfilContext} from '../../context/PerfilContext';
 const Encuesta = ({encuesta, publicacionId, usuarioId}) => {
     const { votar } = useContext(PublicacionContext);
     const {state:{currentUser}} = useContext(PerfilContext);
-
+    const [chequeado, setChequeado] = useState(encuesta.opcion_id_votada?encuesta.opcion_id_votada:-1);
     const fechaCierre = new Date(encuesta.fecha_cierre);
     const fechaActual = Date.now();
 
@@ -25,7 +25,8 @@ const Encuesta = ({encuesta, publicacionId, usuarioId}) => {
     }
 
     const chequear = (opcionId)=>{
-      votar({ opcionId, publicacionId })
+      votar({ opcionId, publicacionId });
+      setChequeado(opcionId);
     }
 
   return (<View>
@@ -34,7 +35,7 @@ const Encuesta = ({encuesta, publicacionId, usuarioId}) => {
           <Checkbox
           color={colores.appDefault}
           uncheckedColor={colores.gris}
-          status={encuesta.opcion_id_votada? encuesta.opcion_id_votada===opcion.id ? 'checked' : 'unchecked':'unchecked'}
+          status={chequeado===opcion.id ? 'checked' : 'unchecked'}
           disabled={deshabilitada()}
           onPress={() => chequear(opcion.id)}/>
           <Text style={{margin: 8}}>{opcion.texto} ({opcion.cantidad_votos})</Text>
