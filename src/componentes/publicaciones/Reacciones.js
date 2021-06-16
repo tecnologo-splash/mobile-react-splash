@@ -3,13 +3,17 @@ import { FlatList, StyleSheet, Image, TouchableOpacity, View } from 'react-nativ
 import { tiposReacciones } from '../../config/configs';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 
-const Reacciones = ({setIndex, publicacionId}) => {
-    const {reaccionarPublicacion, eliminarReaccion} = useContext(PublicacionContext);
-    const reaccionar = (id)=>{
+const Reacciones = ({setIndex, publicacionId, miReaccion}) => {
+    const {reaccionarPublicacion,eliminarReaccion} = useContext(PublicacionContext);
+    const reaccionar = async (id)=>{
         console.log("publicacionId", publicacionId);
         var [r] = tiposReacciones.filter(item=> item.id===id);
         if(r.tipo!="ELIMINAR"){
-            reaccionarPublicacion({publicacionId: publicacionId, tipoReaccion: r.tipo});
+            if(miReaccion){
+                console.log("mi_reaccion",miReaccion);
+                await eliminarReaccion({publicacionId: publicacionId})
+            }
+            await reaccionarPublicacion({publicacionId: publicacionId, tipoReaccion: r.tipo});
             setIndex(id);
         }else{
             eliminarReaccion({publicacionId: publicacionId})

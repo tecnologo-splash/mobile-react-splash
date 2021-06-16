@@ -59,14 +59,18 @@ const PublicacionReducer = (state,action) => {
         case 'appendPublicacionesMuro':
             return {...state, publicaciones: [...state.publicaciones, ...action.payload.publicaciones]};
         case 'reaccionar':
-            var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
             var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
-
-            var kk = {...state, publicaciones: [...publicacionesMenosReaccionada, 
+            for ( var i = 0; i < state.publicaciones.length; i++){
+                if(publicacionReaccionada.id === state.publicaciones[i].id){
+                    state.publicaciones[i] = {...state.publicaciones[i], resumen_reaccion:{...state.publicaciones[i].resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}};
+                }  
+            }
+            //var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
+            /*var kk = {...state, publicaciones: [...publicacionesMenosReaccionada, 
                 {...publicacionReaccionada, 
-                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}}]};
+                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}}]};*/
 
-            return kk;
+            return state;
         case 'eliminarReaccion':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
             var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);

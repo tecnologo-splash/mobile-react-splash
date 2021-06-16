@@ -24,7 +24,7 @@ const BotonesPublicacion = ({publicacion}) => {
             <Tooltip
             backgroundColor={colores.appDefault}
             withOverlay={false}
-            popover={<Reacciones setIndex={index=>setIndex(index)} publicacionId={publicacion.id}/>}>
+            popover={<Reacciones setIndex={index=>setIndex(index)} publicacionId={publicacion.id} miReaccion={publicacion.resumen_reaccion.mi_reaccion}/>}>
                 {publicacion.resumen_reaccion.mi_reaccion? 
                     <Button 
                     mode="outlined"
