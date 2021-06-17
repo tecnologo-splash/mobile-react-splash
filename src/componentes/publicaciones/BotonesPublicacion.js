@@ -7,18 +7,25 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { colores } from '../../config/colores';
 import Reacciones from './Reacciones';
 import { tiposReacciones } from '../../config/configs';
+import {Context as ComentariosContext} from '../../context/ComentariosContext';
 
 const BotonesPublicacion = ({publicacion}) => {
     const [index, setIndex] = useState(0);
     const navigation = useNavigation();
+    const{setComentarios} = useContext(ComentariosContext);
     var [selected] = tiposReacciones.filter(i=>i.id===index);
-
     useEffect(()=>{
         if(publicacion.resumen_reaccion.mi_reaccion){
             var [r] = tiposReacciones.filter(item=> item.tipo===publicacion.resumen_reaccion.mi_reaccion);
             setIndex(r.id);
         }
     },[])
+
+    const irAComentarios = ()=> {
+        setComentarios(publicacion.comentarios);
+        navigation.navigate("Comentarios",{publicacionId: publicacion.id});
+    }
+
   return (
         <Card.Content style={styles.container}>
             <Tooltip
@@ -47,7 +54,7 @@ const BotonesPublicacion = ({publicacion}) => {
             <Button 
             mode="outlined"
             style={{borderWidth:0}} 
-            onPress={() => navigation.navigate("Comentarios",{publicacionId: publicacion.id})}
+            onPress={() => irAComentarios()}
             icon={()=>(<MaterialIcons name="insert-comment" size={22} color={colores.appDefault} />)}>
                 Comentar
             </Button>

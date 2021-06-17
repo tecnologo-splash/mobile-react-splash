@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Image, Text, Linking, Alert, TouchableOpacity } from 'react-native';
 
 const EnlaceExterno = ({enlace}) => {
-    console.log(enlace);
 
     const abrirUrl = async ()=> {
       const supported = await Linking.canOpenURL(enlace.url);
