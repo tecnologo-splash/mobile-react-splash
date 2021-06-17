@@ -19,7 +19,7 @@ const AddImagen = () => {
             return data
         });
         if (!result.cancelled){
-            agregarImagen({uri: result.uri, type: result.type, width: result.width, height: result.height});
+            agregarImagen({id: 0, uri: result.uri, type: result.type, width: result.width, height: result.height});
         }
     }
 
@@ -33,53 +33,53 @@ const AddImagen = () => {
             return data
         });
         if (!result.cancelled){
-            agregarImagen({uri: result.uri, type: result.type, width: result.width, height: result.height});
+            agregarImagen({id: 0, uri: result.uri, type: result.type, width: result.width, height: result.height});
         }
     }
 
-    const _rotate90 = async () => {
-        const manipResult = await ImageManipulator.manipulateAsync(
-            imageU,
-            [{ rotate: 90 }],
-            { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-        ).then((data) => {
-            return data
-        });
-        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    }
+    // const _rotate90 = async () => {
+    //     const manipResult = await ImageManipulator.manipulateAsync(
+    //         imageU,
+    //         [{ rotate: 90 }],
+    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
+    //     ).then((data) => {
+    //         return data
+    //     });
+    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
+    // }
 
-    const _rotate270 = async () => {
-        const manipResult = await ImageManipulator.manipulateAsync(
-            imageU,
-            [{ rotate: 270 }],
-            { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-        ).then((data) => {
-            return data
-        });
-        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    }
-      
-    const _flipV = async () => {
-        const manipResult = await ImageManipulator.manipulateAsync(
-            imageU,
-            [{ flip: ImageManipulator.FlipType.Vertical }],
-            { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-        ).then((data) => {
-            return data
-        });
-        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    }
+    // const _rotate270 = async () => {
+    //     const manipResult = await ImageManipulator.manipulateAsync(
+    //         imageU,
+    //         [{ rotate: 270 }],
+    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
+    //     ).then((data) => {
+    //         return data
+    //     });
+    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
+    // }
+    //   
+    // const _flipV = async () => {
+    //     const manipResult = await ImageManipulator.manipulateAsync(
+    //         imageU,
+    //         [{ flip: ImageManipulator.FlipType.Vertical }],
+    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
+    //     ).then((data) => {
+    //         return data
+    //     });
+    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
+    // }
 
-    const _flipH = async () => {
-        const manipResult = await ImageManipulator.manipulateAsync(
-            imageU,
-            [{ flip: ImageManipulator.FlipType.Horizontal }],
-            { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-        ).then((data) => {
-            return data
-        });
-        agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    }
+    // const _flipH = async () => {
+    //     const manipResult = await ImageManipulator.manipulateAsync(
+    //         imageU,
+    //         [{ flip: ImageManipulator.FlipType.Horizontal }],
+    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
+    //     ).then((data) => {
+    //         return data
+    //     });
+    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
+    // }
 
     return (
         <View style={styles.main}>
@@ -105,7 +105,7 @@ const AddImagen = () => {
                                 <View>
                                     <Image source = {{ uri: item.uri}} style={{ width: item.width/2, height: item.height/2}}/>
                                     {currentPublicacion.id ?
-                                        <Text style = {styles.buttonText} onPress={()=>borrarImagen(item.uri)}>Borrar</Text>
+                                        <Text style = {styles.buttonText} onPress={()=>borrarImagen(currentPublicacion.id, item.id)}>Borrar</Text>
                                         :
                                         <Text style = {styles.buttonText} onPress={()=>cancelarImagen(item.uri)}>Cancelar</Text>
                                     }

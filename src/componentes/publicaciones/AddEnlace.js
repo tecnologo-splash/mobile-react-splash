@@ -11,12 +11,20 @@ const AddEnlace = () => {
     
     const _agregarEnlaceDesdePreview = async (url) => {
         const data = await getLinkPreview(url);
+        console.log(data)
+        var descripcion = ""
+        if(data.description !== undefined)
+        {
+            descripcion = data.description
+        }
+
+        var imagen_url = "";
         if(data.images.length > 0)
         {
-            var imagen_url = data.images[0];
+            imagen_url = data.images[0];
         }
                                 
-        var enlaceObj = {url: url, titulo: data.title, descripcion: data.description, imagen_url: imagen_url}
+        var enlaceObj = {url: url, titulo: data.title, descripcion: descripcion, imagen_url: imagen_url}
         console.log("enlace", enlaceObj)
         agregarEnlace(enlaceObj)
     }

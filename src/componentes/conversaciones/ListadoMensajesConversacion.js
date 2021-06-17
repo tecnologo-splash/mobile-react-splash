@@ -14,7 +14,7 @@ const ListadoMensajesConversacion = ({mensajes, onEnd}) => {
   //fin de esto es solo para saber mi id
   
   return (
-    <ScrollView>
+    <ScrollView onScrollEndDrag={()=>onEnd()}>
       <FlatList
         data={mensajes}
         keyExtractor={item => item.fecha_envio}

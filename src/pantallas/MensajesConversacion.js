@@ -6,23 +6,26 @@ import NuevoMensaje from './NuevoMensaje'
 
 const MensajesConversacion = ({route, navigation}) => {
   
-  const {chat_id} = route.params;
+  const {chat_id, nombre_chat} = route.params;
   
+  const [page, setPage] = useState(0);
   const {state:{mensajesConversacion}, listarMensajesConversacion} = useContext(ConversacionContext);
   
   useEffect(()=>{
-    listarMensajes();
+    listarMensajes(0);
   }, [mensajesConversacion]);
 
-  const listarMensajes = async () =>{
-    await listarMensajesConversacion(chat_id);
+  const listarMensajes = async (pagina) =>{
+    await listarMensajesConversacion(chat_id, {page: pagina});
+    setPage(pagina+1);
   }
 
   return (
     <View>
+      <Text>{nombre_chat}</Text>
       <Text>Chat: {chat_id}</Text>
       <NuevoMensaje chat_id={chat_id}/>
-      <ListadoMensajesConversacion mensajes={mensajesConversacion}/>
+      <ListadoMensajesConversacion mensajes={mensajesConversacion} onEnd={()=>listarMensajes(page)}/>
     </View>
   );
 }

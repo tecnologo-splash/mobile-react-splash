@@ -49,7 +49,7 @@ const listarConversacionesUsuario = dispatch => async ({page}) =>{
         if(page === 0){
             dispatch({type: 'listarConversacionesUsuario', payload: {conversacionesUsuario: response.data}});
         }else{
-            dispatch({type: 'appendConversacionesUsuario', payload: {publicaciones: response.data.content}})
+            dispatch({type: 'appendConversacionesUsuario', payload: {conversacionesUsuario: response.data}})
         }
     }catch(e){
         console.log(e);

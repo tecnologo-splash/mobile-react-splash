@@ -26,7 +26,7 @@ const PublicacionReducer = (state,action) => {
         case 'agregarEnlace':
             return {...state, enlaces: [...state.enlaces, action.payload.enlace], enlace: null};
         case 'cancelarEnlace':
-            var todosEnlacesMenosCancelado = state.enlaces.filter(item => item.uri != action.payload.uri);
+            var todosEnlacesMenosCancelado = state.enlaces.filter(item => item.url != action.payload.uri);
             return {...state, enlaces: todosEnlacesMenosCancelado };
         case 'onError':
             return {...state,  error: action.payload.error};
@@ -34,12 +34,15 @@ const PublicacionReducer = (state,action) => {
             return {...state, currentPublicacion: {}, texto : null, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'editarPublicacion':
             var imagenesCurrentPublicacion = []
-            //Maldito git me cago esto
             if (action.payload.publicacionInfo.multimedia.length > 0)
             {
-                action.payload.publicacionInfo.multimedia.filter(item => item.tipo === "FOTO").map((data)=>imagenesCurrentPublicacion.push({uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
-            }           
-            //Fin de maldito git
+                action.payload.publicacionInfo.multimedia.filter(item => item.tipo === "FOTO").map((data)=>imagenesCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+            }
+            var videosCurrentPublicacion = []
+            if (action.payload.publicacionInfo.multimedia.length > 0)
+            {
+                action.payload.publicacionInfo.multimedia.filter(item => item.tipo === "VIDEO").map((data)=>videosCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+            }
             var opcionesCurrentPublicacion = []
             if(action.payload.publicacionInfo.encuesta != null)
             {
@@ -51,7 +54,7 @@ const PublicacionReducer = (state,action) => {
             {
                 action.payload.publicacionInfo.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
             }
-            return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", imagenes: imagenesCurrentPublicacion, videos: [], enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+            return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", imagenes: imagenesCurrentPublicacion, videos: videosCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
         case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'listarPublicacionesMuro':
@@ -97,8 +100,13 @@ const cancelarImagen = dispatch => (uri) =>{
     dispatch({type: 'cancelarImagen', payload: {uri}});
 }
 
-const borrarImagen = dispatch => (uri) =>{
-    dispatch({type: 'cancelarImagen', payload: {uri}});
+const borrarImagen = dispatch => async (pubId, imgId) =>{
+    try{
+        const response = await settings.delete(`posts/${pubId}/multimedia/${imgId}`);
+        dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
+    }catch(e){
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
+    }
 }
 
 const agregarVideo = dispatch => (video) => {
@@ -108,14 +116,21 @@ const agregarVideo = dispatch => (video) => {
 const cancelarVideo = dispatch => (uri) =>{
     dispatch({type: 'cancelarVideo', payload: {uri}});
 }
+
+const borrarVideo = dispatch => async (pubId, vidId) =>{
+    try{
+        const response = await settings.delete(`posts/${pubId}/multimedia/${vidId}`);
+        dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
+    }catch(e){
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
+    }
+}
+
 const agregarOpcion = dispatch => (opcion) => {
     dispatch({type: 'agregarOpcion', payload: {opcion}});
 }
 
 const cancelarOpcion = dispatch => (uri) =>{
-    console.log('cancelarOpcion')
-    console.log(uri)
-    console.log(enlaces)
     dispatch({type: 'cancelarOpcion', payload: {uri}});
 }
 
@@ -145,7 +160,6 @@ const crearPublicacion = (dispatch) => async (publicacion, multimedias)=> {
                 dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo subir el multimedia", activacion: null}}});
             }
         }
-        console.log(response.data);
         dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
     }catch(e){
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
@@ -250,7 +264,8 @@ export const {Context, Provider} = crearContext(
      cancelarImagen,
      borrarImagen,
      agregarVideo, 
-     cancelarVideo, 
+     cancelarVideo,
+     borrarVideo, 
      agregarOpcion, 
      cancelarOpcion,
      agregarEnlace, 

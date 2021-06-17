@@ -7,7 +7,7 @@ import { FlatList } from 'react-native';
 import { maximos } from '../../config/maximos';
 
 const AddVideo = () => {
-    const {state:{ currentPublicacion, videos }, agregarVideo, cancelarVideo } = useContext(PublicacionContext);
+    const {state:{ currentPublicacion, videos }, agregarVideo, cancelarVideo, borrarVideo } = useContext(PublicacionContext);
 
     const video = useRef(null);
     const [ status, setStatus ] = useState();
@@ -43,7 +43,6 @@ const AddVideo = () => {
         
         <View style={styles.main}>
             <View style={styles.main2}>
-                {console.log(currentPublicacion)}
                 {videos.length < maximos._video ?
                     <View style = { styles.horizontalView }>
                         <Text style = {styles.buttonText} >Seleccionar video:</Text>
@@ -69,9 +68,11 @@ const AddVideo = () => {
                                         isLooping
                                         onPlaybackStatusUpdate={status => setStatus(() => status)}
                                     />
-                                    <View style = { styles.horizontalView }>
+                                    {currentPublicacion.id ?
+                                        <Text style = {styles.buttonText} onPress={()=>borrarVideo(currentPublicacion.id, item.id)}>Borrar</Text>
+                                        :
                                         <Text style = {styles.buttonText} onPress={()=>cancelarVideo(item.uri)}>Cancelar</Text>
-                                    </View>
+                                    }
                                 </View>
                             )}
                         />
