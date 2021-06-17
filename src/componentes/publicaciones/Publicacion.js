@@ -31,7 +31,6 @@ const Publicacion = ({publicacion}) => {
             />;
         }
         else{
-            console.log("else");
             return null;
         }
     }

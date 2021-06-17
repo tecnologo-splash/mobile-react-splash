@@ -83,6 +83,15 @@ const PublicacionReducer = (state,action) => {
                 resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: null}}]};
 
             return retorno;
+        case 'actualizarComentarios':
+            for(i=0 ; i<state.publicaciones.length ; i++) {
+                if(action.payload.publicacionId === state.publicaciones[i].id) {
+                    console.log("actualizo el comentario en ", action.payload.publicacionId);
+                    console.log("cant Comentarios en actualizar", action.payload.comentarios.length);
+                    state.publicaciones[i] = {...state.publicaciones[i], comentarios: action.payload.comentarios};
+                }
+            }
+            return state;
         default:
             return state;
     }
@@ -191,7 +200,6 @@ const listarPublicacionesMuro = dispatch => async ({page, orden, tipoOrden}) =>{
     try{
         console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
         var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
-        console.log("response",response.data.content.length);
         if(page === 0){
             dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
         }else{
@@ -237,6 +245,10 @@ const votar = dispatch => async ({opcionId, publicacionId})=>{
     }
 }
 
+const actualizarComentariosPublicacion = dispatch => ({publicacionId, comentarios}) => {
+    dispatch({type:"actualizarComentarios", payload:{publicacionId, comentarios}})
+}
+
 const initialState = {
     currentPublicacion: {},
     imagenes: [],
@@ -274,7 +286,8 @@ export const {Context, Provider} = crearContext(
      reaccionarPublicacion,
      eliminarReaccion,
      listarPublicacionesUsuario,
-     votar
+     votar,
+     actualizarComentariosPublicacion
     },
     initialState,
 );

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import { Input } from 'react-native-elements';
 import { FAB, Portal } from 'react-native-paper';
@@ -8,6 +8,10 @@ import { Context as ComentariosContext } from '../../context/ComentariosContext'
 const TextoComentario = ({publicacionId}) => {
     const [texto, setTexto]= useState('');
     const {crearComentario}= useContext(ComentariosContext);
+
+    const agregarNuevoComentario = ()=> {
+        crearComentario({text:texto, publicacionId});
+    }
 
   return (
           <Portal>
@@ -21,7 +25,7 @@ const TextoComentario = ({publicacionId}) => {
             style={styles.fab}
             small
             icon="comment-plus"
-            onPress={() => crearComentario({text:texto, publicacionId})}
+            onPress={() => agregarNuevoComentario()}
             />
             </View>
         </Portal>
