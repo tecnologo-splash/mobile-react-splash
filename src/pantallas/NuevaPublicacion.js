@@ -3,7 +3,7 @@
     import { Alert, View, Text, StyleSheet } from 'react-native';
     import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
     import {Context as PublicacionContext} from '../context/PublicacionContext';
-    import AddImagen from '../componentes/publicaciones/AddImagen';
+    import AddMultimedia from '../componentes/publicaciones/AddMultimedia';
     import AddVideo from '../componentes/publicaciones/AddVideo';
     import AddEnlace from '../componentes/publicaciones/AddEnlace';
     import AddEncuesta from '../componentes/publicaciones/AddEncuesta';
@@ -11,7 +11,7 @@
 
     const NuevaPublicacion = () => {
 
-      const {state:{currentPublicacion, texto, duracion, unidad, imagenes, videos , enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
+      const {state:{currentPublicacion, texto, duracion, unidad, multimedias, videos , enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
       const [tipo, setTipo] = useState(0);
 
       const crear = () => {
@@ -24,7 +24,7 @@
           switch (tipo) {
             case 1:
               var formData = { texto }
-              crearPublicacion(formData, imagenes);
+              crearPublicacion(formData, multimedias);
               break;
             case 2:
               var formData = { texto }
@@ -102,6 +102,13 @@
               onPress={()=>setTipo(1)}
               style={styles.button}
               >
+                  Imagen/Video
+              </Button>
+              {/* <Button 
+              mode={tipo===1? "contained":"outlined"} 
+              onPress={()=>setTipo(1)}
+              style={styles.button}
+              >
                   Imagen
               </Button>
               <Button 
@@ -110,7 +117,7 @@
               style={styles.button}
               >
                   Video
-              </Button>
+              </Button> */}
               <Button 
               mode={tipo===3? "contained":"outlined"} 
               onPress={()=>setTipo(3)}
@@ -127,7 +134,7 @@
               </Button>
             </View>
             { tipo===1 ?
-              <AddImagen />
+              <AddMultimedia />
               : tipo===2 ?
                 <AddVideo />
                 : tipo===3 ?
