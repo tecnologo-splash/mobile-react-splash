@@ -63,6 +63,7 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
           onEnd();
         }
       }}
+      inverted
     />
   );
 }
