@@ -48,7 +48,7 @@ const Comentario = ({comentario, publicacionId}) => {
       </View>
       <View style={styles.respuestas}>
           {comentario.respuestas.map(respuesta=>(
-            <Respuesta respuesta={respuesta}/>
+            <Respuesta respuesta={respuesta} comentarioId={comentario.id} publicacionId={publicacionId}/>
           ))}
       </View>
     </View>

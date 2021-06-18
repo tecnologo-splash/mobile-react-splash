@@ -64,8 +64,17 @@ const responderComentario = dispatch =>async ({respuesta, comentarioId, publicac
     }
 }
 
+const eliminarRespuesta = dispatch => async ({publicacionId,comentarioId,respuestaId})=>{
+    try{
+        console.log(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas/${respuestaId}`);
+        const response = await settings.delete(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas/${respuestaId}`);
+    } catch(e) {
+        console.log(e);
+    }
+}
+
 export const {Context, Provider} = crearContext(
     ComentariosReducer,
-    {crearComentario, setComentarios, eliminarComentario, setComentarioAResponder, responderComentario},
+    {crearComentario, setComentarios, eliminarComentario, setComentarioAResponder, responderComentario, eliminarRespuesta},
     initialState,
 );

@@ -6,8 +6,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Context as ComentariosContext} from '../../context/ComentariosContext';
 import {Context as PerfilContext} from '../../context/PerfilContext';
 
-const Respuesta = ({respuesta}) => {
-    const {eliminarComentario} = useContext(ComentariosContext);
+const Respuesta = ({respuesta, comentarioId, publicacionId}) => {
+    const {eliminarRespuesta} = useContext(ComentariosContext);
     const {state:{currentUser}} = useContext(PerfilContext);
     const usuario = respuesta.usuario_comun;
   return (
@@ -19,10 +19,10 @@ const Respuesta = ({respuesta}) => {
             <Text style={{fontWeight:'bold'}}>{usuario.usuario}</Text>
             <Text numberOfLines={15}>{respuesta.texto}</Text>
         </View>
-        {/*respuesta.usuario_comun.id === currentUser.id ?
-        <FontAwesome name="trash" size={24} color="black" onPress={() =>eliminarComentario({publicacionId, comentarioId:comentario.id})}/>
+        {respuesta.usuario_comun.id === currentUser.id ?
+        <FontAwesome name="trash" size={24} color="black" onPress={() =>eliminarRespuesta({publicacionId, comentarioId, respuestaId:respuesta.id})}/>
           :null
-        */}
+        }
       </View>
       <Text style = {styles.fecha}>{respuesta.fecha_creado}</Text>
     </View>
