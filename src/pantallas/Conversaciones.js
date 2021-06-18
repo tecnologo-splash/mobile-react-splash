@@ -13,7 +13,7 @@ const Conversaciones = ({navigation}) => {
 
   useEffect(()=>{
     listarConversaciones(0);
-  }, [navigation]);
+  }, []);
 
   const listarConversaciones = async (pagina) =>{
     await listarConversacionesUsuario({page: pagina});
@@ -29,7 +29,7 @@ const Conversaciones = ({navigation}) => {
           onPress={()=>navigation.navigate('NuevaConversacion')}> 
             Nueva conversacion
       </Button>
-      <ListadoConversaciones conversaciones={conversacionesUsuario} onEnd={()=>listarConversaciones(page)}/> 
+      <ListadoConversaciones conversaciones={conversacionesUsuario} onEnd={()=>listarConversaciones(page)} onStart={()=>listarConversaciones(0)} /> 
     </View>
   );
 }

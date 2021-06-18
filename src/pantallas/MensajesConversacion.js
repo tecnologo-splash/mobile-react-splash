@@ -13,19 +13,20 @@ const MensajesConversacion = ({route, navigation}) => {
   
   useEffect(()=>{
     listarMensajes(0);
-  }, [mensajesConversacion]);
+  }, []);
 
   const listarMensajes = async (pagina) =>{
+    console.log('listarMensaje')
     await listarMensajesConversacion(chat_id, {page: pagina});
     setPage(pagina+1);
   }
 
   return (
-    <View>
+    <View style={{ paddingBottom: 160}}>
       <Text>{nombre_chat}</Text>
       <Text>Chat: {chat_id}</Text>
       <NuevoMensaje chat_id={chat_id}/>
-      <ListadoMensajesConversacion mensajes={mensajesConversacion} onEnd={()=>listarMensajes(page)}/>
+      <ListadoMensajesConversacion mensajes={mensajesConversacion} onEnd={()=>listarMensajes(page)} onStart={()=>listarMensajes(0)}/>
     </View>
   );
 }

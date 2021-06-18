@@ -5,3 +5,4 @@ export const requestSizeListarSeguidos = 8;
 export const requestSizeListarSeguidores = 8;
 export const requestSizeListarSugeridos = 5;
 export const requestSizeListarPublicaciones = 5;
+export const requestSizeListarMensajes = 10;

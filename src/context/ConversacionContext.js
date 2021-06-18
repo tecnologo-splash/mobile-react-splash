@@ -1,7 +1,7 @@
 import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { requestSizeListarCoversaciones, requestSizeListarUsuarios } from "../config/maximos";
+import { requestSizeListarCoversaciones, requestSizeListarUsuarios, requestSizeListarMensajes } from "../config/maximos";
 
 const ConversacionReducer = (state,action) => {
     switch(action.type){
@@ -21,6 +21,8 @@ const ConversacionReducer = (state,action) => {
             return {...state, usuariosParaConversar: action.payload.usuariosParaConversar}
         case 'listarMensajesConversacion':
             return {...state, mensajesConversacion: action.payload.mensajesConversacion};
+        case 'appendMensajesConversacion':
+            return {...state, mensajesConversacion: [...state.mensajesConversacion, ...action.payload.mensajesConversacion]};
         default:
             return state;
     }
@@ -69,10 +71,16 @@ const crearMensaje = (dispatch) => async (mensaje)=> {
     
 }
 
-const listarMensajesConversacion = dispatch => async (chat_id) =>{
+const listarMensajesConversacion = dispatch => async (chat_id, {page}) =>{
+    const endpoint = `/chat/obtener-mensajes?chatId=${chat_id}&page=${page}&size=${requestSizeListarMensajes}`;
+    console.log(endpoint);
     try{
-        var response = await settings.get(`/chat/obtener-mensajes?chatId=${chat_id}&page=0&size=5`);
-        dispatch({type: 'listarMensajesConversacion', payload: {mensajesConversacion: response.data}})
+        var response = await settings.get(`/chat/obtener-mensajes?chatId=${chat_id}&page=${page}&size=${requestSizeListarMensajes}`);
+        if(page === 0){
+            dispatch({type: 'listarMensajesConversacion', payload: {mensajesConversacion: response.data}})
+        }else{
+            dispatch({type: 'appendMensajesConversacion', payload: {mensajesConversacion: response.data}})
+        }
     }catch(e){
         console.log(e);
     }
