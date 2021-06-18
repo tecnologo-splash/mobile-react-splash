@@ -53,8 +53,19 @@ const initialState = {
     comentario_a_responder: {id:-1, usuario:""}
 }
 
+const responderComentario = dispatch =>async ({respuesta, comentarioId, publicacionId})=> {
+    try{
+        console.log(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas`);
+        const response = await settings.post(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas`, JSON.stringify({texto: respuesta}), {headers: {'Content-Type':'application/json'}});
+        
+        console.log(`respuestas en comentario ${comentarioId}`, response.data.comentarios.filter(com=>com.id === comentarioId)[0].respuestas.length);
+    }catch(e){
+        console.log(e);
+    }
+}
+
 export const {Context, Provider} = crearContext(
     ComentariosReducer,
-    {crearComentario, setComentarios, eliminarComentario, setComentarioAResponder},
+    {crearComentario, setComentarios, eliminarComentario, setComentarioAResponder, responderComentario},
     initialState,
 );

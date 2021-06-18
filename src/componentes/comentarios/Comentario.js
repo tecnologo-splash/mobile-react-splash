@@ -26,26 +26,31 @@ const Comentario = ({comentario, publicacionId}) => {
       return {backgroundColor: colores.transparente, flex:1, alignItems:'flex-start', flexDirection:'row'};
     }
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={()=>aResponder()} style={colorTouchable()}>
-        <Image source={{uri: `${baseUriMultimedia}${usuario.url_perfil}`}} style={styles.image}/>
-        <View styles={styles.contentContainer}>
-          <View styles={styles.trashContainer}>
-            <View style={styles.textContainer}>
-                <Text style={{fontWeight:'bold'}}>{usuario.usuario}</Text>
-                <Text numberOfLines={15}>{comentario.texto}</Text>
+    <View>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={()=>aResponder()} style={colorTouchable()}>
+          <Image source={{uri: `${baseUriMultimedia}${usuario.url_perfil}`}} style={styles.image}/>
+          <View styles={styles.contentContainer}>
+            <View styles={styles.trashContainer}>
+              <View style={styles.textContainer}>
+                  <Text style={{fontWeight:'bold'}}>{usuario.usuario}</Text>
+                  <Text numberOfLines={15}>{comentario.texto}</Text>
+              </View>
+              {comentario.usuario_comun.id === currentUser.id ?
+              <FontAwesome name="trash" size={24} color="black" onPress={() =>eliminarComentario({publicacionId, comentarioId:comentario.id})}/>
+                :null
+              }
             </View>
-            {comentario.usuario_comun.id === currentUser.id ?
-            <FontAwesome name="trash" size={24} color="black" onPress={() =>eliminarComentario({publicacionId, comentarioId:comentario.id})}/>
-              :null
-            }
+            <Text style = {styles.fecha}>{comentario.fecha_creado}</Text>
           </View>
-          <Text style = {styles.fecha}>{comentario.fecha_creado}</Text>
-        </View>
-      </TouchableOpacity>
-      {comentario.respuestas.map(respuesta=>(
-        <Respuesta respuesta={respuesta}/>
-      ))}
+        </TouchableOpacity>
+        
+      </View>
+      <View style={styles.respuestas}>
+          {comentario.respuestas.map(respuesta=>(
+            <Respuesta respuesta={respuesta}/>
+          ))}
+      </View>
     </View>
   );
 }
@@ -83,6 +88,9 @@ const styles = StyleSheet.create({
       alignSelf:'flex-end',
       color: colores.gris,
       fontSize:13
+    },
+    respuestas:{
+      marginLeft:30
     }
 });
 export default Comentario;

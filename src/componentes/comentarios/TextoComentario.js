@@ -7,10 +7,19 @@ import { Context as ComentariosContext } from '../../context/ComentariosContext'
 
 const TextoComentario = ({publicacionId}) => {
     const [texto, setTexto]= useState('');
-    const {state:{comentario_a_responder},crearComentario}= useContext(ComentariosContext);
+    const {state:{comentario_a_responder},crearComentario,responderComentario}= useContext(ComentariosContext);
 
     const agregarNuevoComentario = async ()=> {
-        await crearComentario({text:texto, publicacionId});
+        if (comentario_a_responder.id === -1){
+            await crearComentario({text:texto, publicacionId});
+        }else {
+            responderComentario(
+                {
+                    comentarioId:comentario_a_responder.id,
+                    publicacionId:publicacionId, 
+                    respuesta:texto
+                });
+        }
         setTexto("");
     }
 

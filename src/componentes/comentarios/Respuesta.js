@@ -24,7 +24,7 @@ const Respuesta = ({respuesta}) => {
           :null
         */}
       </View>
-      <Text style = {styles.fecha}>{comentario.fecha_creado}</Text>
+      <Text style = {styles.fecha}>{respuesta.fecha_creado}</Text>
     </View>
 
   </View>
