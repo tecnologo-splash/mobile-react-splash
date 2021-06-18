@@ -10,8 +10,8 @@ const BotonOrden = () => {
   const cambiarOrden = (ordenSeleccionada)=> {
       cambiarValor({variable: "orden", valor:ordenSeleccionada})
   }
-  return <Portal.Host> 
-      <Portal>
+  return (
+    <Portal style={styles.portal}>
           {orden == ordenPublicacion._asc?
             <FAB
             style={styles.fab}
@@ -28,13 +28,14 @@ const BotonOrden = () => {
           }
         
       </Portal>
-  </Portal.Host>;
+  );
 }
 
 const styles = StyleSheet.create({
     fab: {
       position: 'absolute',
       margin: 16,
+      marginBottom: 70,
       right: 0,
       bottom: 0,
       alignSelf:'flex-end',

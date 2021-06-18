@@ -11,6 +11,7 @@ const Comentarios = ({route}) => {
   const {actualizarComentariosPublicacion} = useContext(PublicacionContext);
 
   useEffect(()=>{
+    console.log("actualizar comentarios en Comentarios.js",comentarios.length);
     actualizarComentariosPublicacion({publicacionId, comentarios})
   },[comentarios])
 
@@ -18,7 +19,7 @@ const Comentarios = ({route}) => {
     <View>
       <ScrollView>
         {comentarios.map(comentario=>(
-          <Comentario comentario={comentario}/>
+          <Comentario comentario={comentario} publicacionId={publicacionId}/>
         ))}
       </ScrollView>
       <TextoComentario publicacionId={publicacionId}/>

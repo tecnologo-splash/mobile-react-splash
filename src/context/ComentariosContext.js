@@ -4,7 +4,9 @@ import settings from '../config/settings';
 const ComentariosReducer = (state,action) => {
     switch(action.type){
         case 'comentarios':
-            return {...state, comentarios: action.payload.comentarios}
+            return {...state, comentarios: action.payload.comentarios};
+        case 'deleteComment':
+            return {...state, comentarios: state.comentarios.filter(coment=>coment.id !=action.payload.comentarioId)};
         default:
             return state;
     }
@@ -25,6 +27,16 @@ const crearComentario = dispatch => async ({text,publicacionId})=> {
 
 }
 
+const eliminarComentario = dispatch => async ({comentarioId, publicacionId}) => {
+    try{
+        console.log(`/posts/${publicacionId}/comentarios/${comentarioId}`);
+        settings.delete(`/posts/${publicacionId}/comentarios/${comentarioId}`);
+        dispatch({type: 'deleteComment', payload:{comentarioId}});
+    }catch (e){
+        console.log(e);
+    }
+}
+
 const setComentarios = dispatch => (comentarios)=> {
     dispatch({type:"comentarios", payload:{comentarios}});
 
@@ -36,6 +48,6 @@ const initialState = {
 
 export const {Context, Provider} = crearContext(
     ComentariosReducer,
-    {crearComentario, setComentarios},
+    {crearComentario, setComentarios, eliminarComentario},
     initialState,
 );

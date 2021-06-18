@@ -9,39 +9,56 @@ const TextoComentario = ({publicacionId}) => {
     const [texto, setTexto]= useState('');
     const {crearComentario}= useContext(ComentariosContext);
 
-    const agregarNuevoComentario = ()=> {
-        crearComentario({text:texto, publicacionId});
+    const agregarNuevoComentario = async ()=> {
+        await crearComentario({text:texto, publicacionId});
+        setTexto("");
     }
 
   return (
           <Portal>
             <View style={styles.mainContainer}>
-            <Input
-            placeholder='Comentario'
-            value={texto}
-            onChangeText={(text)=>setTexto(text)}
-            />
-            <FAB
-            style={styles.fab}
-            small
-            icon="comment-plus"
-            onPress={() => agregarNuevoComentario()}
-            />
+                <View style={styles.form}>
+                    <Input
+                    style={styles.input}
+                    placeholder='Comentario'
+                    value={texto}
+                    onChangeText={(text)=>setTexto(text)}
+                    />
+                    <FAB
+                    style={styles.fab}
+                    small
+                    icon="comment-plus"
+                    onPress={() => agregarNuevoComentario()}
+                    />
+                </View>
             </View>
         </Portal>
   );
 }
 
 const styles = StyleSheet.create({
+    input:{
+        margin:5,
+        flex:2
+    },
     mainContainer: {
+        padding:15,
         flex:1,
         alignItems:'flex-end',
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
+    form: {
+        padding:15,
+        backgroundColor: colores.blanco,
+        borderRadius:20,
+        flex:1,
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
     fab: {
         backgroundColor: colores.appDefault,
-        margin:15
+        margin:20
     }
 })
 
