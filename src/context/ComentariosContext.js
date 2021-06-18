@@ -7,6 +7,8 @@ const ComentariosReducer = (state,action) => {
             return {...state, comentarios: action.payload.comentarios};
         case 'deleteComment':
             return {...state, comentarios: state.comentarios.filter(coment=>coment.id !=action.payload.comentarioId)};
+        case 'comentario_a_responder':
+            return {...state, comentario_a_responder: action.payload.comentarioId};
         default:
             return state;
     }
@@ -42,12 +44,17 @@ const setComentarios = dispatch => (comentarios)=> {
 
 }
 
+const setComentarioAResponder = dispatch => (comentarioId)=>{
+    dispatch({type:"comentario_a_responder", payload:{comentarioId}})
+}
+
 const initialState = {
-    comentarios: []
+    comentarios: [],
+    comentario_a_responder: {id:-1, usuario:""}
 }
 
 export const {Context, Provider} = crearContext(
     ComentariosReducer,
-    {crearComentario, setComentarios, eliminarComentario},
+    {crearComentario, setComentarios, eliminarComentario, setComentarioAResponder},
     initialState,
 );

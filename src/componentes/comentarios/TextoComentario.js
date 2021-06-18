@@ -7,7 +7,7 @@ import { Context as ComentariosContext } from '../../context/ComentariosContext'
 
 const TextoComentario = ({publicacionId}) => {
     const [texto, setTexto]= useState('');
-    const {crearComentario}= useContext(ComentariosContext);
+    const {state:{comentario_a_responder},crearComentario}= useContext(ComentariosContext);
 
     const agregarNuevoComentario = async ()=> {
         await crearComentario({text:texto, publicacionId});
@@ -20,7 +20,7 @@ const TextoComentario = ({publicacionId}) => {
                 <View style={styles.form}>
                     <Input
                     style={styles.input}
-                    placeholder='Comentario'
+                    placeholder={comentario_a_responder.id != -1?`Responder a ${comentario_a_responder.usuario}`:'Comentario'}
                     value={texto}
                     onChangeText={(text)=>setTexto(text)}
                     />
