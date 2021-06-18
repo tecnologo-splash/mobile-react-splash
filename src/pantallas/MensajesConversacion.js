@@ -25,8 +25,8 @@ const MensajesConversacion = ({route, navigation}) => {
     <View style={{ paddingBottom: 160}}>
       <Text>{nombre_chat}</Text>
       <Text>Chat: {chat_id}</Text>
-      <NuevoMensaje chat_id={chat_id}/>
       <ListadoMensajesConversacion mensajes={mensajesConversacion} onEnd={()=>listarMensajes(page)} onStart={()=>listarMensajes(0)}/>
+      <NuevoMensaje chat_id={chat_id}/>
     </View>
   );
 }
