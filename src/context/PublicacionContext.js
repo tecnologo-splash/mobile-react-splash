@@ -239,6 +239,7 @@ const listarPublicacionesMuro = dispatch => async ({page, orden, tipoOrden}) =>{
 
 const listarPublicacionesUsuario = dispatch => async ({userId}) =>{
     try{
+        console.log(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
         var response = await settings.get(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
         dispatch({type: 'listarPublicacionesUsuario', payload: {publicacionesUsuario: response.data.content}})
     }catch(e){

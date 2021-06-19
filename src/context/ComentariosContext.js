@@ -9,6 +9,8 @@ const ComentariosReducer = (state,action) => {
             return {...state, comentarios: state.comentarios.filter(coment=>coment.id !=action.payload.comentarioId)};
         case 'comentario_a_responder':
             return {...state, comentario_a_responder: action.payload.comentarioId};
+        case 'respuesta':
+            /*agregar respuesta en los comentarios*/ 
         default:
             return state;
     }
@@ -57,6 +59,8 @@ const responderComentario = dispatch =>async ({respuesta, comentarioId, publicac
     try{
         console.log(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas`);
         const response = await settings.post(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas`, JSON.stringify({texto: respuesta}), {headers: {'Content-Type':'application/json'}});
+        console.log("response",response.data);
+        dispatch({type:"respuesta", payload: {respuestas: response.data}})
         
         console.log(`respuestas en comentario ${comentarioId}`, response.data.comentarios.filter(com=>com.id === comentarioId)[0].respuestas.length);
     }catch(e){
@@ -67,7 +71,7 @@ const responderComentario = dispatch =>async ({respuesta, comentarioId, publicac
 const eliminarRespuesta = dispatch => async ({publicacionId,comentarioId,respuestaId})=>{
     try{
         console.log(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas/${respuestaId}`);
-        const response = await settings.delete(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas/${respuestaId}`);
+        await settings.delete(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas/${respuestaId}`);
     } catch(e) {
         console.log(e);
     }
