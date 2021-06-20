@@ -15,7 +15,7 @@ const ListadoSugeridos = ({sugeridos, onEnd}) => {
         keyExtractor={item => item.usuario}
         onEndReached={()=>onEnd()}
         renderItem={({item})=>(
-          <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario: item})} style={{margin: 5}}>
+          <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuarioId: item.usuario_id, lo_sigo: false})} style={{margin: 5}}>
             <ListItem>
               
               <ListItem.Content style={{borderRadius: 20}}>

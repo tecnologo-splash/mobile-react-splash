@@ -22,7 +22,7 @@ const ListadoUsuarios = ({usuarios, onEnd}) => {
         onEndReached={()=>onEnd()}
         onEndReachedThreshold={2}
         renderItem={({item})=>(
-          <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario: item})}>
+          <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuarioId: item.id, lo_sigo:item.lo_sigo})}>
             <ListItem>
               <Avatar 
                 rounded 

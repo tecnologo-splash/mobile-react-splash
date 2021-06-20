@@ -11,7 +11,7 @@ import { baseUriMultimedia } from '../../config/configs';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import BotonOrden from '../muro/BotonOrden';
 
-const PerfilBody = ({usuario:{id,url_perfil,nombre,apellido,usuario,correo,fecha_nacimiento,biografia,genero},cantSeguidores, cantSeguidos}) => {
+const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantidad_usuarios_siguiendo,nombre,apellido,usuario,correo,fecha_nacimiento,biografia,genero}}) => {
 
   const url = url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}` } : require('../../../assets/perfilDefault.jpg');
   const navigation = useNavigation();
@@ -42,20 +42,20 @@ const PerfilBody = ({usuario:{id,url_perfil,nombre,apellido,usuario,correo,fecha
             rounded 
             source={url}
             size="large"
-            onPress={editarFotoPerfil} 
+            onPress={()=>editarFotoPerfil()} 
           >  
           <Avatar.Accessory
               name='pencil'  
               type='font-awesome' 
               size={24}
-              onPress={editarFotoPerfil}
+              onPress={()=>editarFotoPerfil()}
           />
           </Avatar>
           <InfoBasica nombre={nombre} usuario={usuario} apellido={apellido} correo={correo} />
         </ListItem>
         <Divider style={{ backgroundColor: '#6F32C1' }} />
         <View>
-          <InfoSeguidores cantSeguidores= {cantSeguidores} cantSeguidos={cantSeguidos} />
+          <InfoSeguidores cantSeguidores= {cantidad_usuarios_seguidores} cantSeguidos={cantidad_usuarios_siguiendo} />
           <MoreInfo 
             genero={genero} 
             fecha_nacimiento={fecha_nacimiento} 

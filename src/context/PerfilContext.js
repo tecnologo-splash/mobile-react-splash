@@ -16,6 +16,8 @@ const PerfilReducer = (state,action) => {
             return {...state, seguidos: [...state.seguidos, ...action.payload.seguidos], cargando: false};
         case 'getInfo':
             return {...state, currentUser: action.payload.userInfo, biografia: action.payload.userInfo ? action.payload.userInfo.biografia : ""};
+        case 'getInfoExterno':
+            return {...state, user: action.payload.userInfo, biografia: action.payload.userInfo ? action.payload.userInfo.biografia : ""};
         case 'cambiarFecha':
             return {...state, fechaNac: action.payload.date};
         case 'onError':
@@ -24,8 +26,8 @@ const PerfilReducer = (state,action) => {
             return {...state, error:{titulo:null, cuerpo:null, anterior:null, styleError:null}};
         case 'getConfigNotif':
             return {...state, configNotif: action.payload.configNotif};
-        case 'amigos':
-            return {...state, amigos: action.payload.amigos};
+        case 'cambiar_lo_sigo':
+            return {...state, user:{...state.user, lo_sigo: action.payload.lo_sigo}};
         default:
             return state;
     }
@@ -41,6 +43,22 @@ const getInfo = (dispatch) => async () =>{
         console.log('/users/info');
         const response = await settings.get('/users/info' );
         dispatch({type: 'getInfo', payload: {userInfo:response.data}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
+
+    } catch (e) {
+        console.log("error en getInfo",e);
+        dispatch({type: 'onError', payload: {error: e}});
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
+    }
+}
+
+const getInfoExterno = (dispatch) => async ({userId}) =>{
+    
+    try {
+        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
+        console.log(`/users/info/${userId}`);
+        const response = await settings.get(`/users/info/${userId}`);
+        dispatch({type: 'getInfoExterno', payload: {userInfo:response.data}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
 
     } catch (e) {
@@ -89,17 +107,6 @@ const getSeguidos = (dispatch) => async ({filtro,valor, page}) =>{
     }
 }
 
-const getCantAmigos = dispatch => async ({usuarioId}) =>{
-    try{
-        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        console.log(`/users/cantidad-amigos/${usuarioId}`);
-        const response= await settings.get(`/users/cantidad-amigos/${usuarioId}`);
-        dispatch({type:"amigos", payload:{amigos: response.data}})
-    }catch(e){
-        console.log("error en cant amigos",e);
-    }
-}
-
 const editarPerfil = (dispatch) => async (userId, newPerfil)=> {
     try{
         await settings.put(`users/${userId}`, newPerfil);
@@ -126,8 +133,12 @@ const getConfigNotif = (dispatch) => async () =>{
     }
 }
 
+const cambiar_lo_sigo = dispatch => ({lo_sigo}) => {
+    dispatch({type: 'cambiar_lo_sigo', payload: {lo_sigo}});
+}
 const initialState = {
     currentUser: {},
+    user:{},
     nombre: "",
     apellido: "",
     fechaNac: new Date(),
@@ -139,12 +150,11 @@ const initialState = {
     error: {},
     configNotif: {},
     cargando: false,
-    amigos: {}
 }
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil, getConfigNotif, getCantAmigos },
+    {getInfo, getInfoExterno, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil, getConfigNotif , cambiar_lo_sigo},
     initialState,
 );
 

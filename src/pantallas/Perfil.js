@@ -9,21 +9,18 @@ import {Context as PerfilContext} from '../context/PerfilContext';
 
 const Perfil = () => {
 
-  const {state:{currentUser, cargando, amigos}, getInfo, getSeguidores, getSeguidos, getCantAmigos} = useContext(PerfilContext);
+  const {state:{currentUser, cargando}, getInfo, getSeguidores, getSeguidos} = useContext(PerfilContext);
 
   useEffect(()=>{
     getInfo();
     getSeguidores({filtro: filtroSeguidos._usuario,valor:'',page:0});
     getSeguidos({filtro: filtroSeguidos._usuario,valor:'',page:0});
-    getCantAmigos({usuarioId: currentUser.id});
   },[]);
   
   return (
     <View style={{flex: 1}}>
       <PerfilBody 
         usuario={currentUser} 
-        cantSeguidores={amigos.usuarios_que_me_siguen} 
-        cantSeguidos={amigos.usuarios_que_yo_sigo}
       />
       <Cargando estaCargando={cargando} color= {colores.appDefault} />
     </View>
