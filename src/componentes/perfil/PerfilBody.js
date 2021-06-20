@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import { ScrollView, View, StyleSheet, Text } from 'react-native';
 import {Avatar, ListItem, Divider} from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
@@ -15,15 +15,19 @@ const PerfilBody = ({usuario:{id,url_perfil,nombre,apellido,usuario,correo,fecha
 
   const url = url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}` } : require('../../../assets/perfilDefault.jpg');
   const navigation = useNavigation();
-  const {state:{publicacionesUsuario}, listarPublicacionesUsuario} = useContext(PublicacionContext);
+  const [page,setPage] = useState(0);
+  const {state:{publicacionesUsuario, orden, tipoOrden}, listarPublicacionesUsuario} = useContext(PublicacionContext);
   useEffect(()=>{
     if(usuario){
       navigation.setOptions({ title: `${nombre} ${apellido}`});
-      listarPublicacionesUsuario({userId: id});
+      publicacionesUsuarioLista(0);
     }
-  },[usuario]);
+  },[usuario, orden, tipoOrden]);
 
-
+  const publicacionesUsuarioLista = (pagina)=>{
+    listarPublicacionesUsuario({userId: id,page: pagina,tipoOrden,orden});
+    setPage(pagina+1);
+}
   
   const editarFotoPerfil = () => {
     navigation.navigate("EditFotoPerfil")
@@ -32,7 +36,7 @@ const PerfilBody = ({usuario:{id,url_perfil,nombre,apellido,usuario,correo,fecha
   return (
     <View style={styles.scroll}>
       
-      <ScrollView>
+      <ScrollView onScrollEndDrag={()=>publicacionesUsuarioLista(page)}>
       <ListItem>
           <Avatar 
             rounded 

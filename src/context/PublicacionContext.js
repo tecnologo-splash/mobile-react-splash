@@ -67,6 +67,8 @@ const PublicacionReducer = (state,action) => {
             return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", multimedias: multimediasCurrentPublicacion, videos: videosCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
         case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
+        case 'appendPublicacionesUsuario':
+            return {...state, publicacionesUsuario: [...state.publicacionesUsuario, ...action.payload.publicacionesUsuario]}
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones};
         case 'appendPublicacionesMuro':
@@ -237,11 +239,15 @@ const listarPublicacionesMuro = dispatch => async ({page, orden, tipoOrden}) =>{
     }
 }
 
-const listarPublicacionesUsuario = dispatch => async ({userId}) =>{
+const listarPublicacionesUsuario = dispatch => async ({userId, page, tipoOrden,orden}) =>{
     try{
-        console.log(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
-        var response = await settings.get(`/posts/users/${userId}?page=0&size=5&orders=fechaCreado:desc`);
-        dispatch({type: 'listarPublicacionesUsuario', payload: {publicacionesUsuario: response.data.content}})
+        console.log(`/posts/users/${userId}?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
+        var response = await settings.get(`/posts/users/${userId}?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
+        if(page == 0){
+            dispatch({type: 'listarPublicacionesUsuario', payload: {publicacionesUsuario: response.data.content}})
+        }else{
+            dispatch({type: 'appendPublicacionesUsuario', payload: {publicacionesUsuario: response.data.content}})
+        }
     }catch(e){
         console.log(e);
     }

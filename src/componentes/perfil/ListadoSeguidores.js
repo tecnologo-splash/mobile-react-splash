@@ -4,6 +4,7 @@ import { FlatList} from 'react-native-bidirectional-infinite-scroll';
 import {Avatar, ListItem} from 'react-native-elements';
 import {Context as PerfilContext} from '../../context/PerfilContext';
 import {useNavigation} from '@react-navigation/native';
+import { baseUriMultimedia } from '../../config/configs';
 
 const ListadoSeguidores = ({usuarios,onEnd}) => {
   const navigation = useNavigation();
@@ -17,7 +18,7 @@ const ListadoSeguidores = ({usuarios,onEnd}) => {
         <ListItem>
           <Avatar 
             rounded 
-            source={item.url_perfil ? { uri: item.url_perfil } : require('../../../assets/perfilDefault.jpg')}
+            source={item.url_perfil ? { uri: `${baseUriMultimedia}${item.url_perfil}` } : require('../../../assets/perfilDefault.jpg')}
             size="medium"
           >
           </Avatar>

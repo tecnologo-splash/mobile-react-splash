@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import InfoBasica from '../InfoBasica';
 import { useNavigation } from '@react-navigation/native';
 import {Avatar, ListItem, Divider} from 'react-native-elements';
@@ -10,20 +10,26 @@ import { baseUriMultimedia } from '../../../config/configs';
 import {Context as PublicacionContext} from '../../../context/PublicacionContext';
 
 const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_perfil, genero, fecha_nacimiento, biografia, lo_sigo}}) => {
-    const {state:{publicacionesUsuario},listarPublicacionesUsuario} = useContext(PublicacionContext);
+    const {state:{publicacionesUsuario, orden, tipoOrden},listarPublicacionesUsuario} = useContext(PublicacionContext);
+    const [page,setPage] = useState(0);
     const url = url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}`} : require('../../../../assets/perfilDefault.jpg');
     const navigation = useNavigation();
 
     useEffect(()=>{
         if(usuario){
           navigation.setOptions({ title: `${nombre} ${apellido}`});
-          listarPublicacionesUsuario({userId: id});
+          publicacionesUsuarioLista(0);
         }
-      },[usuario]);
+      },[usuario, orden, tipoOrden]);
+
+    const publicacionesUsuarioLista = (pagina)=>{
+        listarPublicacionesUsuario({userId: id,page: pagina,tipoOrden,orden});
+        setPage(pagina+1);
+    }
 
   return (
     <View style={styles.scroll}>
-        <ScrollView>
+        <ScrollView onScrollEndDrag={()=>publicacionesUsuarioLista(page)}>
             <ListItem>
                 <Avatar 
                     rounded 
