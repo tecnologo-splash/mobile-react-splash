@@ -80,11 +80,6 @@ const PublicacionReducer = (state,action) => {
                     state.publicaciones[i] = {...state.publicaciones[i], resumen_reaccion:{...state.publicaciones[i].resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}};
                 }  
             }
-            //var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
-            /*var kk = {...state, publicaciones: [...publicacionesMenosReaccionada, 
-                {...publicacionReaccionada, 
-                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}}]};*/
-
             return state;
         case 'eliminarReaccion':
             var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
@@ -104,6 +99,34 @@ const PublicacionReducer = (state,action) => {
                 }
             }
             return state;
+        case 'currentPublicacion':
+            var multimediasCurrentPublicacion = []
+            if (action.payload.currentPublicacion.multimedia.length > 0)
+            {
+                action.payload.currentPublicacion.multimedia.map((data)=>multimediasCurrentPublicacion.push({id: data.id, tipo: data.tipo==="FOTO"?"Images":"Videos" , uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+            }
+            var imagenesCurrentPublicacion = []
+            if (action.payload.currentPublicacion.multimedia.length > 0)
+            {
+                action.payload.currentPublicacion.multimedia.filter(item => item.tipo === "FOTO").map((data)=>imagenesCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+            }
+            var videosCurrentPublicacion = []
+            if (action.payload.currentPublicacion.multimedia.length > 0)
+            {
+                action.payload.currentPublicacion.multimedia.filter(item => item.tipo === "VIDEO").map((data)=>videosCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+            }
+            var opcionesCurrentPublicacion = []
+            if(action.payload.currentPublicacion.encuesta != null)
+            {
+                action.payload.currentPublicacion.encuesta.opciones.map((data)=>opcionesCurrentPublicacion.push({texto: data.texto}))
+            }
+            var enlacesCurrentPublicacion = []
+            console.log(action.payload.currentPublicacion)
+            if(action.payload.currentPublicacion.enlace_externo != null)
+            {
+                action.payload.currentPublicacion.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
+            }
+            return {...state, currentPublicacion:action.payload.currentPublicacion, texto : action.payload.currentPublicacion.texto, duracion: 0, unidad: "HOURS", multimedias: multimediasCurrentPublicacion, videos: videosCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
         default:
             return state;
     }
@@ -284,6 +307,9 @@ const actualizarComentariosPublicacion = dispatch => ({publicacionId, comentario
     dispatch({type:"actualizarComentarios", payload:{publicacionId, comentarios}})
 }
 
+const setCurrentPublicacion = dispatch => ({currentPublicacion}) => {
+    dispatch({type:"currentPublicacion", payload:{currentPublicacion}});
+}
 const initialState = {
     currentPublicacion: {},
     multimedias: [],
@@ -326,7 +352,8 @@ export const {Context, Provider} = crearContext(
      eliminarReaccion,
      listarPublicacionesUsuario,
      votar,
-     actualizarComentariosPublicacion
+     actualizarComentariosPublicacion,
+     setCurrentPublicacion
     },
     initialState,
 );
