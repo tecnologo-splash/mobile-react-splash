@@ -15,11 +15,11 @@ const MoreInfo = ({genero,biografia,fecha_nacimiento, publicaciones}) => {
                 <Text style={styles.genero}>Genero: </Text>
                 {getGenero(genero)}
             </View>
-        <List.Accordion title="Biografia">
+        <List.Accordion title="Biografia:">
             <Text multiline style={styles.biografia}>{`${biografia ? biografia : '-'}`}</Text>
         </List.Accordion>
         </List.Accordion>
-        <List.Accordion title="Publicaciones">
+        <List.Accordion title="Publicaciones:">
           <ListadoPublicaciones publicaciones = {publicaciones} />
         </List.Accordion>
   </List.Section>
