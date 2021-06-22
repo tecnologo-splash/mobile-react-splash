@@ -12,7 +12,7 @@ const AddEncuesta = () => {
     return (
         <View style={styles.main}>
             <View style={styles.main2}>
-                {currentPublicacion.id ?
+                {currentPublicacion.encuesta ?
                     <Text>Finaliza el: {currentPublicacion.encuesta.fecha_cierre}</Text>
                     :
                     <View>

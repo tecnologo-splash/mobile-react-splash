@@ -16,7 +16,8 @@ const ConversacionReducer = (state,action) => {
         case 'appendConversacionesUsuario':
             return {...state, conversacionesUsuario: [...state.conversacionesUsuario, ...action.payload.conversacionesUsuario]};
         case 'editarMensaje':
-            return {...state, mensaje : "", tipoMensajeEnum: "TEXTO"};
+            var currentMensajes = {fecha_envio: "16/06/2021 20:41", from_usuario_nombre_apellido: null, from_usuario_id: action.payload.userId, mensaje: action.payload.mensaje.mensaje, tipo_mensaje: "TEXTO"}
+            return {...state, mensaje : "", tipoMensajeEnum: "TEXTO", mensajesConversacion: [currentMensajes, ...state.mensajesConversacion]};
         case 'listarUsuariosParaConversar':
             return {...state, usuariosParaConversar: action.payload.usuariosParaConversar}
         case 'listarMensajesConversacion':
@@ -58,12 +59,11 @@ const listarConversacionesUsuario = dispatch => async ({page}) =>{
     }
 }
 
-const crearMensaje = (dispatch) => async (mensaje)=> {
+const crearMensaje = (dispatch) => async (mensaje, userId)=> {
     console.log('entró')
     try{
         const response = await settings.post(`/chat/individual/enviar-mensaje`, JSON.stringify(mensaje), {headers: {"Content-Type":"application/json"}});      
-        console.log(response)
-        dispatch({type:'editarMensaje'});
+        dispatch({type:'editarMensaje', payload:{userId: userId, mensaje:mensaje}});
     }catch(e){
         console.log(e)
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
@@ -79,6 +79,7 @@ const listarMensajesConversacion = dispatch => async (chat_id, {page}) =>{
         if(page === 0){
             dispatch({type: 'listarMensajesConversacion', payload: {mensajesConversacion: response.data}})
         }else{
+            console.log('formato', response.data)
             dispatch({type: 'appendMensajesConversacion', payload: {mensajesConversacion: response.data}})
         }
     }catch(e){

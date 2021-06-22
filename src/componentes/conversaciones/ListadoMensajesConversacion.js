@@ -16,6 +16,11 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
     <FlatList
       data={mensajes}
       keyExtractor={(item, index) => index.toString()}
+      refreshing={false}
+      onRefresh={() => onStart()}
+      onEndReachedThreshold={0.5}
+      onEndReached = {()=>{if(mensajes.length % requestSizeListarMensajes === 0){onEnd()}}}
+      inverted
       renderItem={({item})=>(
         <ListItem>
           <ListItem.Content style={{borderRadius: 20}}>
@@ -53,17 +58,7 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
             }
           </ListItem.Content>
         </ListItem>
-      
       )}
-      refreshing={false}
-      onRefresh={() => onStart()}
-      onEndReachedThreshold={0.5}
-      onEndReached = {()=>{
-        if(mensajes.length % requestSizeListarMensajes === 0){
-          onEnd();
-        }
-      }}
-      inverted
     />
   );
 }

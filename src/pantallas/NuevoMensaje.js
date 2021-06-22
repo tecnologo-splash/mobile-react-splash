@@ -2,15 +2,19 @@ import React, {useContext} from 'react';
 import {StyleSheet, View, Text } from 'react-native';
 import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
 import {Context as ConversacionContext} from '../context/ConversacionContext';
+import {Context as PerfilContext} from '../context/PerfilContext';
 
 const NuevoMensaje = ({chat_id}) => {
 
-    const {state:{ mensaje }, cambiarValor , crearMensaje, listarMensajesConversacion} = useContext(ConversacionContext);
+    const {state:{ mensaje }, cambiarValor , crearMensaje } = useContext(ConversacionContext);
+    
+    //Esto es solo para saber mi id
+    const {state:{currentUser}} = useContext(PerfilContext);
+    //fin de esto es solo para saber mi id
     
     const enviar = () => {
         var formData = { chat_id, mensaje, tipo_mensaje: "TEXTO" }
-        crearMensaje(formData);
-        listarMensajesConversacion(chat_id);
+        crearMensaje(formData, currentUser.id);
     }
 
     return (

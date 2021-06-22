@@ -36,35 +36,9 @@ const PublicacionReducer = (state,action) => {
         case 'onError':
             return {...state,  error: action.payload.error};
         case 'crearPublicacion':
-            return {...state, currentPublicacion: {}, texto : null, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
+            return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'editarPublicacion':
-            var multimediasCurrentPublicacion = []
-            if (action.payload.publicacionInfo.multimedia.length > 0)
-            {
-                action.payload.publicacionInfo.multimedia.map((data)=>multimediasCurrentPublicacion.push({id: data.id, tipo: data.tipo==="FOTO"?"Images":"Videos" , uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
-            }
-            var imagenesCurrentPublicacion = []
-            if (action.payload.publicacionInfo.multimedia.length > 0)
-            {
-                action.payload.publicacionInfo.multimedia.filter(item => item.tipo === "FOTO").map((data)=>imagenesCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
-            }
-            var videosCurrentPublicacion = []
-            if (action.payload.publicacionInfo.multimedia.length > 0)
-            {
-                action.payload.publicacionInfo.multimedia.filter(item => item.tipo === "VIDEO").map((data)=>videosCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
-            }
-            var opcionesCurrentPublicacion = []
-            if(action.payload.publicacionInfo.encuesta != null)
-            {
-                action.payload.publicacionInfo.encuesta.opciones.map((data)=>opcionesCurrentPublicacion.push({texto: data.texto}))
-            }
-            var enlacesCurrentPublicacion = []
-            console.log(action.payload.publicacionInfo)
-            if(action.payload.publicacionInfo.enlace_externo != null)
-            {
-                action.payload.publicacionInfo.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
-            }
-            return {...state, currentPublicacion: action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", multimedias: multimediasCurrentPublicacion, videos: videosCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+            return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
         case 'appendPublicacionesUsuario':
@@ -100,33 +74,27 @@ const PublicacionReducer = (state,action) => {
             }
             return state;
         case 'currentPublicacion':
+            var currentTipoPub = 0
             var multimediasCurrentPublicacion = []
             if (action.payload.currentPublicacion.multimedia.length > 0)
             {
                 action.payload.currentPublicacion.multimedia.map((data)=>multimediasCurrentPublicacion.push({id: data.id, tipo: data.tipo==="FOTO"?"Images":"Videos" , uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+                currentTipoPub = 1
             }
-            var imagenesCurrentPublicacion = []
-            if (action.payload.currentPublicacion.multimedia.length > 0)
+            var enlacesCurrentPublicacion = []
+            console.log(action.payload.currentPublicacion)
+            if(action.payload.currentPublicacion.enlace_externo.length > 0)
             {
-                action.payload.currentPublicacion.multimedia.filter(item => item.tipo === "FOTO").map((data)=>imagenesCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
-            }
-            var videosCurrentPublicacion = []
-            if (action.payload.currentPublicacion.multimedia.length > 0)
-            {
-                action.payload.currentPublicacion.multimedia.filter(item => item.tipo === "VIDEO").map((data)=>videosCurrentPublicacion.push({id: data.id, uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+                action.payload.currentPublicacion.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
+                currentTipoPub = 3
             }
             var opcionesCurrentPublicacion = []
             if(action.payload.currentPublicacion.encuesta != null)
             {
                 action.payload.currentPublicacion.encuesta.opciones.map((data)=>opcionesCurrentPublicacion.push({texto: data.texto}))
+                currentTipoPub = 4
             }
-            var enlacesCurrentPublicacion = []
-            console.log(action.payload.currentPublicacion)
-            if(action.payload.currentPublicacion.enlace_externo != null)
-            {
-                action.payload.currentPublicacion.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
-            }
-            return {...state, currentPublicacion:action.payload.currentPublicacion, texto : action.payload.currentPublicacion.texto, duracion: 0, unidad: "HOURS", multimedias: multimediasCurrentPublicacion, videos: videosCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+            return {...state, currentPublicacion:action.payload.currentPublicacion, tipoPub: currentTipoPub, texto : action.payload.currentPublicacion.texto, duracion: 0, unidad: "HOURS", multimedias: multimediasCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
         default:
             return state;
     }
@@ -312,6 +280,7 @@ const setCurrentPublicacion = dispatch => ({currentPublicacion}) => {
 }
 const initialState = {
     currentPublicacion: {},
+    tipoPub : 0,
     multimedias: [],
     imagenes: [],
     videos: [],

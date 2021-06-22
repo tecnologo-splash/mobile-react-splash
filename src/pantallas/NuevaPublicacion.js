@@ -1,4 +1,4 @@
-    import React, {useContext, useState} from 'react';
+    import React, {useContext, useState, useEffect} from 'react';
     import NavBar from '../componentes/muro/NavBar';
     import { Alert, View, Text, StyleSheet } from 'react-native';
     import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
@@ -11,8 +11,23 @@
 
     const NuevaPublicacion = () => {
 
-      const {state:{currentPublicacion, texto, duracion, unidad, multimedias, videos , enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
+      const {state:{currentPublicacion, tipoPub, texto, duracion, unidad, multimedias, enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
       const [tipo, setTipo] = useState(0);
+
+      // useEffect (()=>{
+      //   console.log("UseEffect1", tipo)
+      //   setTipo(0)
+      //   if (opciones.length > 0){
+      //     setTipo(4);
+      //   } else if (enlaces.length > 0){
+      //     setTipo(3);
+      //   } else if (multimedias.length > 0){
+      //       setTipo(1)
+      //   }else{
+      //     setTipo(0)
+      //   }
+      //   console.log("UseEffect", tipo)
+      // },[currentPublicacion])
 
       const crear = () => {
         if ( texto === null || texto === ''){
@@ -20,8 +35,8 @@
         } 
         else
         {
-          console.log(tipo)
-          switch (tipo) {
+          console.log('crea publicacion',tipoPub)
+          switch (tipoPub) {
             case 1:
               var formData = { texto }
               crearPublicacion(formData, multimedias);
@@ -88,6 +103,20 @@
       const showDialog = () => setVisible(true);
       const hideDialog = () => setVisible(false);
 
+      const definoTipo = () =>{
+        console.log("defino tipo ", tipoPub)
+        switch (tipoPub) {
+          case 1:
+            return <AddMultimedia />;
+          case 3:
+            return <AddEnlace />;
+          case 4:
+            return <AddEncuesta />;
+          default:
+            return null
+        }
+      }
+
       return (
       <View style={styles.body}>
           <ScrollView style={styles.container}>
@@ -97,52 +126,35 @@
               onChangeText={text => cambiarValor({variable: 'texto', valor: text})}
             />
             <View style = { styles.horizontalView }>
-            <Button 
-              mode={tipo===1? "contained":"outlined"} 
-              onPress={()=>setTipo(1)}
-              style={styles.button}
-              >
-                  Imagen/Video
-              </Button>
-              {/* <Button 
-              mode={tipo===1? "contained":"outlined"} 
-              onPress={()=>setTipo(1)}
-              style={styles.button}
-              >
-                  Imagen
-              </Button>
-              <Button 
-              mode={tipo===2? "contained":"outlined"} 
-              onPress={()=>setTipo(2)}
-              style={styles.button}
-              >
-                  Video
-              </Button> */}
-              <Button 
-              mode={tipo===3? "contained":"outlined"} 
-              onPress={()=>setTipo(3)}
-              style={styles.button}
-              >
-                  Enlace
-              </Button>
-              <Button 
-              mode={tipo===4? "contained":"outlined"} 
-              onPress={()=>setTipo(4)}
-              style={styles.button}
-              >
-                  Encuesta
-              </Button>
+            {/* {currentPublicacion.id ?
+              null
+            : */}
+              <>
+                <Button 
+                mode={tipoPub===1? "contained":"outlined"} 
+                onPress={()=>cambiarValor({variable: 'tipoPub', valor: 1})}
+                style={styles.button}
+                >
+                    Imagen/Video
+                </Button>
+                <Button 
+                mode={tipoPub===3? "contained":"outlined"} 
+                onPress={()=>cambiarValor({variable: 'tipoPub', valor: 3})}
+                style={styles.button}
+                >
+                    Enlace
+                </Button>
+                <Button 
+                mode={tipoPub===4? "contained":"outlined"} 
+                onPress={()=>cambiarValor({variable: 'tipoPub', valor: 4})}
+                style={styles.button}
+                >
+                    Encuesta
+                </Button>
+              </>
+            {/* } */}
             </View>
-            { tipo===1 ?
-              <AddMultimedia />
-              : tipo===2 ?
-                <AddVideo />
-                : tipo===3 ?
-                  <AddEnlace />
-                  : tipo===4 ?
-                    <AddEncuesta />
-                    : null
-            }
+            { definoTipo()}
           </ScrollView>
           {currentPublicacion.id ?
             <Button
