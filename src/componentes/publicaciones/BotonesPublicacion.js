@@ -23,7 +23,7 @@ const BotonesPublicacion = ({publicacion}) => {
 
     const irAComentarios = ()=> {
         setComentarios(publicacion.comentarios);
-        navigation.navigate("Comentarios",{publicacionId: publicacion.id});
+        navigation.navigate("Comentarios",{publicacion: publicacion});
     }
 
   return (

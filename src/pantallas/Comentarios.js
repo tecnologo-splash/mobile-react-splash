@@ -6,23 +6,24 @@ import Comentario from '../componentes/comentarios/Comentario';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
 
 const Comentarios = ({route}) => {
-  const {publicacionId} = route.params;
+  const {publicacion} = route.params;
   const {state:{comentarios}} = useContext(ComentariosContext);
   const {actualizarComentariosPublicacion} = useContext(PublicacionContext);
 
   useEffect(()=>{
     console.log("actualizar comentarios en Comentarios.js",comentarios.length);
-    actualizarComentariosPublicacion({publicacionId, comentarios})
+    actualizarComentariosPublicacion({publicacionId: publicacion.id, comentarios, usuarioCreadorId: publicacion.usuario_comun.id})
   },[comentarios])
+  console.log("usuariocreadorid en comentarios",publicacion.usuario_comun.id);
 
   return (
     <View>
       <ScrollView>
         {comentarios.map(comentario=>(
-          <Comentario comentario={comentario} publicacionId={publicacionId}/>
+          <Comentario comentario={comentario} publicacionId={publicacion.id} usuarioCreadorId={publicacion.usuario_comun.id}/>
         ))}
       </ScrollView>
-      <TextoComentario publicacionId={publicacionId}/>
+      <TextoComentario publicacionId={publicacion.id}/>
     </View>
   );
 }

@@ -7,11 +7,12 @@ import { Context as ComentariosContext} from '../../context/ComentariosContext';
 import {Context as PerfilContext} from '../../context/PerfilContext';
 import Respuesta from './Respuesta';
 
-const Comentario = ({comentario, publicacionId}) => {
+const Comentario = ({comentario, publicacionId, usuarioCreadorId}) => {
     const {state:{comentario_a_responder},eliminarComentario, setComentarioAResponder} = useContext(ComentariosContext);
     const {state:{currentUser}} = useContext(PerfilContext);
     const usuario = comentario.usuario_comun;
     console.log("comentario_a_responder", comentario_a_responder);
+    console.log("usuariocreadorid",usuarioCreadorId);
     const aResponder = () => {
       if (comentario_a_responder.id!= comentario.id){
         setComentarioAResponder({id:comentario.id, usuario:usuario.usuario});
@@ -36,7 +37,7 @@ const Comentario = ({comentario, publicacionId}) => {
                   <Text style={{fontWeight:'bold'}}>{usuario.usuario}</Text>
                   <Text numberOfLines={15}>{comentario.texto}</Text>
               </View>
-              {comentario.usuario_comun.id === currentUser.id ?
+              {comentario.usuario_comun.id === currentUser.id || usuarioCreadorId === currentUser.id?
               <FontAwesome name="trash" size={24} color="black" onPress={() =>eliminarComentario({publicacionId, comentarioId:comentario.id})}/>
                 :null
               }
