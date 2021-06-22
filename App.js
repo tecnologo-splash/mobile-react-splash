@@ -20,6 +20,7 @@ import {InicioSesion, Muro, Perfil, Registro, Conversaciones, PerfilExterno, Nue
 import { FontAwesome } from '@expo/vector-icons'; 
 import { colores } from './src/config/colores';
 
+
 const theme = {
   ...DefaultTheme,
   roundness:2,
@@ -80,6 +81,7 @@ const BottomNavigator = ()=> (
 );
 export default function App() {
   const stackOptions={headerShown: true, headerStyle: {backgroundColor:'#6d31bf'}, headerTitleStyle:{color:'#ffffff'}, headerTintColor: '#fff'}
+
   return (
     
     <InicioSesionProvider>
@@ -101,7 +103,7 @@ export default function App() {
                           <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
                           <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
                           <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
-                          <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions}/>
+                          <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions} />
                           <Stack.Screen name="Comentarios" component={Comentarios} options={stackOptions}/>
                           <Stack.Screen name="EditFotoPerfil" component={EditFotoPerfil} options={stackOptions}/>
                           <Stack.Screen name="NuevaConversacion" component={NuevaConversacion} options={stackOptions}/>

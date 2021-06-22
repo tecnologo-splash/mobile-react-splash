@@ -12,6 +12,7 @@ import { colores } from '../config/colores';
 import { List } from 'react-native-paper';
 import BotonOrden from '../componentes/muro/BotonOrden';
 import {Context as PerfilContext} from '../context/PerfilContext';
+import {Context as ComentariosContext} from '../context/ComentariosContext';
 
 const Muro = () => {
 
@@ -20,13 +21,14 @@ const Muro = () => {
   const[pagePublicaciones, setPagePublicaciones] = useState(0);
   const {state:{filtro,buscar,usuarios, cargando, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
   const {state:{publicaciones, orden, tipoOrden}, listarPublicacionesMuro} = useContext(PublicacionContext);
+  const {state:{comentarios}} = useContext(ComentariosContext);
   const {state:{currentUser}}= useContext(PerfilContext);
 
   useEffect(()=>{
     listarUsuarios(0);
     listarSugeridos(0);
     listarPublicaciones(0);
-  },[buscar, filtro, orden, tipoOrden, currentUser]);
+  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios]);
 
   const listarUsuarios = async (pagina)=>{
     await listarUsuariosParaSeguir({filtro, valor:buscar, page: pagina, currentUserId: currentUser.id});
@@ -50,7 +52,7 @@ const Muro = () => {
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
         :
         <View>
-          <ScrollView  onScrollEndDrag={()=>listarPublicaciones(pagePublicaciones)}>
+          <ScrollView  onMomentumScrollEnd={()=>listarPublicaciones(pagePublicaciones)}>
           <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
           <ListadoPublicaciones 
           publicaciones = {publicaciones}

@@ -1,5 +1,5 @@
 import React, {useEffect, useContext, useState} from 'react';
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet, Modal } from 'react-native';
 import {Avatar, ListItem, Divider} from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import IconoEditar from './IconoEditar';
@@ -11,6 +11,10 @@ import { baseUriMultimedia } from '../../config/configs';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import BotonOrden from '../muro/BotonOrden';
 
+import { Tooltip } from 'react-native-elements';
+import MenuTooltip from '../muro/MenuTooltip';
+import { IconButton } from 'react-native-paper';
+
 const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantidad_usuarios_siguiendo,nombre,apellido,usuario,correo,fecha_nacimiento,biografia,genero}}) => {
 
   const url = url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}` } : require('../../../assets/perfilDefault.jpg');
@@ -19,7 +23,16 @@ const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantida
   const {state:{publicacionesUsuario, orden, tipoOrden}, listarPublicacionesUsuario} = useContext(PublicacionContext);
   useEffect(()=>{
     if(usuario){
-      navigation.setOptions({ title: `${nombre} ${apellido}`});
+      navigation.setOptions({ title: `${nombre} ${apellido}`, headerRight: ()=>(
+        <Tooltip
+            backgroundColor="#6d31bf"
+            withOverlay= {false}
+            height={200}
+            width={300}
+            popover={<MenuTooltip />}>
+            <IconButton icon="dots-vertical" color='#fff'/>
+            </Tooltip>
+      )});
       publicacionesUsuarioLista(0);
     }
   },[usuario, orden, tipoOrden]);
@@ -70,9 +83,19 @@ const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantida
 }
 
 const styles = StyleSheet.create({
+  tooltip:{
+    height:200,
+    width:300,
+    top:10,
+    left:10
+  },
     scroll:{
         color:'#6d31bf',
         flex:1
+    },
+    contPopover:{
+      height:300,
+      width:200
     }
   })
 

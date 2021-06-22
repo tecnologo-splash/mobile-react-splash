@@ -9,8 +9,14 @@ const ComentariosReducer = (state,action) => {
             return {...state, comentarios: state.comentarios.filter(coment=>coment.id !=action.payload.comentarioId)};
         case 'comentario_a_responder':
             return {...state, comentario_a_responder: action.payload.comentarioId};
-        case 'respuesta':
-            /*agregar respuesta en los comentarios*/ 
+        case 'deleteResponse':
+            for (var i = 0; i <state.comentarios.length ; i++) {
+                if(state.comentarios[i].id === action.payload.comentarioId){
+                    state.comentarios[i].respuestas = state.comentarios[i].respuestas.filter(respuesta=>respuesta.id != action.payload.respuestaId);
+                    console.log(state.comentarios[i].respuestas);
+                }
+            }
+            return state;
         default:
             return state;
     }
@@ -50,17 +56,12 @@ const setComentarioAResponder = dispatch => (comentarioId)=>{
     dispatch({type:"comentario_a_responder", payload:{comentarioId}})
 }
 
-const initialState = {
-    comentarios: [],
-    comentario_a_responder: {id:-1, usuario:""}
-}
-
 const responderComentario = dispatch =>async ({respuesta, comentarioId, publicacionId})=> {
     try{
         console.log(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas`);
         const response = await settings.post(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas`, JSON.stringify({texto: respuesta}), {headers: {'Content-Type':'application/json'}});
         console.log("response",response.data);
-        dispatch({type:"respuesta", payload: {respuestas: response.data}})
+        dispatch({type:"comentarios", payload: {comentarios: response.data.comentarios}})
         
         console.log(`respuestas en comentario ${comentarioId}`, response.data.comentarios.filter(com=>com.id === comentarioId)[0].respuestas.length);
     }catch(e){
@@ -72,10 +73,17 @@ const eliminarRespuesta = dispatch => async ({publicacionId,comentarioId,respues
     try{
         console.log(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas/${respuestaId}`);
         await settings.delete(`/posts/${publicacionId}/comentarios/${comentarioId}/respuestas/${respuestaId}`);
+        dispatch({type:"deleteResponse", payload:{comentarioId, respuestaId}})
     } catch(e) {
         console.log(e);
     }
 }
+
+const initialState = {
+    comentarios: [],
+    comentario_a_responder: {id:-1, usuario:""}
+}
+
 
 export const {Context, Provider} = crearContext(
     ComentariosReducer,

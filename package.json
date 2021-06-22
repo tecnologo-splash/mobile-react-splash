@@ -33,6 +33,8 @@
     "react-native-elements": "^3.4.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-paper": "^4.8.1",
+    "react-native-popable": "^0.4.0",
+    "react-native-popover-view": "^4.0.1",
     "react-native-screens": "~3.0.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-web": "~0.13.12"

@@ -24,7 +24,7 @@ const MenuTooltip = () => {
   return (
       <View>
           {tipoOrdenPublicacion.map(tipo=>(
-              <Text style={styles.text} onPress={()=>ordenar(tipo)}>Ordenar por {tipo.tipo}</Text>
+              <Text style={styles.text} onPress={()=>ordenar(tipo)}>{tipo.tipo}</Text>
           ))
           }
           <Text style={styles.text} onPress={()=>cerrar()}>Cerrar Sesion</Text>

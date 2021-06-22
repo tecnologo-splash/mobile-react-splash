@@ -17,7 +17,7 @@ const EnlaceExterno = ({enlace}) => {
       <Image  source={{uri:enlace.imagen_url}} style={styles.image}/>
       <View style={styles.cont}>
         <Text multiline style = {styles.title}>{enlace.titulo}</Text>
-        <Text multiline>{enlace.descripcion}</Text>
+        <Text multiline style = {styles.desc}>{enlace.descripcion}</Text>
       </View>
   </View>
   </TouchableOpacity>
@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
   image: {
     height:70,
     width:70
+  },
+  desc:{
+    margin:5,
+    width:350
   }
 })
 

@@ -7,10 +7,11 @@ import { colores } from '../config/colores';
 import {Context as PerfilContext} from '../context/PerfilContext';
 
 
+
+
 const Perfil = () => {
 
   const {state:{currentUser, cargando}, getInfo, getSeguidores, getSeguidos} = useContext(PerfilContext);
-
   useEffect(()=>{
     getInfo();
     getSeguidores({filtro: filtroSeguidos._usuario,valor:'',page:0});
