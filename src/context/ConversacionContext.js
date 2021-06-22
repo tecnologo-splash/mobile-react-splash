@@ -2,6 +2,7 @@ import crearContext from "./crearContext";
 import settings from '../config/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { requestSizeListarCoversaciones, requestSizeListarUsuarios, requestSizeListarMensajes } from "../config/maximos";
+import {getFecha} from '../componentes/perfil/getDatos';
 
 const ConversacionReducer = (state,action) => {
     switch(action.type){
@@ -16,7 +17,10 @@ const ConversacionReducer = (state,action) => {
         case 'appendConversacionesUsuario':
             return {...state, conversacionesUsuario: [...state.conversacionesUsuario, ...action.payload.conversacionesUsuario]};
         case 'editarMensaje':
-            var currentMensajes = {fecha_envio: "16/06/2021 20:41", from_usuario_nombre_apellido: null, from_usuario_id: action.payload.userId, mensaje: action.payload.mensaje.mensaje, tipo_mensaje: "TEXTO"}
+            var currentFecha = new Date()
+            var fechaEnvio = `${currentFecha.getDate()}/${currentFecha.getMonth()+1}/${currentFecha.getFullYear()} ${currentFecha.getHours()}:${currentFecha.getMinutes()}`
+            console.log(fechaEnvio)
+            var currentMensajes = {fecha_envio: fechaEnvio, from_usuario_nombre_apellido: null, from_usuario_id: action.payload.userId, mensaje: action.payload.mensaje.mensaje, tipo_mensaje: "TEXTO"}
             return {...state, mensaje : "", tipoMensajeEnum: "TEXTO", mensajesConversacion: [currentMensajes, ...state.mensajesConversacion]};
         case 'listarUsuariosParaConversar':
             return {...state, usuariosParaConversar: action.payload.usuariosParaConversar}

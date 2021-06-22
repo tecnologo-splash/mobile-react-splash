@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { View, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import {Context as ConversacionContext} from '../context/ConversacionContext';
 import ListadoMensajesConversacion from '../componentes/conversaciones/ListadoMensajesConversacion'
 import NuevoMensaje from './NuevoMensaje'
@@ -7,12 +8,13 @@ import NuevoMensaje from './NuevoMensaje'
 const MensajesConversacion = ({route, navigation}) => {
   
   const {chat_id, nombre_chat} = route.params;
-  
+
+  const navigation2 = useNavigation();
   const [page, setPage] = useState(0);
   const {state:{mensajesConversacion}, listarMensajesConversacion} = useContext(ConversacionContext);
   
   useEffect(()=>{
-    listarMensajes(0);
+    navigation2.setOptions({ title: `${nombre_chat}`})
   }, []);
 
   const listarMensajes = async (pagina) =>{
@@ -23,7 +25,6 @@ const MensajesConversacion = ({route, navigation}) => {
 
   return (
     <View style={{ paddingBottom: 160}}>
-      <Text>{nombre_chat}</Text>
       <Text>Chat: {chat_id}</Text>
       <ListadoMensajesConversacion mensajes={mensajesConversacion} onEnd={()=>listarMensajes(page)} onStart={()=>listarMensajes(0)}/>
       <NuevoMensaje chat_id={chat_id} />

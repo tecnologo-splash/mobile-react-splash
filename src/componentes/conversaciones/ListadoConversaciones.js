@@ -11,6 +11,10 @@ const ListadoConversaciones = ({conversaciones, onEnd, onStart}) => {
     <FlatList
       data={conversaciones}
       keyExtractor={(item, index) => index.toString()}
+      refreshing={false}
+      onRefresh={() => onStart()}
+      onEndReachedThreshold={0.5}
+      onEndReached = {()=>{if(conversaciones.length % requestSizeListarCoversaciones === 0){onEnd()}}}
       renderItem={({item})=>(
         <TouchableOpacity onPress={()=>navigation.navigate('MensajesConversacion', {chat_id: item.chat_id, nombre_chat: item.nombre_chat})} style={{margin: 5}}>
           <ListItem>
@@ -29,14 +33,6 @@ const ListadoConversaciones = ({conversaciones, onEnd, onStart}) => {
           </ListItem>
         </TouchableOpacity>
       )}
-      refreshing={false}
-      onRefresh={() => onStart()}
-      onEndReachedThreshold={0.5}
-      onEndReached = {()=>{
-        if(conversaciones.length % requestSizeListarCoversaciones === 0){
-          onEnd();
-        }
-      }}
     />
   );
 }
