@@ -33,7 +33,6 @@ const Publicacion = ({publicacion}) => {
           volume={1.0}
           isMuted={false}
           resizeMode="cover"
-          isLooping
           useNativeControls
           />;
       }

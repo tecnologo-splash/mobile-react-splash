@@ -9,7 +9,7 @@ import ListadoSugeridos from '../componentes/listado-sugeridos/ListadoSugeridos'
 import ListadoPublicaciones from '../componentes/publicaciones/ListadoPublicaciones';
 import Cargando from '../componentes/Cargando';
 import { colores } from '../config/colores';
-import { List } from 'react-native-paper';
+import { List, Portal } from 'react-native-paper';
 import BotonOrden from '../componentes/muro/BotonOrden';
 import {Context as PerfilContext} from '../context/PerfilContext';
 import {Context as ComentariosContext} from '../context/ComentariosContext';
@@ -62,7 +62,9 @@ const Muro = () => {
           <Cargando estaCargando={cargando} color={colores.appDefault} />
         </View>
       }
+      <Portal.Host>
       <BotonOrden/>
+      </Portal.Host>
 
     </View>
   );

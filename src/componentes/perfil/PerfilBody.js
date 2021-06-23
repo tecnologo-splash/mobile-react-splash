@@ -23,16 +23,7 @@ const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantida
   const {state:{publicacionesUsuario, orden, tipoOrden}, listarPublicacionesUsuario} = useContext(PublicacionContext);
   useEffect(()=>{
     if(usuario){
-      navigation.setOptions({ title: `${nombre} ${apellido}`, headerRight: ()=>(
-        <Tooltip
-            backgroundColor="#6d31bf"
-            withOverlay= {false}
-            height={200}
-            width={300}
-            popover={<MenuTooltip />}>
-            <IconButton icon="dots-vertical" color='#fff'/>
-            </Tooltip>
-      )});
+      navigation.setOptions({ title: `${nombre} ${apellido}`});
       publicacionesUsuarioLista(0);
     }
   },[usuario, orden, tipoOrden]);

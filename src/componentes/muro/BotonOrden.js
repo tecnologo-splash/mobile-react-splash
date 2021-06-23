@@ -65,14 +65,11 @@ const BotonOrden = () => {
 
 const styles = StyleSheet.create({
     fab: {
-      position: 'absolute',
-      right: 0,
-      bottom: 0,
-      alignSelf:'flex-end',
+
       backgroundColor:'#6d31bf'
     },
     container:{
-      paddingBottom: 150
+      paddingBottom: 130
     }
   })
 

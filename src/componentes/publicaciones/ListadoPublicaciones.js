@@ -7,8 +7,8 @@ const ListadoPublicaciones = ({publicaciones}) => {
 
   return (
     <View>
-    {publicaciones.map(publicacion=>(
-      <Publicacion publicacion={publicacion}/>
+    {publicaciones.map((publicacion,index)=>(
+      <Publicacion key={index} publicacion={publicacion}/>
     ))}
     </View>
   );
