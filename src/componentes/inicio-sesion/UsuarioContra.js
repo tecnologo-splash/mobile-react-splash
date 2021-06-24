@@ -9,9 +9,11 @@ import RecuperarPassword2 from './RecuperarPassword2';
 import ConfirmacionPasswordRecuperada from './ConfirmacionPasswordRecuperada';
 import Cargando from '../Cargando';
 import { colores } from '../../config/colores';
+import {Context as PublicacionContext} from '../../context/PublicacionContext';
 
 const UsuarioContra = () => {
     const {state:{usuario, password, entrar, cargando}, cambiarValor, inicioSesion} = useContext(InicioSesionContext);
+    const { state:{redireccionar},setRedireccionar } = useContext(PublicacionContext)
     const [secured, setSecured] = useState(true);
     const navigation = useNavigation();
 
@@ -21,8 +23,9 @@ const UsuarioContra = () => {
         }
     },[entrar])
 
-    const login = ()=>{
-        inicioSesion({usuario,password});
+    const login = async ()=>{
+        setRedireccionar();
+        await inicioSesion({usuario,password});
     }
 
     return (

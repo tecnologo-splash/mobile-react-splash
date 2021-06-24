@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
-import {StyleSheet, View, Text, TextInput } from 'react-native';
+import {StyleSheet, View, Text } from 'react-native';
+import {TextInput} from 'react-native-paper'
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import { FlatList } from 'react-native';    
 import { maximos } from '../../config/maximos';
@@ -17,7 +18,7 @@ const AddEncuesta = () => {
                     :
                     <View>
                         <TextInput
-                            label={"Duracion"}
+                            label="Duracion"
                             value={duracion}
                             style = {styles.imputText}
                             onChangeText={text => cambiarValor({variable: 'duracion', valor: text})}
@@ -37,7 +38,7 @@ const AddEncuesta = () => {
                             null
                             :
                             <TextInput
-                                label={"Opción"}
+                                label="Opción"
                                 value={opcion}
                                 style = {styles.imputText}
                                 onChangeText={text => cambiarValor({variable: 'opcion', valor: text})}

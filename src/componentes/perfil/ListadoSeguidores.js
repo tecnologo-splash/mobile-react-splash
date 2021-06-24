@@ -14,7 +14,7 @@ const ListadoSeguidores = ({usuarios,onEnd}) => {
     keyExtractor={item => item.usuario}
     onEndReached={()=>onEnd()}
     renderItem={({item})=>(
-      <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuario:{...item, lo_sigo: true}})}>
+      <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno', {usuarioId:item.id})}>
         <ListItem>
           <Avatar 
             rounded 

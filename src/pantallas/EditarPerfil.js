@@ -11,8 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import { notificaciones, viaNotif } from '../config/configs';
 import { Ionicons } from '@expo/vector-icons'; 
-import { Settings } from 'react-native';
-
 const EditarPerfil = () => {
 
   const {state:{currentUser, nombre, apellido, fechaNac, biografia }, cambiarValor, cambiarFecha, editarPerfil, getInfo} = useContext(PerfilContext);
@@ -20,7 +18,6 @@ const EditarPerfil = () => {
   const {state:{configNotif}, getConfigNotif, editarNotif} = useContext(NotificacionesContext);
 
   const [fechaSeleccionada, setFechaSeleccionada] = useState(false);
-  const [mensajeUsuario, setMensajeUsuario] = useState("");
   const navigation = useNavigation();
  
   

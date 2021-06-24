@@ -40,30 +40,47 @@ const PublicacionReducer = (state,action) => {
         case 'editarPublicacion':
             return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'listarPublicacionesUsuario':
-            return {...state, publicacionesUsuario: action.payload.publicacionesUsuario};
+            return {...state, publicacionesUsuario: action.payload.publicacionesUsuario, redireccionar: false};
         case 'appendPublicacionesUsuario':
-            return {...state, publicacionesUsuario: [...state.publicacionesUsuario, ...action.payload.publicacionesUsuario]}
+            return {...state, publicacionesUsuario: [...state.publicacionesUsuario, ...action.payload.publicacionesUsuario], redireccionar: false}
         case 'listarPublicacionesMuro':
-            return {...state, publicaciones: action.payload.publicaciones};
+            return {...state, publicaciones: action.payload.publicaciones, redireccionar: false};
         case 'appendPublicacionesMuro':
-            return {...state, publicaciones: [...state.publicaciones, ...action.payload.publicaciones]};
+            return {...state, publicaciones: [...state.publicaciones, ...action.payload.publicaciones], redireccionar: false};
         case 'reaccionar':
-            var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
-            for ( var i = 0; i < state.publicaciones.length; i++){
-                if(publicacionReaccionada.id === state.publicaciones[i].id){
-                    state.publicaciones[i] = {...state.publicaciones[i], resumen_reaccion:{...state.publicaciones[i].resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}};
-                }  
+            if(state.publicaciones.filter(item=>item.id===action.payload.publicacionId).length == 0){
+                var [publicacionReaccionada] = state.publicacionesUsuario.filter(item=>item.id===action.payload.publicacionId);
+                for ( var i = 0; i < state.publicacionesUsuario.length; i++){
+                    if(publicacionReaccionada.id === state.publicacionesUsuario[i].id){
+                        state.publicacionesUsuario[i] = {...state.publicacionesUsuario[i], resumen_reaccion:{...state.publicacionesUsuario[i].resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}};
+                    }  
+                }
+            } else {
+                var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+                for ( var i = 0; i < state.publicaciones.length; i++){
+                    if(publicacionReaccionada.id === state.publicaciones[i].id){
+                        state.publicaciones[i] = {...state.publicaciones[i], resumen_reaccion:{...state.publicaciones[i].resumen_reaccion, mi_reaccion: action.payload.tipoReaccion}};
+                    }  
+                }
             }
             return state;
         case 'eliminarReaccion':
-            var publicacionesMenosReaccionada = state.publicaciones.filter(item=>item.id!=action.payload.publicacionId);
-            var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
-
-            var retorno = {...state, publicaciones: [...publicacionesMenosReaccionada, 
-                {...publicacionReaccionada, 
-                resumen_reaccion:{...publicacionReaccionada.resumen_reaccion, mi_reaccion: null}}]};
-
-            return retorno;
+            if(state.publicaciones.filter(item=>item.id===action.payload.publicacionId).length == 0){
+                var [publicacionReaccionada] = state.publicacionesUsuario.filter(item=>item.id===action.payload.publicacionId);
+                for ( var i = 0; i < state.publicacionesUsuario.length; i++){
+                    if(publicacionReaccionada.id === state.publicacionesUsuario[i].id){
+                        state.publicacionesUsuario[i] = {...state.publicacionesUsuario[i], resumen_reaccion:{...state.publicacionesUsuario[i].resumen_reaccion, mi_reaccion: null}};
+                    }  
+                }
+            } else {
+                var [publicacionReaccionada] = state.publicaciones.filter(item=>item.id===action.payload.publicacionId);
+                for ( var i = 0; i < state.publicaciones.length; i++){
+                    if(publicacionReaccionada.id === state.publicaciones[i].id){
+                        state.publicaciones[i] = {...state.publicaciones[i], resumen_reaccion:{...state.publicaciones[i].resumen_reaccion, mi_reaccion: null}};
+                    }  
+                }
+            }
+            return state;
         case 'actualizarComentarios':
             for(i=0 ; i<state.publicaciones.length ; i++) {
                 if(action.payload.publicacionId === state.publicaciones[i].id) {
@@ -95,6 +112,8 @@ const PublicacionReducer = (state,action) => {
                 currentTipoPub = 4
             }
             return {...state, currentPublicacion:action.payload.currentPublicacion, tipoPub: currentTipoPub, texto : action.payload.currentPublicacion.texto, duracion: 0, unidad: "HOURS", multimedias: multimediasCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
+        case 'setRedireccionar':
+            return {...state, redireccionar: false};
         default:
             return state;
     }
@@ -221,12 +240,16 @@ const listarPublicacionesMuro = dispatch => async ({page, orden, tipoOrden}) =>{
     try{
         console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
         var response = await settings.get(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
+        if(response.status === 403){
+            dispatch({type: 'cambiarValor', payload:{variable:'redireccionar', valor:true}})
+        }
         if(page === 0){
             dispatch({type: 'listarPublicacionesMuro', payload: {publicaciones: response.data.content}})
         }else{
             dispatch({type: 'appendPublicacionesMuro', payload: {publicaciones: response.data.content}})
         }
     }catch(e){
+        dispatch({type: 'cambiarValor', payload:{variable:'redireccionar', valor:true}})
     }
 }
 
@@ -234,6 +257,9 @@ const listarPublicacionesUsuario = dispatch => async ({userId, page, tipoOrden,o
     try{
         console.log(`/posts/users/${userId}?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
         var response = await settings.get(`/posts/users/${userId}?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
+        if(response.status === 403){
+            dispatch({type: 'cambiarValor', payload:{variable:'redireccionar', valor:true}})
+        }
         if(page == 0){
             dispatch({type: 'listarPublicacionesUsuario', payload: {publicacionesUsuario: response.data.content}})
         }else{
@@ -241,13 +267,15 @@ const listarPublicacionesUsuario = dispatch => async ({userId, page, tipoOrden,o
         }
     }catch(e){
         console.log(e);
+        dispatch({type: 'cambiarValor', payload:{variable:'redireccionar', valor:true}})
     }
 }
 const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) => {
     try{
+        dispatch({type: "reaccionar", payload:{publicacionId, tipoReaccion}});
         const response = await settings.post(`/posts/${publicacionId}/reacciones`,JSON.stringify({emoji: tipoReaccion}),
         {headers: {'Content-Type': "application/json"}});
-        dispatch({type: "reaccionar", payload:{publicacionId, tipoReaccion}});
+        
     }catch(e){
         console.log(e);
     }
@@ -255,8 +283,10 @@ const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) 
 
 const eliminarReaccion = dispatch => async ({publicacionId}) => {
     try{
-        await settings.delete(`/posts/${publicacionId}/reacciones`);
         dispatch({type: "eliminarReaccion", payload:{publicacionId}});
+        console.log(`/posts/${publicacionId}/reacciones`);
+        await settings.delete(`/posts/${publicacionId}/reacciones`);
+        
     }catch(e){
         console.log(e);
     }
@@ -278,6 +308,10 @@ const actualizarComentariosPublicacion = dispatch => ({publicacionId, comentario
 const setCurrentPublicacion = dispatch => ({currentPublicacion}) => {
     dispatch({type:"currentPublicacion", payload:{currentPublicacion}});
 }
+
+const setRedireccionar = (dispatch) => () =>{
+    dispatch({type:"setRedireccionar"});
+}
 const initialState = {
     currentPublicacion: {},
     tipoPub : 0,
@@ -290,11 +324,12 @@ const initialState = {
     duracion: 0,
     unidad: "HOURS",
     error: {},
+    redireccionar: false,
     cargando: false,
     publicaciones: [],
     publicacionesUsuario: [],
     tipoOrden: tipoOrdenPublicacion[0],
-    orden: ordenPublicacion._desc
+    orden: ordenPublicacion._desc,
 }
 
 export const {Context, Provider} = crearContext(
@@ -322,7 +357,8 @@ export const {Context, Provider} = crearContext(
      listarPublicacionesUsuario,
      votar,
      actualizarComentariosPublicacion,
-     setCurrentPublicacion
+     setCurrentPublicacion,
+     setRedireccionar
     },
     initialState,
 );

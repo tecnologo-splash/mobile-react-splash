@@ -1,10 +1,8 @@
     import React, {useContext, useState, useEffect} from 'react';
-    import NavBar from '../componentes/muro/NavBar';
     import { Alert, View, Text, StyleSheet } from 'react-native';
     import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
     import {Context as PublicacionContext} from '../context/PublicacionContext';
     import AddMultimedia from '../componentes/publicaciones/AddMultimedia';
-    import AddVideo from '../componentes/publicaciones/AddVideo';
     import AddEnlace from '../componentes/publicaciones/AddEnlace';
     import AddEncuesta from '../componentes/publicaciones/AddEncuesta';
     import { ScrollView } from 'react-native';
@@ -12,22 +10,6 @@
     const NuevaPublicacion = () => {
 
       const {state:{currentPublicacion, tipoPub, texto, duracion, unidad, multimedias, enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
-      const [tipo, setTipo] = useState(0);
-
-      // useEffect (()=>{
-      //   console.log("UseEffect1", tipo)
-      //   setTipo(0)
-      //   if (opciones.length > 0){
-      //     setTipo(4);
-      //   } else if (enlaces.length > 0){
-      //     setTipo(3);
-      //   } else if (multimedias.length > 0){
-      //       setTipo(1)
-      //   }else{
-      //     setTipo(0)
-      //   }
-      //   console.log("UseEffect", tipo)
-      // },[currentPublicacion])
 
       const crear = () => {
         if ( texto === null || texto === ''){
@@ -35,7 +17,6 @@
         } 
         else
         {
-          console.log('crea publicacion',tipoPub)
           switch (tipoPub) {
             case 1:
               var formData = { texto }
@@ -126,9 +107,6 @@
               onChangeText={text => cambiarValor({variable: 'texto', valor: text})}
             />
             <View style = { styles.horizontalView }>
-            {/* {currentPublicacion.id ?
-              null
-            : */}
               <>
                 <Button 
                 mode={tipoPub===1? "contained":"outlined"} 
@@ -152,11 +130,9 @@
                     Encuesta
                 </Button>
               </>
-            {/* } */}
             </View>
             { definoTipo()}
-          </ScrollView>
-          {currentPublicacion.id ?
+            {currentPublicacion.id ?
             <Button
               style={styles.button}
               onPress={()=>editar()}
@@ -182,7 +158,7 @@
           :
             null
           }
-
+          </ScrollView>
       </View>);
     }
 

@@ -7,6 +7,7 @@ import InfoBasica from './InfoBasica';
 import InfoSeguidores from './InfoSeguidores';
 import MoreInfo from './MoreInfo';
 import EditFotoPerfil from '../../pantallas/EditFotoPerfil';
+import {Portal} from 'react-native-paper';
 import { baseUriMultimedia } from '../../config/configs';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import BotonOrden from '../muro/BotonOrden';
@@ -67,7 +68,9 @@ const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantida
             publicaciones={publicacionesUsuario}/>
         </View>
       </ScrollView>
-      <BotonOrden />
+      <Portal.Host>
+        <BotonOrden />
+      </Portal.Host>
       <IconoEditar/>
     </View>
   );
