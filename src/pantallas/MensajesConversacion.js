@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { View, Text } from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {Context as ConversacionContext} from '../context/ConversacionContext';
-import ListadoMensajesConversacion from '../componentes/conversaciones/ListadoMensajesConversacion'
-import NuevoMensaje from './NuevoMensaje'
+import ListadoMensajesConversacion from '../componentes/conversaciones/ListadoMensajesConversacion';
+import NuevoMensaje from './NuevoMensaje';
 
 const MensajesConversacion = ({route, navigation}) => {
   
@@ -14,7 +14,15 @@ const MensajesConversacion = ({route, navigation}) => {
   const {state:{mensajesConversacion}, listarMensajesConversacion} = useContext(ConversacionContext);
   
   useEffect(()=>{
-    navigation2.setOptions({ title: `${nombre_chat}`})
+    navigation2.setOptions({ title: 
+    <View style={styles.viewHorizontal}>
+      <Image 
+        style={styles.image} 
+        source={require('../../assets/perfilDefault.jpg')
+        }
+      />
+      <Text style={styles.text}>{nombre_chat}</Text>
+    </View>})
     listarMensajes(0)
   }, []);
 
@@ -33,4 +41,25 @@ const MensajesConversacion = ({route, navigation}) => {
   );
 }
 
+const styles = StyleSheet.create({
+  image:{
+    height: 35, 
+    width: 35, 
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor:'#fff',
+    marginLeft: 20,
+  },
+  viewHorizontal:{
+    flex: 1, 
+    flexDirection: 'row'
+  },
+  text:{
+    color: '#fff',
+    fontSize: 20,
+    height:35,
+    marginLeft: 15,
+    flex: 1,
+  },
+});
 export {MensajesConversacion};

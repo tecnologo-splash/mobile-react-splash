@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
-import {Avatar, ListItem} from 'react-native-elements';
+import {ListItem} from 'react-native-elements';
 import { requestSizeListarMensajes } from "../../config/maximos";
 
 //Esto es solo para saber mi id
@@ -26,34 +26,17 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
           <ListItem.Content style={{borderRadius: 20}}>
             {item.from_usuario_id === currentUser.id?
               <View style = {styles.horizontalPinkView}>
-                <Avatar 
-                  rounded 
-                  source={require('../../../assets/perfilDefault.jpg')}
-                  size="large"
-                >
-                </Avatar>
                 <View>
-                  <ListItem.Title>{item.fecha_envio}</ListItem.Title>
                   <ListItem.Title>{item.mensaje}</ListItem.Title>
-                  <ListItem.Subtitle>{item.from_usuario_id}</ListItem.Subtitle>
+                  <ListItem.Title>{item.fecha_envio}</ListItem.Title>
                 </View>
               </View>
               :
               <View style = {styles.horizontalBlueView}>
                 <View>
-                  <ListItem.Title>{item.fecha_envio}</ListItem.Title>
                   <ListItem.Title>{item.mensaje}</ListItem.Title>
-                  <ListItem.Subtitle>{item.from_usuario_id}</ListItem.Subtitle>
+                  <ListItem.Title>{item.fecha_envio}</ListItem.Title>
                 </View>
-                <Avatar 
-                  rounded 
-                  source={require('../../../assets/perfilDefault.jpg')}
-                  size="large"
-                  containerStyle={{
-                    alignSelf: "center"
-                  }}
-                >
-                </Avatar>
               </View>
             }
           </ListItem.Content>
