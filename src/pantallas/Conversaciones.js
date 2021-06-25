@@ -22,7 +22,7 @@ const Conversaciones = ({navigation}) => {
 
   return (
     <View style={{ paddingBottom: 160}}>
-      <NavBar/>
+      <NavBar buscador={false} tituloNavBar={'Conversaciones'}/>
       <Button
           style={styles.button}
           mode="contained"

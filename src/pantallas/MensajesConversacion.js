@@ -15,6 +15,7 @@ const MensajesConversacion = ({route, navigation}) => {
   
   useEffect(()=>{
     navigation2.setOptions({ title: `${nombre_chat}`})
+    listarMensajes(0)
   }, []);
 
   const listarMensajes = async (pagina) =>{

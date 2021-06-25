@@ -6,6 +6,7 @@
     import AddEnlace from '../componentes/publicaciones/AddEnlace';
     import AddEncuesta from '../componentes/publicaciones/AddEncuesta';
     import { ScrollView } from 'react-native';
+    import NavBar from '../componentes/muro/NavBar';
 
     const NuevaPublicacion = () => {
 
@@ -63,8 +64,9 @@
         }
       }
 
-      const mostrarAlerta = (titulo, descripcion) =>
+      const mostrarAlerta = (titulo, descripcion) =>{
         Alert.alert(titulo, descripcion, [{ text: "OK"}]);
+      }
 
       const editar = () => {
         if ( texto === null || texto === ''){
@@ -79,10 +81,6 @@
       const eliminar = () => {
         eliminarPublicacion(currentPublicacion.id);
       }
-
-      const [visible, setVisible] = useState(false);
-      const showDialog = () => setVisible(true);
-      const hideDialog = () => setVisible(false);
 
       const definoTipo = () =>{
         console.log("defino tipo ", tipoPub)
@@ -99,7 +97,8 @@
       }
 
       return (
-      <View style={styles.body}>
+      <View style={{ paddingBottom: 160}}>
+          <NavBar buscador={false} tituloNavBar={'Nueva publicación'}/>
           <ScrollView style={styles.container}>
             <TextInput
               label={currentPublicacion.texto ? currentPublicacion.texto : "Publicación"}
@@ -164,17 +163,15 @@
 
     const styles = StyleSheet.create({
       button:{
-          margin: 10, 
-          borderWidth:0
-      },
-      body:{
-        margin: 5
+        margin: 10, 
+        borderWidth:0,
+        paddingBottom: 160
       },
       container:{
         margin: 10
       },
       horizontalView: {
-          flexDirection: 'row',
+        flexDirection: 'row',
       },
       button:{
         margin:5,

@@ -11,7 +11,7 @@ import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosCont
 import MenuTooltip from './MenuTooltip';
 import { baseUriMultimedia } from '../../config/configs';
 
-const NavBar = () => {
+const NavBar = ({buscador, tituloNavBar}) => {
   const navigation = useNavigation();
   const {state:{buscar,filtro},cambiarValor, listarUsuariosParaSeguir} = useContext(ListarUsuariosContext);
 
@@ -38,14 +38,18 @@ const NavBar = () => {
           />
         </TouchableOpacity>
         <View style={styles.searchBar}>
-        <FontAwesome name="search" size={24} color="white" style={styles.magnify} onPress={()=>listarUsuariosParaSeguir({filtro: filtro, valor: buscar})} />
-        <TextInput
-        placeholder="Search"
-        placeholderTextColor='#fff'
-        value={buscar}
-        onChangeText={text => _onChange(text)}
-        style={styles.input}
-        />
+        {/* <FontAwesome name="search" size={24} color="white" style={styles.magnify} onPress={()=>listarUsuariosParaSeguir({filtro: filtro, valor: buscar})} /> */}
+        {buscador?
+          <TextInput
+            placeholder="Buscar usuarios"
+            placeholderTextColor='#fff'
+            value={buscar}
+            onChangeText={text => _onChange(text)}
+            style={styles.input}
+          />
+          :
+          <Text style={styles.text}>{tituloNavBar}</Text>
+        }
         </View>
         <Tooltip
             backgroundColor="#6d31bf"
@@ -79,6 +83,13 @@ const styles = StyleSheet.create({
       flex: 1,
       borderBottomColor:'#fff',
       borderBottomWidth: 1
+    },
+    text:{
+      color: '#fff',
+      fontSize: 20,
+      height:35,
+      marginLeft: 15,
+      flex: 1,
     },
     magnify:{alignSelf: 'center'}
 });
