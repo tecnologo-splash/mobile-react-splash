@@ -3,6 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from '
 import {Avatar, ListItem} from 'react-native-elements';
 import { requestSizeListarMensajes } from "../../config/maximos";
 
+
+import {Context as ConversacionContext} from '../../context/ConversacionContext';
+
 //Esto es solo para saber mi id
 import {Context as PerfilContext} from '../../context/PerfilContext';
 //fin de esto es solo para saber mi id

@@ -18,7 +18,7 @@ const ListadoConversaciones = ({conversaciones, onEnd, onStart}) => {
       renderItem={({item})=>(
         <TouchableOpacity onPress={()=>navigation.navigate('MensajesConversacion', {chat_id: item.chat_id, nombre_chat: item.nombre_chat})} style={{margin: 5}}>
           <ListItem>
-            
+            {console.log(item)}
             <ListItem.Content style={{borderRadius: 20}}>
             <Avatar 
               rounded 

@@ -8,10 +8,9 @@ import { baseUriMultimedia } from '../../config/configs';
 const ListadoSugeridos = ({sugeridos, onEnd}) => {
   const navigation = useNavigation();
   return (
-    <ScrollView showsHorizontalScrollIndicator={false}>
       <FlatList
         data={sugeridos}
-        horizontal={true}
+        // horizontal={true}
         keyExtractor={item => item.usuario}
         onEndReached={()=>onEnd()}
         renderItem={({item})=>(
@@ -33,7 +32,6 @@ const ListadoSugeridos = ({sugeridos, onEnd}) => {
           </TouchableOpacity>
           )}
           />
-      </ScrollView>
   );
 }
 

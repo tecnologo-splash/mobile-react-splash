@@ -21,6 +21,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { colores } from './src/config/colores';
 
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 const theme = {
   ...DefaultTheme,
   roundness:2,
@@ -83,43 +85,43 @@ export default function App() {
   const stackOptions={headerShown: true, headerStyle: {backgroundColor:'#6d31bf'}, headerTitleStyle:{color:'#ffffff'}, headerTintColor: '#fff'}
 
   return (
-    
-    <InicioSesionProvider>
-      <PaperProvider theme={theme}>
-        <CrearCuentaProvider>
-          <PerfilProvider>
-            <ListarUsuariosProvider>
-              <NotificacionesProvider>
-                <ConversacionProvider>
-                  <PublicacionProvider>
-                    <ComentariosProvider>
-                      <NavigationContainer>
+    <SafeAreaProvider>
+      <InicioSesionProvider>
+        <PaperProvider theme={theme}>
+          <CrearCuentaProvider>
+            <PerfilProvider>
+              <ListarUsuariosProvider>
+                <NotificacionesProvider>
+                  <ConversacionProvider>
+                    <PublicacionProvider>
+                      <ComentariosProvider>
+                        <NavigationContainer>
 
-                        <Stack.Navigator>
-                          <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
-                          <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
-                          <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
-                          <Stack.Screen name="Perfil" component={Perfil} options={{...stackOptions, title:''}}/>
-                          <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
-                          <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
-                          <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
-                          <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions} />
-                          <Stack.Screen name="Comentarios" component={Comentarios} options={stackOptions}/>
-                          <Stack.Screen name="EditFotoPerfil" component={EditFotoPerfil} options={stackOptions}/>
-                          <Stack.Screen name="NuevaConversacion" component={NuevaConversacion} options={stackOptions}/>
-                          <Stack.Screen name="MensajesConversacion" component={MensajesConversacion} options={stackOptions}/>
-                        </Stack.Navigator>
+                          <Stack.Navigator>
+                            <Stack.Screen name="InicioSesion" component={InicioSesion}  options={{headerShown: false}}/>
+                            <Stack.Screen name="Registro" component={Registro} options={{headerShown: false}}/>
+                            <Stack.Screen name="BottomTab" component={BottomNavigator} options={{headerShown: false}}/>
+                            <Stack.Screen name="Perfil" component={Perfil} options={{...stackOptions, title:''}}/>
+                            <Stack.Screen name="Seguidores" component={Seguidores} options={stackOptions}/>
+                            <Stack.Screen name="Seguidos" component={Seguidos} options={stackOptions}/>
+                            <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={stackOptions}/>
+                            <Stack.Screen name="PerfilExterno" component={PerfilExterno} options={stackOptions} />
+                            <Stack.Screen name="Comentarios" component={Comentarios} options={stackOptions}/>
+                            <Stack.Screen name="EditFotoPerfil" component={EditFotoPerfil} options={stackOptions}/>
+                            <Stack.Screen name="NuevaConversacion" component={NuevaConversacion} options={stackOptions}/>
+                            <Stack.Screen name="MensajesConversacion" component={MensajesConversacion} options={stackOptions}/>
+                          </Stack.Navigator>
 
-                      </NavigationContainer>
-                    </ComentariosProvider>
-                  </PublicacionProvider>    
-                </ConversacionProvider>
-              </NotificacionesProvider>
-            </ListarUsuariosProvider>
-          </PerfilProvider>
-        </CrearCuentaProvider>
-      </PaperProvider>
-    </InicioSesionProvider>
-
+                        </NavigationContainer>
+                      </ComentariosProvider>
+                    </PublicacionProvider>    
+                  </ConversacionProvider>
+                </NotificacionesProvider>
+              </ListarUsuariosProvider>
+            </PerfilProvider>
+          </CrearCuentaProvider>
+        </PaperProvider>
+      </InicioSesionProvider>
+    </SafeAreaProvider>
   );
 }

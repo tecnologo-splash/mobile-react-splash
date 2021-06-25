@@ -28,6 +28,11 @@ const ConversacionReducer = (state,action) => {
             return {...state, mensajesConversacion: action.payload.mensajesConversacion};
         case 'appendMensajesConversacion':
             return {...state, mensajesConversacion: [...state.mensajesConversacion, ...action.payload.mensajesConversacion]};
+        case 'addMensajeFromPusher':
+            var currentFecha = new Date(action.payload.mensaje.fecha_envio)
+            var fechaEnvio = `${currentFecha.getDate()}/${currentFecha.getMonth()+1}/${currentFecha.getFullYear()} ${currentFecha.getHours()}:${currentFecha.getMinutes()}`
+            action.payload.mensaje.fecha_envio = fechaEnvio;
+            return {...state, mensajesConversacion: [action.payload, ...state.mensajesConversacion]};
         default:
             return state;
     }
@@ -66,13 +71,12 @@ const listarConversacionesUsuario = dispatch => async ({page}) =>{
 const crearMensaje = (dispatch) => async (mensaje, userId)=> {
     console.log('entró')
     try{
-        const response = await settings.post(`/chat/individual/enviar-mensaje`, JSON.stringify(mensaje), {headers: {"Content-Type":"application/json"}});      
+        const response = await settings.post(`/chat/enviar-mensaje`, JSON.stringify(mensaje), {headers: {"Content-Type":"application/json"}});      
         dispatch({type:'editarMensaje', payload:{userId: userId, mensaje:mensaje}});
     }catch(e){
         console.log(e)
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
-    
 }
 
 const listarMensajesConversacion = dispatch => async (chat_id, {page}) =>{
@@ -89,6 +93,11 @@ const listarMensajesConversacion = dispatch => async (chat_id, {page}) =>{
     }catch(e){
         console.log(e);
     }
+}
+
+const appendMensajeConversacion = (dispatch) => async (mensaje) => {
+    console.log(mensaje)
+    dispatch({type: 'addMensajeFromPusher', payload: mensaje})
 }
 
 const listarUsuariosParaConversar = dispatch => async ({filtro,valor}) => {
@@ -121,7 +130,8 @@ export const {Context, Provider} = crearContext(
         listarConversacionesUsuario,
         crearMensaje,
         listarMensajesConversacion,
-        listarUsuariosParaConversar
+        listarUsuariosParaConversar,
+        appendMensajeConversacion
     },
     initialState,
 );
