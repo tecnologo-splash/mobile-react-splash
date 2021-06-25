@@ -45,7 +45,7 @@ const AddEnlace = () => {
         <View style={styles.main}>
             <View style={styles.main2}>
                 {enlaces.length < maximos._enlaces ?
-                    <View style = { styles.horizontalView }>
+                    <View>
                         {currentPublicacion.id ?
                             null
                             :

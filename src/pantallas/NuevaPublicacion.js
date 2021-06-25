@@ -8,7 +8,7 @@
     import { ScrollView } from 'react-native';
     import NavBar from '../componentes/muro/NavBar';
 
-    const NuevaPublicacion = () => {
+    const NuevaPublicacion = ({navigation}) => {
 
       const {state:{currentPublicacion, tipoPub, texto, duracion, unidad, multimedias, enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
 
@@ -61,6 +61,7 @@
               null
               break;
           }
+          navigation.navigate("Muro");
         }
       }
 

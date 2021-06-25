@@ -38,8 +38,9 @@ const NavBar = ({buscador, tituloNavBar}) => {
           />
         </TouchableOpacity>
         <View style={styles.searchBar}>
-        {/* <FontAwesome name="search" size={24} color="white" style={styles.magnify} onPress={()=>listarUsuariosParaSeguir({filtro: filtro, valor: buscar})} /> */}
         {buscador?
+          <>
+          <FontAwesome name="search" size={24} color="white" style={styles.magnify} onPress={()=>listarUsuariosParaSeguir({filtro: filtro, valor: buscar})} />
           <TextInput
             placeholder="Buscar usuarios"
             placeholderTextColor='#fff'
@@ -47,17 +48,18 @@ const NavBar = ({buscador, tituloNavBar}) => {
             onChangeText={text => _onChange(text)}
             style={styles.input}
           />
-          :
-          <Text style={styles.text}>{tituloNavBar}</Text>
-        }
-        </View>
-        <Tooltip
+          <Tooltip
             backgroundColor="#6d31bf"
             withOverlay= {false}
 
             popover={<MenuTooltip />}>
             <Appbar.Action icon="dots-vertical" color='#fff'/>
             </Tooltip>
+          </>
+          :
+          <Text style={styles.text}>{tituloNavBar}</Text>
+        }
+        </View>
     </Appbar.Header>
   );
 }
