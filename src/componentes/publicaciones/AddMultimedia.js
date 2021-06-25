@@ -65,9 +65,7 @@ const AddMultimedia = () => {
                         {mediaTypes==null? null: 
                         <>
                             <Feather name="paperclip" style = {styles.buttonText} size={24} color={colores.appDefault} onPress = {() => OpenGalleryAsync()}/>
-                            <Text style = {styles.buttonText} onPress = {() => OpenGalleryAsync()}>Galeria</Text>
                             <Entypo name="camera" style = {styles.buttonText} size={24} color={colores.appDefault} onPress = {() => OpenCameraAsync()}/>
-                            <Text style = {styles.buttonText} onPress = {() => OpenCameraAsync()}>Camara</Text>
                         </>
                         }
                         
@@ -103,10 +101,6 @@ const AddMultimedia = () => {
                                         :
                                         <Text style = {styles.buttonText} onPress={()=>cancelarMultimedia(item.uri)}>Cancelar</Text>
                                     }
-                                    {/*<Text style = {styles.buttonText} onPress={_rotate90}>90º</Text>
-                                    <Text style = {styles.buttonText} onPress={_rotate270}>270º</Text>
-                                    <Text style = {styles.buttonText} onPress={_flipH}>Flip V.</Text>
-                                    <Text style = {styles.buttonText} onPress={_flipV}>Flip H.</Text>*/}
                                 </View>
                             )}
                         />
