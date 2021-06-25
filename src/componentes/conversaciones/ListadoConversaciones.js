@@ -20,15 +20,18 @@ const ListadoConversaciones = ({conversaciones, onEnd, onStart}) => {
           <ListItem>
             
             <ListItem.Content style={{borderRadius: 20}}>
+            <View style={{flexDirection:'row'}}>
             <Avatar 
               rounded 
               source={require('../../../assets/perfilDefault.jpg')}
               size="large"
-            >
-            </Avatar>
-            <ListItem.Title>{item.nombre_chat}</ListItem.Title>
-            <ListItem.Title>{item.fecha_ultimo_mensaje}</ListItem.Title>
-            <ListItem.Subtitle>{item.chat_grupal? "Grupal":"Personal"}</ListItem.Subtitle>
+            />
+              <View style={{margin:5}}>
+                <ListItem.Title>{item.nombre_chat}</ListItem.Title>
+                <ListItem.Title>{item.fecha_ultimo_mensaje}</ListItem.Title>
+                <ListItem.Subtitle>{item.chat_grupal? "Grupal":"Personal"}</ListItem.Subtitle>
+              </View>
+            </View>
             </ListItem.Content>
           </ListItem>
         </TouchableOpacity>

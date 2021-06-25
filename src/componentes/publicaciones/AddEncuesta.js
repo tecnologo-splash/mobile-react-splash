@@ -29,6 +29,10 @@ const AddEncuesta = () => {
                                 cambiarValor({variable: 'unidad', valor: itemValue})
                             }>
                             <Picker.Item label="HOURS" value="HOURS"/>
+                            <Picker.Item label="DAYS" value="DAYS"/>
+                            <Picker.Item label="WEEKS" value="WEEKS"/>
+                            <Picker.Item label="MONTHS" value="MONTHS"/>
+                            <Picker.Item label="FOREVER" value="FOREVER"/>
                         </Picker>
                     </View>
                 }
@@ -100,7 +104,6 @@ const styles = StyleSheet.create({
     },
     imputText: {
         margin : 8,
-        borderWidth: 1,
     },
     buttonText: {
         margin : 8,

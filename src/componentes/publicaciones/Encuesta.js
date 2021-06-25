@@ -7,7 +7,6 @@ import { Context as PublicacionContext} from '../../context/PublicacionContext';
 import { Context as PerfilContext} from '../../context/PerfilContext';
 
 const Encuesta = ({encuesta, publicacionId, usuarioId}) => {
-  console.log("encuesta:", encuesta);
     const { votar } = useContext(PublicacionContext);
     const {state:{currentUser}} = useContext(PerfilContext);
     const [chequeado, setChequeado] = useState(encuesta.opcion_id_votada?encuesta.opcion_id_votada:-1);
