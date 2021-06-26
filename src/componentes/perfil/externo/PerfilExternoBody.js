@@ -10,12 +10,15 @@ import { baseUriMultimedia } from '../../../config/configs';
 import {Context as PublicacionContext} from '../../../context/PublicacionContext';
 import {Context as ListarUsuariosContext} from '../../../context/ListarUsuariosContext';
 import {Context as PerfilContext} from '../../../context/PerfilContext';
+import { colores } from '../../../config/colores';
+import Denuncia from './Denuncia';
 
 const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_perfil, genero, fecha_nacimiento, biografia, cantidad_usuarios_seguidores, cantidad_usuarios_siguiendo, lo_sigo}}) => {
     const {state:{publicacionesUsuario, orden, tipoOrden},listarPublicacionesUsuario} = useContext(PublicacionContext);
     const {dejarDeSeguirUsuario, seguirUsuario} = useContext(ListarUsuariosContext);
-    const {cambiar_lo_sigo} = useContext(PerfilContext)
+    const {cambiar_lo_sigo} = useContext(PerfilContext);
     const [page,setPage] = useState(0);
+    const [visible,setVisible] = useState(false);
     const url = url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}`} : require('../../../../assets/perfilDefault.jpg');
     const navigation = useNavigation();
 
@@ -24,7 +27,6 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
           navigation.setOptions({ title: `${nombre} ${apellido}`});
         }
         if (lo_sigo){
-          console.log("PUBLICACIONES USUARIO LISTA");
           publicacionesUsuarioLista(0);
         }
     },[usuario, orden, tipoOrden, lo_sigo]);
@@ -44,6 +46,10 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
       await seguirUsuario(id);
       cambiar_lo_sigo({lo_sigo:true});
     }
+    
+    const denunciar = () =>{
+      setVisible(true);
+    }
   return (
     <View style={styles.scroll}>
         <ScrollView onScrollEndDrag={()=>publicacionesUsuarioLista(page)}>
@@ -56,7 +62,10 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
                 />  
                 <InfoBasica nombre= {nombre} apellido= {apellido} usuario={usuario} correo={correo} />
                 {lo_sigo ?
+                  <View style ={styles.options}>
                   <Text style={{...styles.text, color: '#dd182f'}} onPress={()=>dejarSeguir()}>Dejar de seguir</Text>
+                  <Text style={{...styles.text, color: colores.gris}} onPress={()=>denunciar()}>Denunciar</Text>
+                  </View>
                   :
                   <Text style={{...styles.text, color: '#296fe8'}} onPress={()=>seguir()}>Seguir</Text>
                 }
@@ -71,6 +80,7 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
                 <Text>Seguir para mas informacion</Text>
             }
         </ScrollView>
+        <Denuncia usuarioId= {id} visible={visible} setVisible={()=>setVisible(false)}/>
     </View>
   );
 }
@@ -82,6 +92,10 @@ const styles = StyleSheet.create({
     text:{
       fontWeight:'600',
       fontSize:15
+    },
+    options:{
+      flex:1,
+      justifyContent: 'space-between'
     }
   });
 export default PerfilExternoBody;

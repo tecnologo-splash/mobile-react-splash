@@ -71,11 +71,11 @@ const Muro = ({navigation}) => {
           </ScrollView>
           
           <Cargando estaCargando={cargando} color={colores.appDefault} />
+          <Portal.Host>
+            <BotonOrden/>
+          </Portal.Host>
         </View>
       }
-      <Portal.Host>
-      <BotonOrden/>
-      </Portal.Host>
 
     </View>
   );

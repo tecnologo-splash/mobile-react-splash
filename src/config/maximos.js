@@ -6,5 +6,5 @@ export const requestSizeListarSeguidores = 8;
 export const requestSizeListarSugeridos = 8;
 export const requestSizeListarPublicaciones = 5;
 export const requestSizeListarMensajes = 10;
-export const maxTituloEnlace = 41;
+export const maxTituloEnlace = 27;
 export const maxDescEnlace = 197;

@@ -133,6 +133,16 @@ const getConfigNotif = (dispatch) => async () =>{
     }
 }
 
+const denunciarPerfil = dispatch => async ({usuario_denunciado_id, tipo}) => {
+    try{
+        const obj = JSON.stringify({usuario_denunciado_id, tipo});
+        const response = await settings.post('/denuncias', obj, {headers: {'Content-Type': "application/json"}});
+        return response.data;
+    }catch (e){
+        console.log(e);
+    }
+}
+
 const cambiar_lo_sigo = dispatch => ({lo_sigo}) => {
     dispatch({type: 'cambiar_lo_sigo', payload: {lo_sigo}});
 }
@@ -154,7 +164,7 @@ const initialState = {
 
 export const {Context, Provider} = crearContext(
     PerfilReducer,
-    {getInfo, getInfoExterno, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil, getConfigNotif , cambiar_lo_sigo},
+    {getInfo, getInfoExterno, getSeguidores, getSeguidos, cambiarValor, cambiarFecha, editarPerfil, getConfigNotif , cambiar_lo_sigo, denunciarPerfil},
     initialState,
 );
 

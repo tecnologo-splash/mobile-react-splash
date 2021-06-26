@@ -36,4 +36,10 @@ export const tipoOrdenPublicacion =
     {tipo: "Cantidad de Me Gusta", url: "resumenReaccion.cantidadMeGusta"},
 ];
 
+export const tipoDenuncia = [
+    {tipo: "CONTENIDO_INAPROPIADO", nombre: "Contenido Inapropiado"},
+    {tipo: "CUENTA_FALSA", nombre: "Cuenta Falsa"},
+    {tipo: "SPAM", nombre: "SPAM"}
+]
+
 export const ordenPublicacion = {_asc: "asc", _desc:"desc"};

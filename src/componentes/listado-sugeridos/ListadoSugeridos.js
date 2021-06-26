@@ -10,7 +10,7 @@ const ListadoSugeridos = ({sugeridos, onEnd}) => {
   return (
       <FlatList
         data={sugeridos}
-        // horizontal={true}
+        horizontal={true}
         keyExtractor={item => item.usuario}
         onEndReached={()=>onEnd()}
         renderItem={({item})=>(
@@ -34,12 +34,5 @@ const ListadoSugeridos = ({sugeridos, onEnd}) => {
           />
   );
 }
-
-const styles = StyleSheet.create({
-  text:{
-    fontWeight:'600',
-    fontSize:15
-  }
-});
 
 export default ListadoSugeridos;
