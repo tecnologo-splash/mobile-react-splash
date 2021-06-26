@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Card} from 'react-native-paper';
 import { colores } from '../../config/colores';
 import { tipoMultimedia } from '../../config/tiposPublicacion';
@@ -60,13 +60,15 @@ const Publicacion = ({publicacion}) => {
         );
     }
     return (
+      <TouchableOpacity onPress={()=>navigation.navigate('PerfilExterno',{usuarioId:usuario.id})}>
       <Card.Title
-          title={usuario.usuario}
-          subtitle={`${usuario.nombre} ${usuario.apellido}`}
-          left={(props)=>
-            <Image {...props} style={{height: 50, width: 50, borderRadius: 50}} source={usuario.url_perfil ? {uri: `${baseUriMultimedia}${usuario.url_perfil}`}:require("../../../assets/perfilDefault.jpg")}/>
-          }
-          />
+        title={usuario.usuario}
+        subtitle={`${usuario.nombre} ${usuario.apellido}`}
+        left={(props)=>
+          <Image {...props} style={{height: 50, width: 50, borderRadius: 50}} source={usuario.url_perfil ? {uri: `${baseUriMultimedia}${usuario.url_perfil}`}:require("../../../assets/perfilDefault.jpg")}/>
+        }
+        />
+      </TouchableOpacity>
     )
   }
 

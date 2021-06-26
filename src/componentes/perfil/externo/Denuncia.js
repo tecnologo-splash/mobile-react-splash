@@ -26,6 +26,7 @@ const Denuncia = ({usuarioId,visible, setVisible}) => {
             {tipoDenuncia.map(denuncia=>(
                 <Button 
                 mode="outlined"
+                style={{marginBottom:5}}
                 loading={cargando==denuncia.tipo}
                 color={colores.gris} 
                 onPress={()=>den(denuncia.tipo)} >

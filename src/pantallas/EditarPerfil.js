@@ -85,6 +85,7 @@ const EditarPerfil = () => {
       <ScrollView style={styles.container}>
         <Title>Datos Personales</Title>
         <TextInput
+          style={styles.input}
           label={currentUser.nombre}
           value={nombre}
           onChangeText={text => cambiarValor({variable: 'nombre', valor: text})}
@@ -93,6 +94,7 @@ const EditarPerfil = () => {
         
 
         <TextInput
+          style={styles.input}
           label={currentUser.apellido}
           value={apellido}
           onChangeText={text => cambiarValor({variable: 'apellido', valor: text})}
@@ -101,6 +103,7 @@ const EditarPerfil = () => {
         <View style={styles.fecha}>
           {fechaSeleccionada? 
               <DateTimePicker
+              style={styles.input}
               mode="date"
               value={fechaNac}
               onChange={(event,selectedDate)=>onChangeFecha(event,selectedDate)}
@@ -117,13 +120,14 @@ const EditarPerfil = () => {
           </Button>
         
           <TextInput
-            style={{width:"100%"}}
+            style={{width:"100%",...styles.input}}
             label="Fecha"
             value={ fechaNac.toISOString().split('T')[0].split('-')[2] + "/" + fechaNac.toISOString().split('T')[0].split('-')[1] + "/" + fechaNac.toISOString().split('T')[0].split('-')[0] }
             disabled
           />
         </View>
         <TextInput
+          style={styles.input}
           label="Biografia"
           value={biografia}
           onChangeText={text => cambiarValor({variable: 'biografia', valor: text})}
@@ -237,7 +241,9 @@ const styles = StyleSheet.create({
     flex:1,
     //alignItems:'center'
   },
-  
+  input:{
+    marginTop:10
+  }
 });
 
 

@@ -77,7 +77,7 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
                     <MoreInfo genero={genero} fecha_nacimiento={fecha_nacimiento} biografia={biografia} publicaciones={publicacionesUsuario} />
                 </View>
                 :
-                <Text>Seguir para mas informacion</Text>
+                <Text style={{alignSelf: 'center', marginTop:5}}>Seguir para mas informacion</Text>
             }
         </ScrollView>
         <Denuncia usuarioId= {id} visible={visible} setVisible={()=>setVisible(false)}/>
