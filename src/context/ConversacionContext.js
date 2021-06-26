@@ -54,8 +54,6 @@ const crearConversacion = (dispatch) => async (conversacion)=> {
 }
 
 const listarConversacionesUsuario = dispatch => async ({page}) =>{
-    const endpoint = `/chat/obtener-chats?page=${page}&size=${requestSizeListarCoversaciones}`;
-    console.log(endpoint);
     try{
         var response = await settings.get(`/chat/obtener-chats?page=${page}&size=${requestSizeListarCoversaciones}`);
         if(page === 0){

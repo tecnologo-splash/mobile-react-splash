@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
-import {StyleSheet, View, Text, TextInput, Linking } from 'react-native';
+import {StyleSheet, View, Text, Linking } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import { FlatList } from 'react-native';    
 import { getLinkPreview, getPreviewFromContent } from 'link-preview-js';
@@ -44,14 +45,13 @@ const AddEnlace = () => {
         <View style={styles.main}>
             <View style={styles.main2}>
                 {enlaces.length < maximos._enlaces ?
-                    <View style = { styles.horizontalView }>
+                    <View>
                         {currentPublicacion.id ?
                             null
                             :
                             <TextInput
                                 label={"Enlace"}
                                 value={enlace}
-                                style = {styles.imputText}
                                 onChangeText={text => cambiarValor({variable: 'enlace', valor: text})}
                             />
                         }
@@ -110,8 +110,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     imputText: {
-        margin : 8,
-        borderWidth: 1,
+
     },
     linkText: {
         margin : 8,

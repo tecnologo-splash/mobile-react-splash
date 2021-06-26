@@ -58,7 +58,7 @@ const Muro = ({navigation}) => {
 
   return (
     <View style={{ paddingBottom: 160}}>
-      <NavBar/>
+      <NavBar buscador={true} tituloNavBar={''}/>
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
         :

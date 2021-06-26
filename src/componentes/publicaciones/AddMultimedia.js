@@ -6,6 +6,9 @@ import { Video } from 'expo-av';
 import {Context as PublicacionContext} from '../../context/PublicacionContext';
 import { FlatList } from 'react-native';    
 import { maximos } from '../../config/maximos';
+import { Entypo } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { colores } from '../../config/colores';
 
 const AddMultimedia = () => {
     const {state:{currentPublicacion, multimedias }, agregarMultimedia, cancelarMultimedia, borrarMultimedia } = useContext(PublicacionContext);
@@ -40,51 +43,6 @@ const AddMultimedia = () => {
             agregarMultimedia({id: 0, tipo: mediaTypes, uri: result.uri, type: result.type, width: result.width, height: result.height});
         }
     }
-
-    // const _rotate90 = async () => {
-    //     const manipResult = await ImageManipulator.manipulateAsync(
-    //         imageU,
-    //         [{ rotate: 90 }],
-    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-    //     ).then((data) => {
-    //         return data
-    //     });
-    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    // }
-
-    // const _rotate270 = async () => {
-    //     const manipResult = await ImageManipulator.manipulateAsync(
-    //         imageU,
-    //         [{ rotate: 270 }],
-    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-    //     ).then((data) => {
-    //         return data
-    //     });
-    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    // }
-    //   
-    // const _flipV = async () => {
-    //     const manipResult = await ImageManipulator.manipulateAsync(
-    //         imageU,
-    //         [{ flip: ImageManipulator.FlipType.Vertical }],
-    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-    //     ).then((data) => {
-    //         return data
-    //     });
-    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    // }
-
-    // const _flipH = async () => {
-    //     const manipResult = await ImageManipulator.manipulateAsync(
-    //         imageU,
-    //         [{ flip: ImageManipulator.FlipType.Horizontal }],
-    //         { compress: 1, format: ImageManipulator.SaveFormat.PNG }
-    //     ).then((data) => {
-    //         return data
-    //     });
-    //     agregarImagen({uri: manipResult.uri, type: manipResult.type, width: manipResult.width, height: manipResult.height});
-    // }
-
     return (
         <View style={styles.main}>
             <View style={styles.main2}>
@@ -104,8 +62,13 @@ const AddMultimedia = () => {
                         >
                             Video
                         </Button>
-                        <Text style = {styles.buttonText} onPress = {() => OpenGalleryAsync()}>Galeria</Text>
-                        <Text style = {styles.buttonText} onPress = {() => OpenCameraAsync()}>Camara</Text>
+                        {mediaTypes==null? null: 
+                        <>
+                            <Feather name="paperclip" style = {styles.buttonText} size={24} color={colores.appDefault} onPress = {() => OpenGalleryAsync()}/>
+                            <Entypo name="camera" style = {styles.buttonText} size={24} color={colores.appDefault} onPress = {() => OpenCameraAsync()}/>
+                        </>
+                        }
+                        
                     </View>
                     :
                     null
@@ -138,10 +101,6 @@ const AddMultimedia = () => {
                                         :
                                         <Text style = {styles.buttonText} onPress={()=>cancelarMultimedia(item.uri)}>Cancelar</Text>
                                     }
-                                    {/*<Text style = {styles.buttonText} onPress={_rotate90}>90º</Text>
-                                    <Text style = {styles.buttonText} onPress={_rotate270}>270º</Text>
-                                    <Text style = {styles.buttonText} onPress={_flipH}>Flip V.</Text>
-                                    <Text style = {styles.buttonText} onPress={_flipV}>Flip H.</Text>*/}
                                 </View>
                             )}
                         />

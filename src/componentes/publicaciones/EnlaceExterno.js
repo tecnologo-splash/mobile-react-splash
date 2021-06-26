@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text, Linking, Alert, TouchableOpacity } from 'react-native';
+import { maxDescEnlace, maxTituloEnlace } from '../../config/maximos';
 
 const EnlaceExterno = ({enlace}) => {
 
@@ -16,8 +17,17 @@ const EnlaceExterno = ({enlace}) => {
   <View style={styles.contenedor}>
       <Image  source={{uri:enlace.imagen_url}} style={styles.image}/>
       <View style={styles.cont}>
-        <Text multiline style = {styles.title}>{enlace.titulo}</Text>
-        <Text multiline style = {styles.desc}>{enlace.descripcion}</Text>
+        <Text 
+        numberOfLines={1} 
+        style = {styles.title}>
+          {enlace.titulo.length > maxTituloEnlace?`${enlace.titulo.slice(0, maxTituloEnlace)}...`:enlace.titulo}
+        </Text>
+        <Text 
+        multiline 
+        numberOfLines={8} 
+        style = {styles.desc}>
+          {enlace.descripcion.length > maxDescEnlace?`${enlace.descripcion.slice(0, maxDescEnlace)}...`:enlace.descripcion}
+        </Text>
       </View>
   </View>
   </TouchableOpacity>
@@ -31,8 +41,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-      fontWeight:'800',
-      fontSize:15
+      fontWeight:'bold',
+      fontSize:15,
+      flex:1,
+      marginRight:10,
+      textAlign: 'left'
   },
   cont:{
     margin:5
@@ -43,7 +56,10 @@ const styles = StyleSheet.create({
   },
   desc:{
     margin:5,
-    width:350
+    marginRight:20,
+    width:250,
+    flexShrink: 1,
+    textAlign: 'left'
   }
 })
 
