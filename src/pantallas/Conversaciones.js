@@ -5,14 +5,32 @@ import {Context as ConversacionContext} from '../context/ConversacionContext';
 
 import NavBar from '../componentes/muro/NavBar';
 import ListadoConversaciones from '../componentes/conversaciones/ListadoConversaciones'
+import RNPusherPushNotifications from "react-native-pusher-beams-push-notifications";
 
 const Conversaciones = ({navigation}) => {
   
   const [page, setPage] = useState(0);
   const {state:{conversacionesUsuario}, listarConversacionesUsuario} = useContext(ConversacionContext);
 
+  const interests = [
+    "debug-test",
+  ];
+  
+  const init = () => {
+    RNPusherPushNotifications.setInstanceId('PUSHER_BEAMS_INSTANCE_ID');
+  
+    // Init interests after registration
+    RNPusherPushNotifications.on('registered', () => {
+       subscribe(interests);
+    });
+  
+    RNPusherPushNotifications.on("notification", handleNotification);
+  };
+  
   useEffect(()=>{
     listarConversaciones(0);
+    init();
+    console.log('Paso');
   }, []);
 
   const listarConversaciones = async (pagina) =>{

@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
 import {ListItem} from 'react-native-elements';
 import { requestSizeListarMensajes } from "../../config/maximos";
 
-
-import {Context as ConversacionContext} from '../../context/ConversacionContext';
-
 //Esto es solo para saber mi id
 import {Context as PerfilContext} from '../../context/PerfilContext';
 //fin de esto es solo para saber mi id
+
 const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
 
   //Esto es solo para saber mi id
@@ -21,7 +19,7 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
       keyExtractor={(item, index) => index.toString()}
       refreshing={false}
       onRefresh={() => onStart()}
-      onEndReachedThreshold={0.5}
+      onEndReachedThreshold={2}
       onEndReached = {()=>{if(mensajes.length % requestSizeListarMensajes === 0){onEnd()}}}
       inverted
       renderItem={({item})=>(

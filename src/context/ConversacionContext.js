@@ -45,7 +45,6 @@ const cambiarValor = dispatch => ({variable,valor})=> {
 const crearConversacion = (dispatch) => async (conversacion)=> {
     try{
         const response = await settings.post(`chat/individual/crear`, JSON.stringify(conversacion), {headers: {"Content-Type":"application/json"}});      
-        console.log(response)
     }catch(e){
         console.log(e)
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
