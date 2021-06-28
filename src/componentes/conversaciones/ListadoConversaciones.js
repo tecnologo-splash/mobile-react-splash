@@ -13,7 +13,7 @@ const ListadoConversaciones = ({conversaciones, onEnd, onStart}) => {
       keyExtractor={(item, index) => index.toString()}
       refreshing={false}
       onRefresh={() => onStart()}
-      onEndReachedThreshold={0.5}
+      onEndReachedThreshold={2}
       onEndReached = {()=>{if(conversaciones.length % requestSizeListarCoversaciones === 0){onEnd()}}}
       renderItem={({item})=>(
         <TouchableOpacity onPress={()=>navigation.navigate('MensajesConversacion', {chat_id: item.chat_id, nombre_chat: item.nombre_chat})} style={{margin: 5}}>
@@ -21,14 +21,9 @@ const ListadoConversaciones = ({conversaciones, onEnd, onStart}) => {
             {console.log(item)}
             <ListItem.Content style={{borderRadius: 20}}>
             <View style={{flexDirection:'row'}}>
-            <Avatar 
-              rounded 
-              source={require('../../../assets/perfilDefault.jpg')}
-              size="large"
-            />
-              <View style={{margin:5}}>
+              <View>
                 <ListItem.Title>{item.nombre_chat}</ListItem.Title>
-                <ListItem.Title>{item.fecha_ultimo_mensaje}</ListItem.Title>
+                <ListItem.Subtitle>{item.fecha_ultimo_mensaje}</ListItem.Subtitle>
                 <ListItem.Subtitle>{item.chat_grupal? "Grupal":"Personal"}</ListItem.Subtitle>
               </View>
             </View>

@@ -13,6 +13,7 @@ const Conversaciones = ({navigation}) => {
 
   useEffect(()=>{
     listarConversaciones(0);
+    console.log('Paso');
   }, []);
 
   const listarConversaciones = async (pagina) =>{

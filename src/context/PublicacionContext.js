@@ -216,14 +216,30 @@ const crearPublicacion = (dispatch) => async (publicacion, multimedias)=> {
     
 }
 
-const editarPublicacion = (dispatch) => async (pubId, publicacion)=> {
+const editarPublicacion = (dispatch) => async (pubId, publicacion, multimedias)=> {
     try{
         const response = await settings.patch(`posts/${pubId}`, publicacion);
+        for(var i = 0; i < multimedias.length; i++){
+            var multimedia = multimedias[i];
+            if(!multimedia.uri.startsWith(baseUriMultimedia)){
+                var file = {
+                    uri: multimedia.uri,
+                    type: multimedia.type + '/' + multimedia.uri.split('.').pop(),
+                    name: 'multimedia_'+ response.data.id + '_' + i + '.' + multimedia.uri.split('.').pop()
+                }
+                var formData = new FormData();
+                formData.append("file", file);
+                try{
+                    await settings.post(`/posts/${response.data.id}/multimedia`, formData);
+                }catch(e){
+                    dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo subir el multimedia", activacion: null}}});
+                }
+            }
+        }
         dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
     }catch(e){
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
-    }
-    
+    } 
 }
 
 const eliminarPublicacion = (dispatch) => async (pubId)=> {
