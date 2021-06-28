@@ -19,18 +19,17 @@ const NuevoMensaje = ({chat_id}) => {
 
     return (
         <View style={styles.body}>
-            <Text>Escriba el mensaje</Text>
-                <TextInput
-                    label={"Mensaje"}
-                    value={mensaje}
-                    onChangeText={text => cambiarValor({variable: 'mensaje', valor: text})}
-                />
-                <Button
-                    style={styles.button}
-                    onPress={()=>enviar()}
-                    mode="contained"> 
-                        Enviar mensaje
-                </Button>
+            <TextInput
+                label={"Mensaje"}
+                value={mensaje}
+                onChangeText={text => cambiarValor({variable: 'mensaje', valor: text})}
+            />
+            <Button
+                style={styles.button}
+                onPress={()=>enviar()}
+                mode="contained"> 
+                    Enviar mensaje
+            </Button>
         </View>
     );
 }
@@ -42,12 +41,6 @@ const styles = StyleSheet.create({
     },
     body:{
       margin: 5
-    },
-    container:{
-      margin: 10
-    },
-    horizontalView: {
-        flexDirection: 'row',
     },
     button:{
       margin:5,

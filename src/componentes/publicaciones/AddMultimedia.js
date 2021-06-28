@@ -9,6 +9,7 @@ import { maximos } from '../../config/maximos';
 import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { colores } from '../../config/colores';
+import { baseUriMultimedia } from "../../config/configs";
 
 const AddMultimedia = () => {
     const {state:{currentPublicacion, multimedias }, agregarMultimedia, cancelarMultimedia, borrarMultimedia } = useContext(PublicacionContext);
@@ -93,11 +94,8 @@ const AddMultimedia = () => {
                                         :
                                         <Image source = {{ uri: item.uri}} style={{ width: item.width/2, height: item.height/2}}/>
                                     }
-                                    {currentPublicacion.id ?
-                                        <>
-                                        {console.log(item)}
+                                    {item.uri.startsWith(baseUriMultimedia)?
                                         <Text style = {styles.buttonText} onPress={()=>borrarMultimedia(currentPublicacion.id, item.id)}>Borrar</Text>
-                                        </>
                                         :
                                         <Text style = {styles.buttonText} onPress={()=>cancelarMultimedia(item.uri)}>Cancelar</Text>
                                     }

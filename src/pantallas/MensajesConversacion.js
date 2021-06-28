@@ -23,6 +23,7 @@ const MensajesConversacion = ({route, navigation}) => {
     const pusher = new Pusher("1f2a6fe63e0652eb4139", {
       cluster: "us2",
     });
+
     var channel = pusher.subscribe(`chat-usuario-${currentUser.id}`);
     channel.bind(`nuevo-mensaje`, function(data) {
       
@@ -34,18 +35,8 @@ const MensajesConversacion = ({route, navigation}) => {
           tipo_mensaje: data.tipoMensaje,
           from_usuario_nombre_apellido: "Sin nombre"
         }
-
         appendMensajeConversacion(mensaje)
       }
-
-      // {
-      //   "chatId": "60d5546740c5c47856b0885a",
-      //   "fromUsuarioId": 62,
-      //   "mensaje": "Hola joquito",
-      //   "tipoMensaje": "TEXTO",
-      //   "fechaDeEnvio": "Jun 25, 2021, 8:04:13 PM"
-      // }
-      // alert();
     });
 
 
@@ -62,7 +53,6 @@ const MensajesConversacion = ({route, navigation}) => {
   }, []);
 
   const listarMensajes = async (pagina) =>{
-    console.log('listarMensaje')
     await listarMensajesConversacion(chat_id, {page: pagina});
     setPage(pagina+1);
   }

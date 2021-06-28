@@ -15,42 +15,31 @@
       const crear = () => {
         if ( texto === null || texto === ''){
           mostrarAlerta("Error", "La publicación no puede ser vacia")
-        } 
-        else
-        {
+        }else{
           switch (tipoPub) {
             case 1:
               var formData = { texto }
-              crearPublicacion(formData, multimedias);
-              break;
-            case 2:
-              var formData = { texto }
-              crearPublicacion(formData, videos);
+              if(multimedias.length = 0){
+                mostrarAlerta("Error", "La publicación no tiene archivos multimedia ingresados")
+              }else{
+                crearPublicacion(formData, multimedias);
+              }
               break;
             case 3:
-              if ( enlaces.length == 0 )
-              {
+              if ( enlaces.length == 0 ){
                 mostrarAlerta("Error", "La publicación no tiene enlaces ingresados")
-              }
-              else
-              {
+              }else{
                 var formData = { texto, enlaces_externos: enlaces }
                 crearPublicacion(formData, []);
               }
               break;
             case 4:
-              if ( duracion === 0 )
-              {
+              if ( duracion === 0 ){
                 mostrarAlerta("Error", "La encuesta no puede tener duración 0")
-              }
-              else
-              {
-                if ( opciones.length < 2 )
-                {
+              }else{
+                if ( opciones.length < 2 ){
                   mostrarAlerta("Error", "La encuesta no tiene el minimo de dos opciones")
-                }
-                else
-                {
+                }else{
                   var encuesta = { duracion, unidad, opciones}
                   var formData = { texto, encuesta }
                   crearPublicacion(formData, []);
@@ -72,10 +61,9 @@
       const editar = () => {
         if ( texto === null || texto === ''){
           mostrarAlerta("Error", "La publicación no puede ser vacia")
-        } 
-        else{
+        }else{
           var formData = { texto }
-          editarPublicacion(currentPublicacion.id, formData);
+          editarPublicacion(currentPublicacion.id, formData, multimedias);
         }
       }
 
@@ -110,21 +98,21 @@
               <>
                 <Button 
                 mode={tipoPub===1? "contained":"outlined"} 
-                onPress={()=>cambiarValor({variable: 'tipoPub', valor: 1})}
+                onPress={!currentPublicacion.id?()=>cambiarValor({variable: 'tipoPub', valor: 1}):null}
                 style={styles.button}
                 >
                     Imagen/Video
                 </Button>
                 <Button 
                 mode={tipoPub===3? "contained":"outlined"} 
-                onPress={()=>cambiarValor({variable: 'tipoPub', valor: 3})}
+                onPress={!currentPublicacion.id?()=>cambiarValor({variable: 'tipoPub', valor: 3}):null}
                 style={styles.button}
                 >
                     Enlace
                 </Button>
                 <Button 
                 mode={tipoPub===4? "contained":"outlined"} 
-                onPress={()=>cambiarValor({variable: 'tipoPub', valor: 4})}
+                onPress={!currentPublicacion.id?()=>cambiarValor({variable: 'tipoPub', valor: 4}):null}
                 style={styles.button}
                 >
                     Encuesta

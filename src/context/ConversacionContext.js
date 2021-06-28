@@ -19,7 +19,6 @@ const ConversacionReducer = (state,action) => {
         case 'editarMensaje':
             var currentFecha = new Date()
             var fechaEnvio = `${currentFecha.getDate()}/${currentFecha.getMonth()+1}/${currentFecha.getFullYear()} ${currentFecha.getHours()}:${currentFecha.getMinutes()}`
-            console.log(fechaEnvio)
             var currentMensajes = {fecha_envio: fechaEnvio, from_usuario_nombre_apellido: null, from_usuario_id: action.payload.userId, mensaje: action.payload.mensaje.mensaje, tipo_mensaje: "TEXTO"}
             return {...state, mensaje : "", tipoMensajeEnum: "TEXTO", mensajesConversacion: [currentMensajes, ...state.mensajesConversacion]};
         case 'listarUsuariosParaConversar':
@@ -62,11 +61,11 @@ const listarConversacionesUsuario = dispatch => async ({page}) =>{
         }
     }catch(e){
         console.log(e);
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
 }
 
 const crearMensaje = (dispatch) => async (mensaje, userId)=> {
-    console.log('entró')
     try{
         const response = await settings.post(`/chat/enviar-mensaje`, JSON.stringify(mensaje), {headers: {"Content-Type":"application/json"}});      
         dispatch({type:'editarMensaje', payload:{userId: userId, mensaje:mensaje}});
@@ -77,33 +76,41 @@ const crearMensaje = (dispatch) => async (mensaje, userId)=> {
 }
 
 const listarMensajesConversacion = dispatch => async (chat_id, {page}) =>{
-    const endpoint = `/chat/obtener-mensajes?chatId=${chat_id}&page=${page}&size=${requestSizeListarMensajes}`;
-    console.log(endpoint);
     try{
         var response = await settings.get(`/chat/obtener-mensajes?chatId=${chat_id}&page=${page}&size=${requestSizeListarMensajes}`);
         if(page === 0){
             dispatch({type: 'listarMensajesConversacion', payload: {mensajesConversacion: response.data}})
         }else{
-            console.log('formato', response.data)
             dispatch({type: 'appendMensajesConversacion', payload: {mensajesConversacion: response.data}})
         }
     }catch(e){
         console.log(e);
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
 }
 
 const appendMensajeConversacion = (dispatch) => async (mensaje) => {
-    console.log(mensaje)
     dispatch({type: 'addMensajeFromPusher', payload: mensaje})
 }
 
 const listarUsuariosParaConversar = dispatch => async ({filtro,valor}) => {
     try{
-        const endpoint = `/users?page=0&size=${requestSizeListarUsuarios}activo=true&bloqueado=false&${filtro}=${valor}`;
         const response = await settings.get(`/users?page=0&size=${requestSizeListarUsuarios}&activo=true&bloqueado=false&${filtro}=${valor}`);
         dispatch({type:'listarUsuariosParaConversar', payload: {usuariosParaConversar: response.data.content}});
     }catch(e){
         console.log(e);
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
+    }
+}
+
+const verificaSiExisteConversacion = dispatch => async (id) => {
+    try{
+        const response = await settings.get(`/chat/obtener-chat?usuarioIdDos=${id}`);
+        console.log('RESPUEST', response.data[0].chat_id);
+        //dispatch({type:'listarUsuariosParaConversar', payload: {chats: response.data}});
+    }catch(e){
+        console.log(e);
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
 }
 
@@ -111,6 +118,7 @@ const initialState = {
     error: {},
     usuario: "",
     to_usuario_id: "",
+    to_usuario_nombre: "",
     mensaje: "",
     tipoMensajeEnum: "TEXTO",
     cargando: false,
@@ -128,6 +136,7 @@ export const {Context, Provider} = crearContext(
         crearMensaje,
         listarMensajesConversacion,
         listarUsuariosParaConversar,
+        verificaSiExisteConversacion,
         appendMensajeConversacion
     },
     initialState,
