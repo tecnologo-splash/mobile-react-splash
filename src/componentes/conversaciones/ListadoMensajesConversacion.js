@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   arrowPinkView: {
     position: 'absolute',
     left: -16,
+    alignSelf: 'baseline',
     borderTopColor: 'transparent',
     borderTopWidth: 13,
     borderRightWidth: 26,
@@ -98,6 +99,7 @@ const styles = StyleSheet.create({
   arrowBlueView: {
     position: 'absolute',
     right: -16,
+    alignSelf: 'baseline',
     borderTopColor: 'transparent',
     borderTopWidth: 13,
     borderLeftWidth: 26,

@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { Alert, StyleSheet, View, Text, FlatList } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import {ListItem} from 'react-native-elements';
 import { Context as ConversacionContext } from '../context/ConversacionContext';
+import { AntDesign } from '@expo/vector-icons';
 
 const NuevaConversacion = () => {
 
@@ -42,15 +44,23 @@ const NuevaConversacion = () => {
     
     return (
         <View style={styles.body}>
-            <Text onPress={()=>quitarUsuarioParaConversar()}>{to_usuario_nombre}</Text>
             {to_usuario_nombre === ''? 
                 <TextInput
-                    label={"Usuario"}
+                    label={"Seleccione usuario"}
                     value={usuario}
                     onChangeText={text => cambiarValor({variable: 'usuario', valor: text})}
                 />
                 :
-                null
+                <ListItem onPress={()=>quitarUsuarioParaConversar()}>
+                    <ListItem.Content>
+                        <View style={styles.usuarioSel}>
+                            <ListItem.Title>
+                                <Text>{to_usuario_nombre}</Text>
+                                <AntDesign name="closecircleo" size={20} color="black" />
+                            </ListItem.Title>
+                        </View>
+                    </ListItem.Content>
+                </ListItem>    
             }
             {usuario != ''? 
                 <FlatList
@@ -62,7 +72,7 @@ const NuevaConversacion = () => {
                 null
             }
             <TextInput
-                label={"Mensaje"}
+                label={"Escriba mensaje"}
                 value={mensaje}
                 onChangeText={text => cambiarValor({variable: 'mensaje', valor: text})}
             />
@@ -82,19 +92,25 @@ const styles = StyleSheet.create({
         borderWidth:0
     },
     body:{
-      margin: 5
+        margin: 5
     },
     container:{
-      margin: 10
+        margin: 10
     },
     horizontalView: {
         flexDirection: 'row',
     },
     button:{
-      margin:5,
-      borderWidth:0,
-      borderRadius:20
-    }
+        margin:5,
+        borderWidth:0,
+        borderRadius:20
+    },
+    usuarioSel:{
+        borderWidth:1,
+        borderRadius:20,
+        padding: 10,
+        flexDirection: 'row',
+    },
 });
 
 export {NuevaConversacion};
