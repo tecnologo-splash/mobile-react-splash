@@ -10,7 +10,7 @@ const ListadoSugeridos = ({sugeridos, onEnd}) => {
   return (
       <FlatList
         data={sugeridos}
-        //horizontal={true}
+        horizontal={true}
         keyExtractor={item => item.usuario}
         onEndReached={()=>onEnd()}
         renderItem={({item})=>(
