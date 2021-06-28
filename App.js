@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -22,6 +22,8 @@ import { colores } from './src/config/colores';
 
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+
 
 const theme = {
   ...DefaultTheme,
@@ -83,6 +85,7 @@ const BottomNavigator = ()=> (
 );
 export default function App() {
   const stackOptions={headerShown: true, headerStyle: {backgroundColor:'#6d31bf'}, headerTitleStyle:{color:'#ffffff'}, headerTintColor: '#fff'}
+
 
   return (
     <SafeAreaProvider>

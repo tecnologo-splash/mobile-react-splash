@@ -15,6 +15,9 @@ import {Context as PerfilContext} from '../context/PerfilContext';
 import {Context as ComentariosContext} from '../context/ComentariosContext';
 import {Context as InicioSesionContext} from '../context/InicioSesionContext';
 
+
+import {init} from '../../initPusher';
+
 const Muro = ({navigation}) => {
 
   const [page, setPage] = useState(0);
@@ -26,7 +29,12 @@ const Muro = ({navigation}) => {
   const {state:{comentarios}} = useContext(ComentariosContext);
   const {state:{currentUser}}= useContext(PerfilContext);
 
+
+  const interest = `users-${currentUser.id}`
   useEffect(()=>{
+
+    init(interest);
+
     setTodoaCero();
     console.log("EJECUTO USE EFFECT", redireccionar);
     if(redireccionar == true){
@@ -34,6 +42,7 @@ const Muro = ({navigation}) => {
       cerrarSesion();
       navigation.navigate('InicioSesion');
     }
+    
   },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar]);
 
   const setTodoaCero = ()=> {
