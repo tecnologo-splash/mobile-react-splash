@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { Alert, StyleSheet, View, Text, FlatList } from 'react-native';
+import { Alert, StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
 import { Context as ConversacionContext } from '../context/ConversacionContext';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { baseUriMultimedia } from '../config/configs';
 
 const NuevaConversacion = () => {
 
@@ -25,15 +26,20 @@ const NuevaConversacion = () => {
     }
     
     const selecUsuarioParaConversar = async (id, nombre) => {
+        console.log(id, nombre)
         const response = await verificaSiExisteConversacion(id)
-        console.log(response)
-        if (response.chat_id){
+        console.log('respuesta', response)
+        if (response){
+            cambiarValor({variable: 'to_usuario_id', valor: ''})
+            cambiarValor({variable: 'to_usuario_nombre', valor: ''})
+            cambiarValor({variable: 'usuario', valor: ''})
             navigation.navigate("MensajesConversacion", {chat_id: response.chat_id, nombre_chat:response.nombre_chat, url_perfil: response.url_perfil})
+        }else{
+            console.log('FRuttaaaaa')
+            cambiarValor({variable: 'to_usuario_id', valor: id})
+            cambiarValor({variable: 'to_usuario_nombre', valor: nombre})
+            cambiarValor({variable: 'usuario', valor: ''})
         }
-
-        cambiarValor({variable: 'to_usuario_id', valor: id})
-        cambiarValor({variable: 'to_usuario_nombre', valor: nombre})
-        cambiarValor({variable: 'usuario', valor: ''})
     }
 
     const quitarUsuarioParaConversar = () => {
@@ -74,7 +80,19 @@ const NuevaConversacion = () => {
                 <FlatList
                     data={usuariosParaConversar}
                     keyExtractor={item => item.id}
-                    renderItem={({item})=>( <Text onPress={()=>selecUsuarioParaConversar(item.id, item.usuario)}>{item.usuario}</Text>)}
+                    renderItem={({item})=>(
+                        <TouchableOpacity onPress={()=>selecUsuarioParaConversar(item.id, item.usuario)}>
+                            <View style={styles.horizontalView}>
+                                <Image 
+                                style={styles.image} 
+                                source={item.url_perfil ? { uri: `${baseUriMultimedia}${item.url_perfil}` } :require('../../assets/perfilDefault.jpg')
+                                }
+                                />
+                                <Text style={styles.text}>{item.usuario}</Text>
+                            </View>
+                        </TouchableOpacity>
+                        // <Text onPress={()=>selecUsuarioParaConversar(item.id, item.usuario)}>{item.usuario}</Text>)}
+                    )}
                 />
                 :
                 null
@@ -118,6 +136,20 @@ const styles = StyleSheet.create({
         borderRadius:20,
         padding: 10,
         flexDirection: 'row',
+    },
+    image:{
+        height: 35, 
+        width: 35, 
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor:'#fff',
+        marginLeft: 20,
+    },
+    text:{
+        fontSize: 20,
+        height:35,
+        marginLeft: 15,
+        flex: 1,
     },
 });
 
