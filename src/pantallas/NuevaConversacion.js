@@ -4,10 +4,13 @@ import { TextInput, Button } from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
 import { Context as ConversacionContext } from '../context/ConversacionContext';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const NuevaConversacion = () => {
 
     const {state:{usuario, to_usuario_id, to_usuario_nombre, mensaje, tipoMensajeEnum, usuariosParaConversar }, cambiarValor , crearConversacion, listarUsuariosParaConversar, verificaSiExisteConversacion} = useContext(ConversacionContext);
+    
+    const navigation = useNavigation();
     
     useEffect(()=>{
         listarUsuarios();
@@ -21,8 +24,13 @@ const NuevaConversacion = () => {
         await listarUsuariosParaConversar({filtro: "usuario", valor:usuario});
     }
     
-    const selecUsuarioParaConversar = (id, nombre) => {
-        verificaSiExisteConversacion(id)
+    const selecUsuarioParaConversar = async (id, nombre) => {
+        const response = await verificaSiExisteConversacion(id)
+        console.log(response)
+        if (response.chat_id){
+            navigation.navigate("MensajesConversacion", {chat_id: response.chat_id, nombre_chat:response.nombre_chat, url_perfil: response.url_perfil})
+        }
+
         cambiarValor({variable: 'to_usuario_id', valor: id})
         cambiarValor({variable: 'to_usuario_nombre', valor: nombre})
         cambiarValor({variable: 'usuario', valor: ''})
