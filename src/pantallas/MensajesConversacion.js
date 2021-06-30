@@ -6,11 +6,12 @@ import {Context as PerfilContext} from '../context/PerfilContext';
 import ListadoMensajesConversacion from '../componentes/conversaciones/ListadoMensajesConversacion';
 import NuevoMensaje from './NuevoMensaje';
 import Pusher from 'pusher-js/react-native';
+import { baseUriMultimedia } from '../config/configs';
 
 
 const MensajesConversacion = ({route, navigation}) => {
   
-  const {chat_id, nombre_chat} = route.params;
+  const {chat_id, nombre_chat, url_perfil} = route.params;
 
   const navigation2 = useNavigation();
   const [page, setPage] = useState(0);
@@ -39,18 +40,19 @@ const MensajesConversacion = ({route, navigation}) => {
       }
     });
 
-
     navigation2.setOptions({ title: 
-    <View style={styles.viewHorizontal}>
-      <Image 
-        style={styles.image} 
-        source={require('../../assets/perfilDefault.jpg')
-        }
-      />
-      <Text style={styles.text}>{nombre_chat}</Text>
-    </View>})
+      <View style={styles.viewHorizontal}>
+        <Image 
+          style={styles.image} 
+          source={url_perfil ? { uri: `${baseUriMultimedia}${url_perfil}` } :require('../../assets/perfilDefault.jpg')
+          }
+        />
+        <Text style={styles.text}>{nombre_chat}</Text>
+      </View>
+    })
+
     listarMensajes(0)
-  }, []);
+  }, [chat_id]);
 
   const listarMensajes = async (pagina) =>{
     await listarMensajesConversacion(chat_id, {page: pagina});

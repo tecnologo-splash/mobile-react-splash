@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "173036509667",
+    "project_id": "splash-2779d",
+    "storage_bucket": "splash-2779d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173036509667:android:bd28b7327a1082b627a8d6",
+        "android_client_info": {
+          "package_name": "com.splash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173036509667-90flb7t288e02fb27sk87au4ml1lstun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC8i3MeIQ6v5Uuz_0Sf7Cl7nl0yR1_PJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173036509667-90flb7t288e02fb27sk87au4ml1lstun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

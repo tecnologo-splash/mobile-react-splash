@@ -164,8 +164,6 @@ const EditarPerfil = () => {
         }
 
 
-      </ScrollView>
-
       <Button
         style={styles.button}
         onPress={()=>onSubmit()}
@@ -180,6 +178,9 @@ const EditarPerfil = () => {
         color="red"> 
           Eliminar Cuenta
       </Button>
+
+      </ScrollView>
+
 
 
       <Portal>

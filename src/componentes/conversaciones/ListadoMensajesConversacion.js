@@ -42,7 +42,7 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
     </ListItem>, []
   );
 
-  const keyExtractor = useCallback((item)=> item.fecha_envio.toString());
+  const keyExtractor = useCallback((item, index)=> index.toString());
 
   return (
     <FlatList
