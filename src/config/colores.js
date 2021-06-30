@@ -1,1 +1,1 @@
-export const colores = { appDefault: "#6d31bf", blanco: "#ffffff", secundario: "#3c1053", gris: "#ababab", transparente:"rgba( 255, 255, 255, 0 )"};
+export const colores = { appDefault: "#6d31bf", appDefaultClaro:"#8f3fff", blanco: "#ffffff", secundario: "#3c1053", gris: "#ababab",grisClaro: "#d1d1d1", transparente:"rgba( 255, 255, 255, 0 )"};

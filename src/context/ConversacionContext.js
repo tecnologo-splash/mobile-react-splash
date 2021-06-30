@@ -67,6 +67,7 @@ const listarConversacionesUsuario = dispatch => async ({page}) =>{
 
 const crearMensaje = (dispatch) => async (mensaje, userId)=> {
     try{
+        console.log('/chat/enviar-mensaje');
         const response = await settings.post(`/chat/enviar-mensaje`, JSON.stringify(mensaje), {headers: {"Content-Type":"application/json"}});      
         dispatch({type:'editarMensaje', payload:{userId: userId, mensaje:mensaje}});
     }catch(e){

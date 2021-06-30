@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
 import {ListItem} from 'react-native-elements';
 import { requestSizeListarMensajes } from "../../config/maximos";
+import {colores} from "../../config/colores";
 
 //Esto es solo para saber mi id
 import {Context as PerfilContext} from '../../context/PerfilContext';
@@ -17,19 +18,19 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
     <ListItem>
       <ListItem.Content>
         {item.from_usuario_id === currentUser.id?
-          <>
-            <View style = {styles.arrowPinkView}/>
-            <View style = {styles.horizontalPinkView}>
+            <>
+            <View style = {styles.arrowBlueView}/>
+            <View style = {styles.horizontalBlueView}>
               <View>
                 <ListItem.Title>{item.mensaje}</ListItem.Title>
                 <ListItem.Subtitle>{item.fecha_envio}</ListItem.Subtitle>
               </View>
             </View>
-          </>
+            </>
           :
           <>
-            <View style = {styles.arrowBlueView}/>
-            <View style = {styles.horizontalBlueView}>
+            <View style = {styles.arrowPinkView}/>
+            <View style = {styles.horizontalPinkView}>
               <View>
                 <ListItem.Title>{item.mensaje}</ListItem.Title>
                 <ListItem.Subtitle>{item.fecha_envio}</ListItem.Subtitle>
@@ -68,9 +69,9 @@ const styles = StyleSheet.create({
   },
   horizontalPinkView: {
     borderRadius: 20,
-    borderColor: 'red',
+    borderColor: colores.gris,
     borderWidth: 1,
-    backgroundColor: 'lightpink',
+    backgroundColor: colores.grisClaro,
     flexDirection: 'row',
     flex: 1,
     padding: 10,
@@ -82,15 +83,15 @@ const styles = StyleSheet.create({
     borderTopColor: 'transparent',
     borderTopWidth: 13,
     borderRightWidth: 26,
-    borderRightColor: 'red',
+    borderRightColor: colores.gris,
     borderBottomWidth: 13,
     borderBottomColor: 'transparent',
   },
   horizontalBlueView: {
     borderRadius: 20,
-    borderColor: 'blue',
+    borderColor: colores.appDefault,
     borderWidth: 1,
-    backgroundColor: 'lightblue',
+    backgroundColor: colores.appDefaultClaro,
     flexDirection: 'row',
     alignSelf: 'flex-end',
     flex: 1,
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'transparent',
     borderTopWidth: 13,
     borderLeftWidth: 26,
-    borderLeftColor: 'blue',
+    borderLeftColor: colores.appDefault,
     borderBottomWidth: 13,
     borderBottomColor: 'transparent',
   },

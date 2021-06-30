@@ -20,7 +20,7 @@ const NuevoMensaje = ({chat_id}) => {
     return (
         <View style={styles.body}>
             <TextInput
-                label={"Escriba mensaje"}
+                label="Escriba mensaje"
                 value={mensaje}
                 onChangeText={text => cambiarValor({variable: 'mensaje', valor: text})}
             />
