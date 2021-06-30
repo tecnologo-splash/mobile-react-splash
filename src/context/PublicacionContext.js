@@ -39,6 +39,24 @@ const PublicacionReducer = (state,action) => {
             return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
         case 'editarPublicacion':
             return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
+        case 'borrarMultimediaPublicacion':
+            var multimediasCurrentPublicacion = []
+            if (action.payload.publicacionInfo.multimedia.length > 0)
+            {
+                action.payload.publicacionInfo.multimedia.map((data)=>multimediasCurrentPublicacion.push({id: data.id, tipo: data.tipo==="FOTO"?"Images":"Videos" , uri: baseUriMultimedia + data.url, type: data.tipo, width: 800, height: 600}))
+            }
+            var enlacesCurrentPublicacion = []
+            console.log(action.payload.publicacionInfo)
+            if(action.payload.publicacionInfo.enlace_externo.length > 0)
+            {
+                action.payload.publicacionInfo.enlace_externo.map((data)=>enlacesCurrentPublicacion.push({url: data.url}))
+            }
+            var opcionesCurrentPublicacion = []
+            if(action.payload.publicacionInfo.encuesta != null)
+            {
+                action.payload.publicacionInfo.encuesta.opciones.map((data)=>opcionesCurrentPublicacion.push({texto: data.texto}))
+            }
+            return {...state, currentPublicacion:action.payload.publicacionInfo, texto : action.payload.publicacionInfo.texto, duracion: 0, unidad: "HOURS", multimedias: multimediasCurrentPublicacion, enlaces: enlacesCurrentPublicacion, opciones: opcionesCurrentPublicacion};
         case 'listarPublicacionesUsuario':
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario, redireccionar: false};
         case 'appendPublicacionesUsuario':
@@ -135,43 +153,9 @@ const borrarMultimedia = dispatch => async (pubId, multId) =>{
     console.log('Mensaje', pubId, multId)
     try{
         const response = await settings.delete(`posts/${pubId}/multimedia/${multId}`);
-        dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
+        dispatch({type:'borrarMultimediaPublicacion', payload: {publicacionInfo:response.data}});
     }catch(e){
         dispatch({type:'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
-    }
-}
-
-const agregarImagen = dispatch => (imagen) => {
-    dispatch({type: 'agregarImagen', payload: {imagen}});
-}
-
-const cancelarImagen = dispatch => (uri) =>{
-    dispatch({type: 'cancelarImagen', payload: {uri}});
-}
-
-const borrarImagen = dispatch => async (pubId, imgId) =>{
-    try{
-        const response = await settings.delete(`posts/${pubId}/multimedia/${imgId}`);
-        dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
-    }catch(e){
-        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
-    }
-}
-
-const agregarVideo = dispatch => (video) => {
-    dispatch({type: 'agregarVideo', payload: {video}});
-}
-
-const cancelarVideo = dispatch => (uri) =>{
-    dispatch({type: 'cancelarVideo', payload: {uri}});
-}
-
-const borrarVideo = dispatch => async (pubId, vidId) =>{
-    try{
-        const response = await settings.delete(`posts/${pubId}/multimedia/${vidId}`);
-        dispatch({type:'editarPublicacion', payload: {publicacionInfo:response.data}});
-    }catch(e){
-        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
     }
 }
 
@@ -332,8 +316,6 @@ const initialState = {
     currentPublicacion: {},
     tipoPub : 0,
     multimedias: [],
-    imagenes: [],
-    videos: [],
     opciones: [],
     enlaces: [],
     texto: "",
@@ -357,12 +339,6 @@ export const {Context, Provider} = crearContext(
      agregarMultimedia,
      cancelarMultimedia,
      borrarMultimedia,
-     agregarImagen, 
-     cancelarImagen,
-     borrarImagen,
-     agregarVideo, 
-     cancelarVideo,
-     borrarVideo, 
      agregarOpcion, 
      cancelarOpcion,
      agregarEnlace, 

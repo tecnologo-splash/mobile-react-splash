@@ -106,11 +106,11 @@ const listarUsuariosParaConversar = dispatch => async ({filtro,valor}) => {
 const verificaSiExisteConversacion = dispatch => async (id) => {
     try{
         const response = await settings.get(`/chat/obtener-chat?usuarioIdDos=${id}`);
-        console.log('RESPUEST', response.data[0].chat_id);
-        //dispatch({type:'listarUsuariosParaConversar', payload: {chats: response.data}});
+        console.log('RESPUEST', response.data[0]);
+        return response.data[0];
     }catch(e){
-        console.log(e);
-        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
+        //console.log(e);
+        return null;
     }
 }
 
