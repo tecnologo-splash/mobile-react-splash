@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import { Appbar } from 'react-native-paper';
 import { Image, StyleSheet, View, TextInput } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Entypo } from '@expo/vector-icons';
 import { Tooltip } from 'react-native-elements';
 import { Text } from 'react-native';
 import { TouchableOpacity } from 'react-native';
@@ -10,6 +10,7 @@ import {Context as PerfilContext} from '../../context/PerfilContext';
 import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosContext';
 import MenuTooltip from './MenuTooltip';
 import { baseUriMultimedia } from '../../config/configs';
+import { colores } from '../../config/colores';
 
 const NavBar = ({buscador, tituloNavBar}) => {
   const navigation = useNavigation();
@@ -26,6 +27,12 @@ const NavBar = ({buscador, tituloNavBar}) => {
     getInfo()
   },[])
 
+  const renderCross = ()=> {
+    if(buscar != ""){
+      return <TextInput.Icon icon="alpha-x" color={colores.blanco} onPress={()=>cambiarValor({variable:"buscar", valor: ""})}/>
+    }
+    return null;
+  }
   return (
     <Appbar.Header style={{backgroundColor: '#6F32C1'}}>
         <TouchableOpacity onPress={()=>navigation.navigate("Perfil")}>
@@ -48,6 +55,7 @@ const NavBar = ({buscador, tituloNavBar}) => {
             onChangeText={text => _onChange(text)}
             style={styles.input}
           />
+          {buscar != "" ?<Entypo name="cross" size={24} style={styles.cross} color={colores.blanco} onPress={()=>cambiarValor({variable:"buscar", valor: ""})} />:null}
           <Tooltip
             backgroundColor="#6d31bf"
             withOverlay= {false}
@@ -85,6 +93,9 @@ const styles = StyleSheet.create({
       flex: 1,
       borderBottomColor:'#fff',
       borderBottomWidth: 1
+    },
+    cross:{
+      alignSelf: 'center'
     },
     text:{
       color: '#fff',

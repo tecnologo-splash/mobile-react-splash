@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {StyleSheet, View, Text } from 'react-native';
-import { TextInput, Button, Paragraph, Dialog, Portal } from 'react-native-paper';
+import { TextInput} from 'react-native-paper';
+import { colores } from '../config/colores';
 import {Context as ConversacionContext} from '../context/ConversacionContext';
 import {Context as PerfilContext} from '../context/PerfilContext';
 
@@ -23,13 +24,8 @@ const NuevoMensaje = ({chat_id}) => {
                 label="Escriba mensaje"
                 value={mensaje}
                 onChangeText={text => cambiarValor({variable: 'mensaje', valor: text})}
+                right={<TextInput.Icon onPress={()=>enviar()} icon="send" color={colores.appDefault}/>}
             />
-            <Button
-                style={styles.button}
-                onPress={()=>enviar()}
-                mode="contained"> 
-                    Enviar mensaje
-            </Button>
         </View>
     );
 }

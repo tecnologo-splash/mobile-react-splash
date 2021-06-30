@@ -33,7 +33,7 @@ const Muro = ({navigation}) => {
   const interest = `users-${currentUser.id}`
   useEffect(()=>{
 
-    init(interest);
+    //init(interest); ///////// ES EL PUSHER
 
     setTodoaCero();
     console.log("EJECUTO USE EFFECT", redireccionar);

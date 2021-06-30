@@ -80,7 +80,7 @@ const Publicacion = ({publicacion}) => {
             <Text>{publicacion.texto}</Text>
       </Card.Content>
       {publicacion.enlace_externo.length > 0 ?
-        publicacion.enlace_externo.map(enlace=>(<EnlaceExterno enlace={enlace}/>))
+        publicacion.enlace_externo.map((enlace,index)=>(<EnlaceExterno key={index} enlace={enlace}/>))
         :
         null
       }
