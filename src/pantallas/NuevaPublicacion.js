@@ -17,6 +17,9 @@
           mostrarAlerta("Error", "La publicación no puede ser vacia")
         }else{
           switch (tipoPub) {
+            case 0:
+              var formData = { texto }
+              crearPublicacion(formData, []);
             case 1:
               var formData = { texto }
               crearPublicacion(formData, multimedias);
