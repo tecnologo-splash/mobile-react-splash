@@ -19,11 +19,7 @@
           switch (tipoPub) {
             case 1:
               var formData = { texto }
-              if(multimedias.length = 0){
-                mostrarAlerta("Error", "La publicación no tiene archivos multimedia ingresados")
-              }else{
-                crearPublicacion(formData, multimedias);
-              }
+              crearPublicacion(formData, multimedias);
               break;
             case 3:
               if ( enlaces.length == 0 ){

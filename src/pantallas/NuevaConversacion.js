@@ -25,7 +25,7 @@ const NuevaConversacion = () => {
         await listarUsuariosParaConversar({filtro: "usuario", valor:usuario});
     }
     
-    const selecUsuarioParaConversar = async (id, nombre) => {
+    const selecUsuarioParaConversar = async (id, nombre, url_perfil) => {
         console.log(id, nombre)
         const response = await verificaSiExisteConversacion(id)
         console.log('respuesta', response)
@@ -33,7 +33,7 @@ const NuevaConversacion = () => {
             cambiarValor({variable: 'to_usuario_id', valor: ''})
             cambiarValor({variable: 'to_usuario_nombre', valor: ''})
             cambiarValor({variable: 'usuario', valor: ''})
-            navigation.navigate("MensajesConversacion", {chat_id: response.chat_id, nombre_chat:response.nombre_chat, url_perfil: response.url_perfil})
+            navigation.navigate("MensajesConversacion", {chat_id: id, nombre_chat: nombre, url_perfil: url_perfil})
         }else{
             cambiarValor({variable: 'to_usuario_id', valor: id})
             cambiarValor({variable: 'to_usuario_nombre', valor: nombre})
@@ -84,7 +84,7 @@ const NuevaConversacion = () => {
                     data={usuariosParaConversar}
                     keyExtractor={item => item.id}
                     renderItem={({item})=>(
-                        <TouchableOpacity onPress={()=>selecUsuarioParaConversar(item.id, item.usuario)}>
+                        <TouchableOpacity onPress={()=>selecUsuarioParaConversar(item.id, item.usuario, item.url_perfil)}>
                             <View style={styles.horizontalView}>
                                 <Image 
                                 style={styles.image} 

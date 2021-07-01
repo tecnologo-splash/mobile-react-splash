@@ -3,7 +3,6 @@ import InfoBasica from '../InfoBasica';
 import { useNavigation } from '@react-navigation/native';
 import {Avatar, ListItem, Divider} from 'react-native-elements';
 import { StyleSheet, ScrollView, View } from 'react-native';
-import InfoSeguidores from '../InfoSeguidores';
 import MoreInfo from '../MoreInfo';
 import { Text } from 'react-native';
 import { baseUriMultimedia } from '../../../config/configs';
@@ -12,6 +11,7 @@ import {Context as ListarUsuariosContext} from '../../../context/ListarUsuariosC
 import {Context as PerfilContext} from '../../../context/PerfilContext';
 import { colores } from '../../../config/colores';
 import Denuncia from './Denuncia';
+import InfoSeguidoresExterno from './InfoSeguidoresExterno';
 
 const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_perfil, genero, fecha_nacimiento, biografia, cantidad_usuarios_seguidores, cantidad_usuarios_siguiendo, lo_sigo}}) => {
     const {state:{publicacionesUsuario, orden, tipoOrden},listarPublicacionesUsuario} = useContext(PublicacionContext);
@@ -73,7 +73,7 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
             <Divider style={{ backgroundColor: '#6F32C1' }} />
             {lo_sigo?
                 <View>
-                    <InfoSeguidores cantSeguidores= {cantidad_usuarios_seguidores} cantSeguidos={cantidad_usuarios_siguiendo} />
+                    <InfoSeguidoresExterno cantSeguidores= {cantidad_usuarios_seguidores} cantSeguidos={cantidad_usuarios_siguiendo} />
                     <MoreInfo genero={genero} fecha_nacimiento={fecha_nacimiento} biografia={biografia} publicaciones={publicacionesUsuario} />
                 </View>
                 :

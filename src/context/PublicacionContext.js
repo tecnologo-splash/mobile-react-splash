@@ -13,16 +13,6 @@ const PublicacionReducer = (state,action) => {
         case 'cancelarMultimedia':
             var todosMultimediasMenosCancelado = state.multimedias.filter(item => item.uri != action.payload.uri);
             return {...state, multimedias: todosMultimediasMenosCancelado};
-        case 'agregarImagen':
-            return {...state, imagenes: [...state.imagenes, action.payload.imagen]};
-        case 'cancelarImagen':
-            var todasImagenesMenosCancelada = state.imagenes.filter(item => item.uri != action.payload.uri);
-            return {...state, imagenes: todasImagenesMenosCancelada};
-        case 'agregarVideo':
-            return {...state, videos: [...state.videos, action.payload.video]};
-        case 'cancelarVideo':
-            var todosVideosMenosCancelado = state.videos.filter(item => item.uri != action.payload.uri);
-            return {...state, videos: todosVideosMenosCancelado};
         case 'agregarOpcion':
             return {...state, opciones: [...state.opciones, action.payload.opcion], opcion: null};
         case 'cancelarOpcion':
@@ -36,9 +26,9 @@ const PublicacionReducer = (state,action) => {
         case 'onError':
             return {...state,  error: action.payload.error};
         case 'crearPublicacion':
-            return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
+            return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", multimedias:[], enlaces: [], opciones: []};
         case 'editarPublicacion':
-            return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", imagenes: [], videos: [], enlaces: [], opciones: []};
+            return {...state, currentPublicacion: {}, texto : null, tipoPub: 0, duracion: 0, unidad: "HOURS", multimedias:[], enlaces: [], opciones: []};
         case 'borrarMultimediaPublicacion':
             var multimediasCurrentPublicacion = []
             if (action.payload.publicacionInfo.multimedia.length > 0)

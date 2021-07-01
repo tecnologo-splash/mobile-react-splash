@@ -84,7 +84,7 @@ const AddMultimedia = () => {
                                     {item.tipo === "Videos"?
                                         <Video
                                         ref={video}
-                                        style={{ width: item.width/2, height: item.height/2 }}
+                                        style={{height: 300}}
                                         source={{ uri: item.uri }}
                                         useNativeControls
                                         resizeMode="contain"
@@ -92,7 +92,7 @@ const AddMultimedia = () => {
                                         onPlaybackStatusUpdate={status => setStatus(() => status)}
                                         />
                                         :
-                                        <Image source = {{ uri: item.uri}} style={{ width: item.width/2, height: item.height/2}}/>
+                                        <Image source = {{ uri: item.uri}} style={{height: 300}}/>
                                     }
                                     {item.uri.startsWith(baseUriMultimedia)?
                                         <Text style = {styles.buttonText} onPress={()=>borrarMultimedia(currentPublicacion.id, item.id)}>Borrar</Text>
