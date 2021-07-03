@@ -26,14 +26,12 @@ const NuevaConversacion = () => {
     }
     
     const selecUsuarioParaConversar = async (id, nombre, url_perfil) => {
-        console.log(id, nombre)
         const response = await verificaSiExisteConversacion(id)
-        console.log('respuesta', response)
         if (response){
             cambiarValor({variable: 'to_usuario_id', valor: ''})
             cambiarValor({variable: 'to_usuario_nombre', valor: ''})
             cambiarValor({variable: 'usuario', valor: ''})
-            navigation.navigate("MensajesConversacion", {chat_id: id, nombre_chat: nombre, url_perfil: url_perfil})
+            navigation.navigate("MensajesConversacion", {chat_id: response.chat_id, nombre_chat: nombre, url_perfil: url_perfil})
         }else{
             cambiarValor({variable: 'to_usuario_id', valor: id})
             cambiarValor({variable: 'to_usuario_nombre', valor: nombre})
@@ -46,14 +44,23 @@ const NuevaConversacion = () => {
         cambiarValor({variable: 'to_usuario_nombre', valor: ''})
     }
 
-    const enviar = () => {
+    const enviar = async () => {
         if(to_usuario_id !== '' && mensaje !== ''){
             var formData = { to_usuario_id, mensaje, tipoMensajeEnum }
             crearConversacion(formData);
-            cambiarValor({variable: 'to_usuario_id', valor: ''})
-            cambiarValor({variable: 'to_usuario_nombre', valor: ''})
-            cambiarValor({variable: 'usuario', valor: ''})
-            cambiarValor({variable: 'mensaje', valor: ''})
+            const response = await verificaSiExisteConversacion(to_usuario_id)
+            if (response){
+                cambiarValor({variable: 'to_usuario_id', valor: ''})
+                cambiarValor({variable: 'to_usuario_nombre', valor: ''})
+                cambiarValor({variable: 'usuario', valor: ''})
+                cambiarValor({variable: 'mensaje', valor: ''})
+                navigation.navigate("MensajesConversacion", {chat_id: response.chat_id, nombre_chat: response.nombre_chat, url_perfil: response.url_perfil})
+            }else{
+                cambiarValor({variable: 'to_usuario_id', valor: id})
+                cambiarValor({variable: 'to_usuario_nombre', valor: nombre})
+                cambiarValor({variable: 'usuario', valor: ''})
+                cambiarValor({variable: 'mensaje', valor: ''})
+            }
         }else{
             mostrarAlerta("Error", "Debe seleccionar un usuario y escribir un mensaje")
         }
