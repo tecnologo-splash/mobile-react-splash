@@ -51,6 +51,10 @@ const PublicacionReducer = (state,action) => {
             return {...state, publicacionesUsuario: action.payload.publicacionesUsuario, redireccionar: false};
         case 'appendPublicacionesUsuario':
             return {...state, publicacionesUsuario: [...state.publicacionesUsuario, ...action.payload.publicacionesUsuario], redireccionar: false}
+        case 'listarPublicacionesExterno':
+            return {...state, publicacionesExterno: action.payload.publicacionesExterno, redireccionar: false};
+        case 'appendPublicacionesExterno':
+            return {...state, publicacionesExterno: [...state.publicacionesExterno, ...action.payload.publicacionesExterno], redireccionar: false}
         case 'listarPublicacionesMuro':
             return {...state, publicaciones: action.payload.publicaciones, redireccionar: false};
         case 'appendPublicacionesMuro':
@@ -260,6 +264,25 @@ const listarPublicacionesUsuario = dispatch => async ({userId, page, tipoOrden,o
         dispatch({type: 'cambiarValor', payload:{variable:'redireccionar', valor:true}})
     }
 }
+
+const listarPublicacionesExterno = dispatch => async ({userId, page, tipoOrden,orden}) =>{
+    try{
+        console.log(`/posts/users/${userId}?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
+        var response = await settings.get(`/posts/users/${userId}?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
+        if(response.status === 403){
+            dispatch({type: 'cambiarValor', payload:{variable:'redireccionar', valor:true}})
+        }
+        if(page == 0){
+            dispatch({type: 'listarPublicacionesExterno', payload: {publicacionesExterno: response.data.content}})
+        }else{
+            dispatch({type: 'appendPublicacionesExterno', payload: {publicacionesExterno: response.data.content}})
+        }
+    }catch(e){
+        console.log(e);
+        dispatch({type: 'cambiarValor', payload:{variable:'redireccionar', valor:true}})
+    }
+}
+
 const reaccionarPublicacion = dispatch => async ({publicacionId, tipoReaccion}) => {
     try{
         dispatch({type: "reaccionar", payload:{publicacionId, tipoReaccion}});
@@ -316,6 +339,7 @@ const initialState = {
     cargando: false,
     publicaciones: [],
     publicacionesUsuario: [],
+    publicacionesExterno: [],
     tipoOrden: tipoOrdenPublicacion[0],
     orden: ordenPublicacion._desc,
 }
@@ -334,6 +358,7 @@ export const {Context, Provider} = crearContext(
      agregarEnlace, 
      cancelarEnlace,
      listarPublicacionesMuro,
+     listarPublicacionesExterno,
      reaccionarPublicacion,
      eliminarReaccion,
      listarPublicacionesUsuario,

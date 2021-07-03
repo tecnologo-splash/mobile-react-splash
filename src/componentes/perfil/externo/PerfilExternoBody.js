@@ -14,7 +14,7 @@ import Denuncia from './Denuncia';
 import InfoSeguidoresExterno from './InfoSeguidoresExterno';
 
 const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_perfil, genero, fecha_nacimiento, biografia, cantidad_usuarios_seguidores, cantidad_usuarios_siguiendo, lo_sigo}}) => {
-    const {state:{publicacionesUsuario, orden, tipoOrden},listarPublicacionesUsuario} = useContext(PublicacionContext);
+    const {state:{publicacionesExterno, orden, tipoOrden},listarPublicacionesExterno} = useContext(PublicacionContext);
     const {dejarDeSeguirUsuario, seguirUsuario} = useContext(ListarUsuariosContext);
     const {cambiar_lo_sigo} = useContext(PerfilContext);
     const [page,setPage] = useState(0);
@@ -33,7 +33,7 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
 
 
     const publicacionesUsuarioLista = (pagina)=>{
-        listarPublicacionesUsuario({userId: id,page: pagina,tipoOrden,orden});
+        listarPublicacionesExterno({userId: id,page: pagina,tipoOrden,orden});
         setPage(pagina+1);
     }
 
@@ -74,7 +74,7 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
             {lo_sigo?
                 <View>
                     <InfoSeguidoresExterno cantSeguidores= {cantidad_usuarios_seguidores} cantSeguidos={cantidad_usuarios_siguiendo} />
-                    <MoreInfo genero={genero} fecha_nacimiento={fecha_nacimiento} biografia={biografia} publicaciones={publicacionesUsuario} />
+                    <MoreInfo genero={genero} fecha_nacimiento={fecha_nacimiento} biografia={biografia} publicaciones={publicacionesExterno} />
                 </View>
                 :
                 <Text style={{alignSelf: 'center', marginTop:5}}>Seguir para mas informacion</Text>
