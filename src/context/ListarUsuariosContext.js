@@ -58,18 +58,12 @@ const listarUsuariosParaSeguir = dispatch => async ({filtro,valor, page, current
 const listarUsuariosSugeridos= dispatch => async ({page, currentUser}) => {
     try{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
-        const endpoint = `/seguidores/recomendados?page=${page}&size=${requestSizeListarSeguidos}`;
-        console.log(endpoint);
         const response = await settings.get(`/seguidores/recomendados?page=${page}&size=${requestSizeListarSugeridos}`);
-        if(page == 0){
+        // if(page == 0){
             dispatch({type:'listarSugeridos', payload: {sugeridos: response.data.filter(sugerido=>sugerido.usuario!=currentUser)}});
-        }else{
-            dispatch({type:'appendSugeridos', payload: {sugeridos: response.data.filter(sugerido=>sugerido.usuario!=currentUser)}});
-        }
-        console.log("sugeridos sin filtro", response.data);
-        console.log("currentUser", currentUser);
-        console.log("sugerido:",response.data.filter(sugerido=>sugerido.id!=currentUser));
-        dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
+        // }else{
+        //     dispatch({type:'appendSugeridos', payload: {sugeridos: response.data.filter(sugerido=>sugerido.usuario!=currentUser)}});
+        // }
     }catch(e){
         console.log("error en listar usuarios sugeridos",e);
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});

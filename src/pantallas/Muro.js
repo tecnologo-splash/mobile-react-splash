@@ -35,7 +35,7 @@ const Muro = ({navigation}) => {
   //const interest = `users-${currentUser.id}`
   useEffect(()=>{
 
-    //init(`users-${currentUser.id}`); ///////// ES EL PUSHER
+    // init(`users-${currentUser.id}`); ///////// ES EL PUSHER
 
     setTodoaCero();
     if(redireccionar == true){
@@ -82,7 +82,7 @@ const Muro = ({navigation}) => {
         <View>
           {ocultarSugeridos? null:
             <View>
-              <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
+              <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)} onStart={()=>listarSugeridos(pageSugeridos-2)}/>
             </View>
           }
           <ListadoPublicaciones 
