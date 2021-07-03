@@ -29,7 +29,7 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
         if (lo_sigo){
           publicacionesUsuarioLista(0);
         }
-    },[usuario, orden, tipoOrden, lo_sigo]);
+    },[usuario, orden, tipoOrden, lo_sigo, id]);
 
 
     const publicacionesUsuarioLista = (pagina)=>{
