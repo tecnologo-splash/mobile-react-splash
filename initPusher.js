@@ -32,7 +32,7 @@ console.log(notification);
             break;
         }
     } else {
-        // console.log("android handled notification...");
+        console.log("android handled notification...");
     }
 }
 
