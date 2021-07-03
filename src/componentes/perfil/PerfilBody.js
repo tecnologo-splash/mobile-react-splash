@@ -27,7 +27,7 @@ const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantida
       navigation.setOptions({ title: `${nombre} ${apellido}`});
       publicacionesUsuarioLista(0);
     }
-  },[usuario, orden, tipoOrden]);
+  },[usuario, orden, tipoOrden, id]);
 
   const publicacionesUsuarioLista = (pagina)=>{
     listarPublicacionesUsuario({userId: id,page: pagina,tipoOrden,orden});

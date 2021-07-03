@@ -33,7 +33,6 @@ const ListadoSugeridos = ({sugeridos, onEnd}) => {
       <FlatList
         showsHorizontalScrollIndicator={false}
         data={sugeridos}
-        horizontal={true}
         keyExtractor={keyExtractor}
         onEndReached={()=>onEnd()}
         renderItem={renderItem}

@@ -59,10 +59,9 @@ const NavBar = ({buscador, tituloNavBar}) => {
           <Tooltip
             backgroundColor="#6d31bf"
             withOverlay= {false}
-
             popover={<MenuTooltip />}>
-            <Appbar.Action icon="dots-vertical" color='#fff'/>
-            </Tooltip>
+             <Appbar.Action icon="dots-vertical" color='#fff'/>
+          </Tooltip>
           </>
           :
           <Text style={styles.text}>{tituloNavBar}</Text>

@@ -19,14 +19,13 @@ const EditarPerfil = () => {
 
   const [fechaSeleccionada, setFechaSeleccionada] = useState(false);
   const navigation = useNavigation();
- 
+
+  const [newNotif, setNewNotif] = useState(configNotif) 
   
   useEffect(()=>{
-    getConfigNotif()
-  },[])
+    setNewNotif(configNotif)
+  },[configNotif])
 
-
-  const [newNotif, setNewNotif] = useState({configNotif})
   const onChangeNotif = (name, value) => {
     setNewNotif({...newNotif, [name]: value});
   }
@@ -137,18 +136,20 @@ const EditarPerfil = () => {
         <Title><Ionicons size={24} name="notifications-outline"/> Configurar Notificaciones</Title>
 
         {notificaciones.map((notificacion)=>{
-          
+          const name = notificacion.name;
           return(
             <View style={styles.cont}>
               <View style={styles.pickerContainer}>
                 <Text style={{fontSize:20}}>{notificacion.text}</Text>
+                {console.log("configNotif:", newNotif)}
                 <Picker
                   style={styles.picker}
-                  selectedValue={newNotif[notificacion.name]}
+                  //selectedValue={newNotif[notificacion.name]}
+                  selectedValue={newNotif[name]}
                   dropdownIconColor='#ffffff'
                   //itemStyle={{alignSelf: 'center'}}
                   onValueChange={(itemValue, itemIndex) =>
-                    onChangeNotif(notificacion.name, itemValue)
+                    onChangeNotif(name, itemValue)
                   }
                   >
 

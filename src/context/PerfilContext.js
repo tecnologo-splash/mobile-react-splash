@@ -42,6 +42,7 @@ const getInfo = (dispatch) => async () =>{
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         console.log('/users/info');
         const response = await settings.get('/users/info' );
+        console.log(response.data.id)
         dispatch({type: 'getInfo', payload: {userInfo:response.data}});
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: false}});
 

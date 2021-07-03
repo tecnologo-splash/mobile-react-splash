@@ -32,10 +32,10 @@ const Muro = ({navigation}) => {
   const {state:{currentUser}}= useContext(PerfilContext);
 
 
-  const interest = `users-${currentUser.id}`
+  //const interest = `users-${currentUser.id}`
   useEffect(()=>{
 
-    //init(interest); ///////// ES EL PUSHER
+    init(`users-${currentUser.id}`); ///////// ES EL PUSHER
 
     setTodoaCero();
     if(redireccionar == true){

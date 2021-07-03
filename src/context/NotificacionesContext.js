@@ -28,6 +28,7 @@ const getConfigNotif = (dispatch) => async () =>{
     
     try {
         const response = await settings.get('/configuracion-notificaciones', {headers: {'Content-Type': "application/json"}} );
+
         dispatch({type: 'getConfigNotif', payload: {configNotif:response.data}});
     } catch (e) {
         console.log(e);
@@ -37,9 +38,12 @@ const getConfigNotif = (dispatch) => async () =>{
 
 const editarNotif = (dispatch) => async (newNotif)=> {
     try{
-        await settings.patch(`configuracion-notificaciones`, newNotif);
+        console.log("en el contexto",newNotif)
+        await settings.patch(`configuracion-notificaciones`, newNotif)
         
+        dispatch({type: 'getConfigNotif', payload: {configNotif:newNotif}});
         dispatch({type:'onError', payload: {error: {titulo: 'Exito en editar perfil', cuerpo: 'Se ha actualizado su perfil', anterior: 'EditarPerfil', styleError: styles.success}}});
+
     }catch(e){
         dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo editar el perfil", activacion: null}}});
     }
