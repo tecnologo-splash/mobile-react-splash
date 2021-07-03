@@ -35,7 +35,7 @@ const Muro = ({navigation}) => {
   //const interest = `users-${currentUser.id}`
   useEffect(()=>{
 
-    init(`users-${currentUser.id}`); ///////// ES EL PUSHER
+    //init(`users-${currentUser.id}`); ///////// ES EL PUSHER
 
     setTodoaCero();
     if(redireccionar == true){
@@ -74,7 +74,7 @@ const Muro = ({navigation}) => {
   }
 
   return (
-    <View style={{ paddingBottom: 170, flex:1}}>
+    <View style={{ flex:1}}>
       <NavBar buscador={true} tituloNavBar={''}/>
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
@@ -99,7 +99,9 @@ const Muro = ({navigation}) => {
                 }
               </View>
             </Portal>
+            <View style={{paddingBottom: 200}}>
             <BotonOrden/>
+            </View>
           </Portal.Host>
         </View>
       }
