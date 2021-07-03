@@ -41,7 +41,7 @@ const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantida
   return (
     <View style={styles.scroll}>
       
-      <ScrollView onScrollEndDrag={()=>publicacionesUsuarioLista(page)}>
+    <ScrollView>
       <ListItem>
           <Avatar 
             rounded 
@@ -59,19 +59,21 @@ const PerfilBody = ({usuario:{id,url_perfil,cantidad_usuarios_seguidores,cantida
           <InfoBasica nombre={nombre} usuario={usuario} apellido={apellido} correo={correo} />
         </ListItem>
         <Divider style={{ backgroundColor: '#6F32C1' }} />
-        <View>
-          <InfoSeguidores cantSeguidores= {cantidad_usuarios_seguidores} cantSeguidos={cantidad_usuarios_siguiendo} />
-          <MoreInfo 
-            genero={genero} 
-            fecha_nacimiento={fecha_nacimiento} 
-            biografia={biografia} 
-            publicaciones={publicacionesUsuario}/>
-        </View>
+        <InfoSeguidores cantSeguidores= {cantidad_usuarios_seguidores} cantSeguidos={cantidad_usuarios_siguiendo} />
       </ScrollView>
-      <Portal.Host>
-        <BotonOrden />
-      </Portal.Host>
-      <IconoEditar/>
+        <MoreInfo 
+          genero={genero} 
+          fecha_nacimiento={fecha_nacimiento} 
+          biografia={biografia} 
+          publicaciones={publicacionesUsuario}
+          onEnd={()=>publicacionesUsuarioLista(page)}
+          onRefresh={()=>publicacionesUsuarioLista(0)} />
+        <Portal.Host style={{flex: 1}}>
+          <BotonOrden />
+          <IconoEditar/>
+        </Portal.Host>
+      
+      
     </View>
   );
 }

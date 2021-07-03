@@ -7,7 +7,7 @@ const IconoEditar = () => {
 
   const navigation = useNavigation();
   
-  return <Portal.Host> 
+  return (
       <Portal>
         <FAB
             style={styles.fab}
@@ -15,8 +15,7 @@ const IconoEditar = () => {
             icon="account-edit"
             onPress={() => navigation.navigate("EditarPerfil")}
         />
-      </Portal>
-  </Portal.Host>;
+      </Portal>);
 }
 
 const styles = StyleSheet.create({

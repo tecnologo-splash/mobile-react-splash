@@ -1,15 +1,22 @@
-import React from 'react';
-import { View } from 'react-native';
-import BotonOrden from '../muro/BotonOrden';
+import React, {useCallback} from 'react';
+import { View, FlatList } from 'react-native';
 import Publicacion from './Publicacion';
 
-const ListadoPublicaciones = ({publicaciones}) => {
+const ListadoPublicaciones = ({publicaciones, onEnd, onRefresh}) => {
 
   return (
     <View>
-    {publicaciones.map((publicacion,index)=>(
-      <Publicacion key={index} publicacion={publicacion}/>
-    ))}
+    <FlatList
+      data={publicaciones}
+      keyExtractor={useCallback((item, index)=> index.toString())}
+      onEndReachedThreshold={2}
+      refreshing={false}
+      renderItem={({item,index})=>(
+        <Publicacion key={index} publicacion={item}/>
+      )}
+      onEndReached={()=>onEnd()}
+      onRefresh={()=>onRefresh()}
+    />
     </View>
   );
 }

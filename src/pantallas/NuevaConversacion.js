@@ -94,7 +94,6 @@ const NuevaConversacion = () => {
                                 <Text style={styles.text}>{item.usuario}</Text>
                             </View>
                         </TouchableOpacity>
-                        // <Text onPress={()=>selecUsuarioParaConversar(item.id, item.usuario)}>{item.usuario}</Text>)}
                     )}
                 />
                 :

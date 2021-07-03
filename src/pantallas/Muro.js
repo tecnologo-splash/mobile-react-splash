@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import { View, ScrollView } from 'react-native';
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
@@ -14,6 +14,7 @@ import BotonOrden from '../componentes/muro/BotonOrden';
 import {Context as PerfilContext} from '../context/PerfilContext';
 import {Context as ComentariosContext} from '../context/ComentariosContext';
 import {Context as InicioSesionContext} from '../context/InicioSesionContext';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 
 import {init} from '../../initPusher';
@@ -23,6 +24,7 @@ const Muro = ({navigation}) => {
   const [page, setPage] = useState(0);
   const [pageSugeridos, setPageSugeridos] = useState(0);
   const[pagePublicaciones, setPagePublicaciones] = useState(0);
+  const[ocultarSugeridos, setOcultarSugeridos] = useState(false);
   const {cerrarSesion} = useContext(InicioSesionContext);
   const {state:{filtro,buscar,usuarios, cargando, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
   const {state:{publicaciones, orden, tipoOrden, redireccionar}, listarPublicacionesMuro} = useContext(PublicacionContext);
@@ -36,14 +38,20 @@ const Muro = ({navigation}) => {
     //init(interest); ///////// ES EL PUSHER
 
     setTodoaCero();
-    console.log("EJECUTO USE EFFECT", redireccionar);
     if(redireccionar == true){
-      console.log("EJECUTO USE EFFECT EN EL IF");
       cerrarSesion();
       navigation.navigate('InicioSesion');
     }
     
-  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar]);
+  },[]);
+
+  const memorizedCallback = useCallback(()=>{
+    setTodoaCero();
+    if(redireccionar == true){
+      cerrarSesion();
+      navigation.navigate('InicioSesion');
+    }
+  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar],)
 
   const setTodoaCero = ()=> {
     listarUsuarios(0);
@@ -66,21 +74,31 @@ const Muro = ({navigation}) => {
   }
 
   return (
-    <View style={{ paddingBottom: 160}}>
+    <View style={{ paddingBottom: 170, flex:1}}>
       <NavBar buscador={true} tituloNavBar={''}/>
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
         :
         <View>
-          <ScrollView  onMomentumScrollEnd={()=>listarPublicaciones(pagePublicaciones)} showsVerticalScrollIndicator={false}>
-          <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
+          {ocultarSugeridos? null:
+            <View>
+              <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
+            </View>
+          }
           <ListadoPublicaciones 
           publicaciones = {publicaciones}
-          onEnd={()=>listarPublicaciones(pagePublicaciones)} />
-          </ScrollView>
-          
+          onEnd={()=>listarPublicaciones(pagePublicaciones)} 
+          onRefresh={()=>listarPublicaciones(0)}/>
           <Cargando estaCargando={cargando} color={colores.appDefault} />
-          <Portal.Host>
+          <Portal.Host style={{flex: 1}}>
+            <Portal>
+              <View style={{alignItems:'flex-end'}}>
+                {ocultarSugeridos? 
+                <MaterialIcons name="keyboard-arrow-down" size={24} color="black" onPress={()=> setOcultarSugeridos(!ocultarSugeridos)}/>:
+                <MaterialIcons name="keyboard-arrow-up" size={24} color="black" onPress={()=> setOcultarSugeridos(!ocultarSugeridos)}/>
+                }
+              </View>
+            </Portal>
             <BotonOrden/>
           </Portal.Host>
         </View>

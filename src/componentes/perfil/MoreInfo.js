@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { getFecha, getGenero } from './getDatos';
-import { List } from 'react-native-paper';
+import { List, Portal } from 'react-native-paper';
 import ListadoPublicaciones from '../publicaciones/ListadoPublicaciones';
+import BotonOrden from '../muro/BotonOrden';
 
 
-const MoreInfo = ({genero,biografia,fecha_nacimiento, publicaciones}) => {
+const MoreInfo = ({genero,biografia,fecha_nacimiento, publicaciones, onEnd, onRefresh}) => {
   return (
+    <>
     <List.Section>
         <List.Accordion
         title="Mas Informacion">
@@ -20,9 +22,13 @@ const MoreInfo = ({genero,biografia,fecha_nacimiento, publicaciones}) => {
         </List.Accordion>
         </List.Accordion>
         <List.Accordion title="Publicaciones:">
-          <ListadoPublicaciones publicaciones = {publicaciones} />
+          <ListadoPublicaciones publicaciones = {publicaciones} onEnd={() =>onEnd()} onRefresh={() =>onRefresh()}/>
         </List.Accordion>
   </List.Section>
+  <Portal.Host style={{flex: 1}}>
+    <BotonOrden />
+  </Portal.Host>
+  </>
   );
 }
 
