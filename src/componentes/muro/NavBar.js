@@ -11,6 +11,7 @@ import {Context as ListarUsuariosContext} from '../../context/ListarUsuariosCont
 import MenuTooltip from './MenuTooltip';
 import { baseUriMultimedia } from '../../config/configs';
 import { colores } from '../../config/colores';
+import { Popable } from 'react-native-popable';
 
 const NavBar = ({buscador, tituloNavBar}) => {
   const navigation = useNavigation();
@@ -56,12 +57,7 @@ const NavBar = ({buscador, tituloNavBar}) => {
             style={styles.input}
           />
           {buscar != "" ?<Entypo name="cross" size={24} style={styles.cross} color={colores.blanco} onPress={()=>cambiarValor({variable:"buscar", valor: ""})} />:null}
-          <Tooltip
-            backgroundColor="#6d31bf"
-            withOverlay= {false}
-            popover={<MenuTooltip />}>
-             <Appbar.Action icon="dots-vertical" color='#fff'/>
-          </Tooltip>
+            <MenuTooltip />
           </>
           :
           <Text style={styles.text}>{tituloNavBar}</Text>

@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import { colores } from '../../config/colores';
 import {Context as InicioSesionContext} from '../../context/InicioSesionContext';
 import {useNavigation} from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
 
 const MenuTooltip = () => {
     const {cerrarSesion} = useContext(InicioSesionContext);
@@ -16,16 +17,15 @@ const MenuTooltip = () => {
     }
 
   return (
-      <View>
-          <Text style={styles.text} onPress={()=>cerrar()}>Cerrar Sesion</Text>
+      <View style = {styles.container}>
+          <FontAwesome name="sign-out" size={24} color={colores.blanco} onPress={()=>cerrar()}/>
       </View>
   );
 }
 
 const styles = StyleSheet.create({
-    text:{
-        color:colores.blanco,
-        margin:2
+    container:{
+        margin:5
     }
 })
 export default MenuTooltip;
