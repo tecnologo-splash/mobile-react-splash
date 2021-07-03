@@ -64,12 +64,17 @@ const Muro = ({navigation}) => {
   }
 
   const listarSugeridos = async (pagina) =>{
-    await listarUsuariosSugeridos({page: pagina, currentUser: currentUser.usuario});
+    if(pagina>=0){
+      await listarUsuariosSugeridos({page: pagina, currentUser: currentUser.usuario});
+    }
     setPageSugeridos(pagina+1);
   }
   
   const listarPublicaciones = async (pagina) =>{
-    await listarPublicacionesMuro({page: pagina, orden: orden, tipoOrden: tipoOrden});
+    if(pagina>=0){
+      await listarPublicacionesMuro({page: pagina, orden: orden, tipoOrden: tipoOrden});
+    }
+    
     setPagePublicaciones(pagina+1);
   }
 

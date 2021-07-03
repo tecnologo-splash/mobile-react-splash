@@ -57,9 +57,12 @@ const listarUsuariosParaSeguir = dispatch => async ({filtro,valor, page, current
 
 const listarUsuariosSugeridos= dispatch => async ({page, currentUser}) => {
     try{
+        console.log(`/seguidores/recomendados?page=${page}&size=${requestSizeListarSugeridos}`);
         dispatch({type: 'cambiarValor', payload:{variable: 'cargando', valor: true}});
         const response = await settings.get(`/seguidores/recomendados?page=${page}&size=${requestSizeListarSugeridos}`);
         // if(page == 0){
+            console.log("response.data en listar usuarios seguidos ",response.data.length)
+            console.log(response.data.filter(sugerido=>sugerido.usuario!=currentUser).length);
             dispatch({type:'listarSugeridos', payload: {sugeridos: response.data.filter(sugerido=>sugerido.usuario!=currentUser)}});
         // }else{
         //     dispatch({type:'appendSugeridos', payload: {sugeridos: response.data.filter(sugerido=>sugerido.usuario!=currentUser)}});
