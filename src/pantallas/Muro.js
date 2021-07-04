@@ -1,23 +1,25 @@
 import React, {useContext, useEffect, useState, useCallback} from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
-
+import { ListItem } from 'react-native-elements'
 import NavBar from '../componentes/muro/NavBar';
 import ListadoUsuarios from '../componentes/listado-usuarios/ListadoUsuarios';
 import ListadoSugeridos from '../componentes/listado-sugeridos/ListadoSugeridos';
 import ListadoPublicaciones from '../componentes/publicaciones/ListadoPublicaciones';
 import Cargando from '../componentes/Cargando';
 import { colores } from '../config/colores';
-import { List, Portal } from 'react-native-paper';
+import { List, Portal, FAB, Dialog, Button } from 'react-native-paper';
 import BotonOrden from '../componentes/muro/BotonOrden';
 import {Context as PerfilContext} from '../context/PerfilContext';
 import {Context as ComentariosContext} from '../context/ComentariosContext';
 import {Context as InicioSesionContext} from '../context/InicioSesionContext';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import RNPusherPushNotifications from 'react-native-pusher-push-notifications';
+import { notificaciones } from '../config/configs';
+import { getCurrentInfo } from '../servicios/infoService';
 
-
-import {init} from '../../initPusher';
+//import {init} from '../../initPusher';
 
 const Muro = ({navigation}) => {
 
@@ -29,13 +31,34 @@ const Muro = ({navigation}) => {
   const {state:{filtro,buscar,usuarios, cargando, sugeridos},listarUsuariosParaSeguir, listarUsuariosSugeridos} = useContext(ListarUsuariosContext);
   const {state:{publicaciones, orden, tipoOrden, redireccionar}, listarPublicacionesMuro} = useContext(PublicacionContext);
   const {state:{comentarios}} = useContext(ComentariosContext);
-  const {state:{currentUser}}= useContext(PerfilContext);
+  const {state:{currentUser}, getInfo}= useContext(PerfilContext);
+  
+  const [notificacionesVivas, setNotificacionesVivas] = useState([]);
+  const [cantNotificaciones, setCantNotificaciones] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const hideDialog = () => setVisible(false);
 
+  const vaciarNotificaciones = () =>{
+    const notif = notificacionesVivas;
+    
+    for (let i = notif.length; i > 0; i--) {
+      notif.pop();
+    }
+
+    setNotificacionesVivas(notif)
+    
+    setCantNotificaciones(0);
+    setVisible(false);
+  }
 
   //const interest = `users-${currentUser.id}`
   useEffect(()=>{
 
-    init(`users-${currentUser.id}`); ///////// ES EL PUSHER
+    getCurrentInfo().then((response)=>{
+        const id = response.data.id
+        init(`users-${id}`); 
+    })
+    
 
     setTodoaCero();
     if(redireccionar == true){
@@ -44,6 +67,73 @@ const Muro = ({navigation}) => {
     }
     
   },[]);
+
+
+  //*****************************//
+  //        Inicio PUSHER        //
+  //*****************************//
+  
+  const init = (interest) => {
+    // Set your app key and register for push
+    RNPusherPushNotifications.setInstanceId("467be457-32c8-4e24-bede-31f801954fbe");
+  
+    // Init interests after registration
+    RNPusherPushNotifications.on('registered', () => {
+      subscribe(interest);
+    });
+  
+    // Setup notification listeners
+    RNPusherPushNotifications.on('notification', handleNotification);
+  };
+  
+  const handleNotification = notification => {
+    console.log(notification);
+    
+    // iOS app specific handling
+        if (Platform.OS === 'ios') {
+            switch (notification.appState) {
+                case 'inactive':
+                // inactive: App came in foreground by clicking on notification.
+                //           Use notification.userInfo for redirecting to specific view controller
+                case 'background':
+                // background: App is in background and notification is received.
+                //             You can fetch required data here don't do anything with UI
+                case 'active':
+                // App is foreground and notification is received. Show a alert or something.
+                default:
+                break;
+            }
+        } else {
+            if (!notificacionesVivas.includes(notification.body)){
+              const notif = notificacionesVivas;
+              notif.push(notification.body);
+              setNotificacionesVivas(notif)
+              const cant = notif.length
+              setCantNotificaciones(cantNotificaciones+1)
+              
+            }
+            
+        }
+    }
+    
+    // Subscribe to an interest
+    const subscribe = interest => {
+    // Note that only Android devices will respond to success/error callbacks
+        RNPusherPushNotifications.subscribe(
+            interest,
+            (statusCode, response) => {
+            console.error(statusCode, response);
+            },
+            () => {
+            console.log('Success');
+            }
+        );
+    };
+    //*****************************//
+    //        FIN PUSHER           //
+    //*****************************//
+
+
 
   const memorizedCallback = useCallback(()=>{
     setTodoaCero();
@@ -64,17 +154,51 @@ const Muro = ({navigation}) => {
   }
 
   const listarSugeridos = async (pagina) =>{
-    await listarUsuariosSugeridos({page: pagina, currentUser: currentUser.usuario});
+    if(pagina>=0){
+      await listarUsuariosSugeridos({page: pagina, currentUser: currentUser.usuario});
+    }
     setPageSugeridos(pagina+1);
   }
   
   const listarPublicaciones = async (pagina) =>{
-    await listarPublicacionesMuro({page: pagina, orden: orden, tipoOrden: tipoOrden});
+    if(pagina>=0){
+      await listarPublicacionesMuro({page: pagina, orden: orden, tipoOrden: tipoOrden});
+    }
+    
     setPagePublicaciones(pagina+1);
   }
 
   return (
     <View style={{ flex:1}}>
+        <Portal>
+        
+        {cantNotificaciones > 0 &&
+        <FAB
+          style={styles.fab}
+          medium
+          label="hola"
+          icon="bell-outline"
+          onPress={()=>setVisible(true)}
+        />
+      }
+
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.ScrollArea>
+            <ScrollView contentContainerStyle={{paddingHorizontal: 24}}>
+              {
+                notificacionesVivas.map((notif,index)=>
+                  <ListItem key={index}>
+                    <ListItem.Content>
+                      <ListItem.Title>{notif}</ListItem.Title>
+                    </ListItem.Content>
+                  </ListItem>
+                )
+              }
+              <Button onPress={()=>vaciarNotificaciones()}>Vaciar Notificaciones</Button>
+            </ScrollView>
+          </Dialog.ScrollArea>
+        </Dialog>
+      </Portal>
       <NavBar buscador={true} tituloNavBar={''}/>
       {buscar!='' ? 
         <ListadoUsuarios usuarios={usuarios} onEnd={()=>listarUsuarios(page)}/>
@@ -82,7 +206,7 @@ const Muro = ({navigation}) => {
         <View>
           {ocultarSugeridos? null:
             <View>
-              <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)}/>
+              <ListadoSugeridos sugeridos={sugeridos} onEnd={()=>listarSugeridos(pageSugeridos)} onStart={()=>listarSugeridos(pageSugeridos-2)}/>
             </View>
           }
           <ListadoPublicaciones 
@@ -111,3 +235,15 @@ const Muro = ({navigation}) => {
 }
 
 export {Muro};
+
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    top: 100,
+    backgroundColor:'#6d31bf'
+  },
+
+})

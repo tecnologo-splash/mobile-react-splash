@@ -33,6 +33,7 @@ console.log(notification);
         }
     } else {
         console.log("android handled notification...");
+        return notification.body;
     }
 }
 
