@@ -15,8 +15,8 @@ const ListadoMensajesConversacion = ({mensajes, onEnd, onStart}) => {
   //fin de esto es solo para saber mi id
   
   const renderItem = useCallback(({item}) =>
-    <ListItem>
-      <ListItem.Content>
+    <ListItem color={colores.transparente}>
+      <ListItem.Content color={colores.transparente}>
         {item.from_usuario_id === currentUser.id?
             <>
             <View style = {styles.arrowBlueView}/>

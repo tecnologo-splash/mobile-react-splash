@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState, useCallback} from 'react';
-import { View, ScrollView } from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import { View } from 'react-native';
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
 
@@ -43,15 +43,7 @@ const Muro = ({navigation}) => {
       navigation.navigate('InicioSesion');
     }
     
-  },[]);
-
-  const memorizedCallback = useCallback(()=>{
-    setTodoaCero();
-    if(redireccionar == true){
-      cerrarSesion();
-      navigation.navigate('InicioSesion');
-    }
-  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar],)
+  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar]);
 
   const setTodoaCero = ()=> {
     listarUsuarios(0);
