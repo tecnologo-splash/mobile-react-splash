@@ -60,9 +60,11 @@ const MensajesConversacion = ({route, navigation}) => {
   }
 
   return (
-    <View style={{ paddingBottom: 160}}>
-      <ListadoMensajesConversacion mensajes={mensajesConversacion} onEnd={()=>listarMensajes(page)} onStart={()=>listarMensajes(0)}/>
-      <NuevoMensaje chat_id={chat_id} />
+    <View style={{alignItems:"flex-end", flexDirection:"row", flex:1}}>
+      <View style={{ flex:1}}>
+        <ListadoMensajesConversacion mensajes={mensajesConversacion} onEnd={()=>listarMensajes(page)} onStart={()=>listarMensajes(0)}/>
+        <NuevoMensaje chat_id={chat_id} />
+      </View>
     </View>
   );
 }

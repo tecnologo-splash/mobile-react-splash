@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React, {useContext, useEffect, useState, useCallback} from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
+=======
+import React, {useContext, useEffect, useState} from 'react';
+import { View } from 'react-native';
+>>>>>>> 57aa440a235af62d56edff1b9742694bdbe127fa
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
 import { ListItem } from 'react-native-elements'
@@ -66,6 +71,7 @@ const Muro = ({navigation}) => {
       navigation.navigate('InicioSesion');
     }
     
+<<<<<<< HEAD
   },[]);
 
 
@@ -142,6 +148,9 @@ const Muro = ({navigation}) => {
       navigation.navigate('InicioSesion');
     }
   },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar],)
+=======
+  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar]);
+>>>>>>> 57aa440a235af62d56edff1b9742694bdbe127fa
 
   const setTodoaCero = ()=> {
     listarUsuarios(0);
