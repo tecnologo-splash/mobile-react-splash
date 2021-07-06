@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Card} from 'react-native-paper';
 import { StyleSheet, Image} from 'react-native';
-import { Tooltip } from 'react-native-elements';
+import { Popable } from 'react-native-popable';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colores } from '../../config/colores';
 import Reacciones from './Reacciones';
@@ -28,10 +28,9 @@ const BotonesPublicacion = ({publicacion}) => {
 
   return (
         <Card.Content style={styles.container}>
-            <Tooltip
+            <Popable
             backgroundColor={colores.appDefault}
-            withOverlay={false}
-            popover={<Reacciones setIndex={index=>setIndex(index)} publicacionId={publicacion.id} miReaccion={publicacion.resumen_reaccion.mi_reaccion}/>}>
+            content={<Reacciones setIndex={index=>setIndex(index)} publicacionId={publicacion.id} miReaccion={publicacion.resumen_reaccion.mi_reaccion}/>}>
                 {publicacion.resumen_reaccion.mi_reaccion? 
                     <Button 
                     mode="outlined"
@@ -50,7 +49,7 @@ const BotonesPublicacion = ({publicacion}) => {
                         {selected.texto}
                     </Button>
                 }
-            </Tooltip>
+            </Popable>
             <Button 
             mode="outlined"
             style={{borderWidth:0}} 
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
         width: 25
     },
     container: {
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         flexDirection: 'row'
     },
     card:{
