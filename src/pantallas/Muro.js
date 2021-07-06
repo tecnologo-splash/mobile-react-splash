@@ -166,7 +166,6 @@ const Muro = ({navigation}) => {
         <FAB
           style={styles.fab}
           medium
-          label="hola"
           icon="bell-outline"
           onPress={()=>setVisible(true)}
         />
