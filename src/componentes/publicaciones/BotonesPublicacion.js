@@ -55,7 +55,7 @@ const BotonesPublicacion = ({publicacion}) => {
             style={{borderWidth:0}} 
             onPress={() => irAComentarios()}
             icon={()=>(<MaterialIcons name="insert-comment" size={22} color={colores.appDefault} />)}>
-                Comentar
+                Comentar {publicacion.comentarios.length>0? "("+publicacion.comentarios.length+")" : null }
             </Button>
         </Card.Content>
   );
