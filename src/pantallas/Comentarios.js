@@ -4,6 +4,7 @@ import {Context as ComentariosContext} from '../context/ComentariosContext';
 import TextoComentario from '../componentes/comentarios/TextoComentario';
 import Comentario from '../componentes/comentarios/Comentario';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
+import CantReacciones from '../componentes/comentarios/CantReacciones';
 
 const Comentarios = ({route}) => {
   const {publicacion} = route.params;
@@ -19,6 +20,7 @@ const Comentarios = ({route}) => {
   return (
     <View>
       <ScrollView>
+        <CantReacciones cantReacciones={publicacion.resumen_reaccion}/>
         {comentarios.map(comentario=>(
           <Comentario comentario={comentario} publicacionId={publicacion.id} usuarioCreadorId={publicacion.usuario_comun.id}/>
         ))}

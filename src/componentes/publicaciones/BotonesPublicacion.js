@@ -8,11 +8,13 @@ import { colores } from '../../config/colores';
 import Reacciones from './Reacciones';
 import { tiposReacciones } from '../../config/configs';
 import {Context as ComentariosContext} from '../../context/ComentariosContext';
+import {Context as PublicacionContext} from '../../context/PublicacionContext';
 
 const BotonesPublicacion = ({publicacion}) => {
     const [index, setIndex] = useState(0);
     const navigation = useNavigation();
     const{setComentarios} = useContext(ComentariosContext);
+    const {eliminarReaccion} = useContext(PublicacionContext);
     var [selected] = tiposReacciones.filter(i=>i.id===index);
     useEffect(()=>{
         if(publicacion.resumen_reaccion.mi_reaccion){
@@ -30,6 +32,7 @@ const BotonesPublicacion = ({publicacion}) => {
         <Card.Content style={styles.container}>
             <Popable
             backgroundColor={colores.appDefault}
+            onLongPress={()=>eliminarReaccion({publicacionId: publicacion.id})}
             content={<Reacciones setIndex={index=>setIndex(index)} publicacionId={publicacion.id} miReaccion={publicacion.resumen_reaccion.mi_reaccion}/>}>
                 {publicacion.resumen_reaccion.mi_reaccion? 
                     <Button 
