@@ -56,7 +56,7 @@ const Muro = ({navigation}) => {
 
     getCurrentInfo().then((response)=>{
         const id = response.data.id
-        init(`users-${id}`); 
+        // init(`users-${id}`); 
     })
     
 

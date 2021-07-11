@@ -230,6 +230,15 @@ const eliminarPublicacion = (dispatch) => async (pubId)=> {
     
 }
 
+const cancelarPublicacion = (dispatch) => async ()=> {
+    try{
+        dispatch({type:'editarPublicacion'});
+    }catch(e){
+        dispatch({type: 'onError', payload: {error: {tipo:"ERROR", mensaje: "No se pudo crear la publicación", activacion: null}}});
+    }
+    
+}
+
 const listarPublicacionesMuro = dispatch => async ({page, orden, tipoOrden}) =>{
     try{
         console.log(`/posts?page=${page}&size=${requestSizeListarPublicaciones}&orders=${tipoOrden.url}:${orden}`);
@@ -349,6 +358,7 @@ export const {Context, Provider} = crearContext(
     {cambiarValor, 
      crearPublicacion, 
      editarPublicacion , 
+     cancelarPublicacion,
      eliminarPublicacion, 
      agregarMultimedia,
      cancelarMultimedia,
