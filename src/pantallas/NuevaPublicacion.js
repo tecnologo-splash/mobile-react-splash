@@ -10,7 +10,7 @@
 
     const NuevaPublicacion = ({navigation}) => {
 
-      const {state:{currentPublicacion, tipoPub, texto, duracion, unidad, multimedias, enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
+      const {state:{currentPublicacion, tipoPub, texto, duracion, unidad, multimedias, enlaces, opciones}, cambiarValor, crearPublicacion, editarPublicacion, cancelarPublicacion, eliminarPublicacion } = useContext(PublicacionContext);
 
       const crear = () => {
         if ( texto === null || texto === ''){
@@ -63,11 +63,18 @@
         }else{
           var formData = { texto }
           editarPublicacion(currentPublicacion.id, formData, multimedias);
+          navigation.navigate("Muro");
         }
       }
 
       const eliminar = () => {
         eliminarPublicacion(currentPublicacion.id);
+        navigation.navigate("Muro");
+      }
+
+      const cancelar = () => {
+        cancelarPublicacion();
+        navigation.navigate("Muro");
       }
 
       const definoTipo = () =>{
@@ -86,7 +93,7 @@
 
       return (
       <View style={{ paddingBottom: 160}}>
-          <NavBar buscador={false} tituloNavBar={'Nueva publicación'}/>
+          <NavBar buscador={false} tituloNavBar={currentPublicacion.id?'Editar publicación':'Nueva publicación'}/>
           <ScrollView style={styles.container}>
             <TextInput
               label={currentPublicacion.texto ? currentPublicacion.texto : "Publicación"}
@@ -118,8 +125,8 @@
                 </Button>
               </>
             </View>
-            { definoTipo()}
-            {currentPublicacion.id ?
+          { definoTipo()}
+          {currentPublicacion.id ?
             <Button
               style={styles.button}
               onPress={()=>editar()}
@@ -135,13 +142,22 @@
             </Button>
           }
           {currentPublicacion.id ?
-            <Button
-              style={styles.button}
-              onPress={()=>eliminar()}
-              mode="outlined"
-              color="red"> 
-                Eliminar Publicación
-            </Button>
+            <>
+              <Button
+                style={styles.button}
+                onPress={()=>eliminar()}
+                mode="outlined"
+                color="red"> 
+                  Eliminar Publicación
+              </Button>
+              <Button
+                style={styles.button}
+                onPress={()=>cancelar()}
+                mode="outlined"
+                color="black">
+                  Cancelar
+              </Button>
+            </>
           :
             null
           }

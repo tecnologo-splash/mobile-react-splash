@@ -17,11 +17,16 @@ const ComentariosReducer = (state,action) => {
                 }
             }
             return state;
+        case "borrar_comentario_a_responder":
+            return {...state, comentario_a_responder: {id:-1, usuario:""}};
         default:
             return state;
     }
 }
 
+const borrar_comentario_a_responder = dispatch => () => {
+    dispatch({type:"borrar_comentario_a_responder"})
+}
 const crearComentario = dispatch => async ({text,publicacionId})=> {
     try{
         console.log("Texto de comentrio", text);
@@ -87,6 +92,6 @@ const initialState = {
 
 export const {Context, Provider} = crearContext(
     ComentariosReducer,
-    {crearComentario, setComentarios, eliminarComentario, setComentarioAResponder, responderComentario, eliminarRespuesta},
+    {crearComentario, setComentarios, eliminarComentario, setComentarioAResponder, responderComentario, eliminarRespuesta, borrar_comentario_a_responder},
     initialState,
 );

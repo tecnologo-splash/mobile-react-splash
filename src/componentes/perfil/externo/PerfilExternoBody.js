@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import {Avatar, ListItem, Divider} from 'react-native-elements';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import MoreInfo from '../MoreInfo';
-import { Text } from 'react-native';
+import { Text, Image } from 'react-native';
 import { baseUriMultimedia } from '../../../config/configs';
 import {Context as PublicacionContext} from '../../../context/PublicacionContext';
 import {Context as ListarUsuariosContext} from '../../../context/ListarUsuariosContext';
@@ -85,7 +85,10 @@ const PerfilExternoBody = ({usuario:{nombre,id, apellido, usuario, correo, url_p
                 onEnd={()=>publicacionesUsuarioLista(page)}
                 onRefresh={()=>publicacionesUsuarioLista(0)} />
               :
+              <View style={{alignItems: 'center', flex:1}}>
               <Text style={{alignSelf: 'center', marginTop:5}}>Seguir para mas informacion</Text>
+              <Image style={{height:300, width:300}} source={require('../../../../assets/404.png')}/>
+              </View>
           }
       <Portal.Host style={{flex: 1}}>
         <BotonOrden />

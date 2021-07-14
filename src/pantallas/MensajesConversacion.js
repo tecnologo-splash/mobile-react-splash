@@ -28,12 +28,12 @@ const MensajesConversacion = ({route, navigation}) => {
     var channel = pusher.subscribe(`chat-usuario-${currentUser.id}`);
     channel.bind(`nuevo-mensaje`, function(data) {
       
-      if( data.chatId === chat_id){
+      if( data.chat_id === chat_id){
         let mensaje = {
-          fecha_envio: data.fechaDeEnvio,
-          from_usuario_id: data.fromUsuarioId,
+          fecha_envio: data.fecha_envio,
+          from_usuario_id: data.from_usuario_id,
           mensaje: data.mensaje,
-          tipo_mensaje: data.tipoMensaje,
+          tipo_mensaje: data.tipo_mensaje,
           from_usuario_nombre_apellido: "Sin nombre"
         }
         appendMensajeConversacion(mensaje)

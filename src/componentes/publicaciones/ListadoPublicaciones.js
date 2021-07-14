@@ -11,6 +11,7 @@ const ListadoPublicaciones = ({publicaciones, onEnd, onRefresh}) => {
       keyExtractor={useCallback((item, index)=> index.toString())}
       onEndReachedThreshold={2}
       refreshing={false}
+      showsVerticalScrollIndicator={false}
       renderItem={({item,index})=>(
         <Publicacion key={index} publicacion={item}/>
       )}

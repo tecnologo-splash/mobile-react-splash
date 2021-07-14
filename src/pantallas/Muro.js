@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useCallback} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
@@ -56,7 +56,7 @@ const Muro = ({navigation}) => {
 
     getCurrentInfo().then((response)=>{
         const id = response.data.id
-        init(`users-${id}`); 
+        // init(`users-${id}`); 
     })
     
 
@@ -66,7 +66,7 @@ const Muro = ({navigation}) => {
       navigation.navigate('InicioSesion');
     }
     
-  },[]);
+  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar]);
 
 
   //*****************************//
@@ -132,16 +132,6 @@ const Muro = ({navigation}) => {
     //*****************************//
     //        FIN PUSHER           //
     //*****************************//
-
-
-
-  const memorizedCallback = useCallback(()=>{
-    setTodoaCero();
-    if(redireccionar == true){
-      cerrarSesion();
-      navigation.navigate('InicioSesion');
-    }
-  },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar],)
 
   const setTodoaCero = ()=> {
     listarUsuarios(0);

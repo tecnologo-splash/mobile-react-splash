@@ -2,17 +2,19 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Card} from 'react-native-paper';
 import { StyleSheet, Image} from 'react-native';
-import { Tooltip } from 'react-native-elements';
+import { Popable } from 'react-native-popable';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colores } from '../../config/colores';
 import Reacciones from './Reacciones';
 import { tiposReacciones } from '../../config/configs';
 import {Context as ComentariosContext} from '../../context/ComentariosContext';
+import {Context as PublicacionContext} from '../../context/PublicacionContext';
 
 const BotonesPublicacion = ({publicacion}) => {
     const [index, setIndex] = useState(0);
     const navigation = useNavigation();
     const{setComentarios} = useContext(ComentariosContext);
+    const {eliminarReaccion} = useContext(PublicacionContext);
     var [selected] = tiposReacciones.filter(i=>i.id===index);
     useEffect(()=>{
         if(publicacion.resumen_reaccion.mi_reaccion){
@@ -28,10 +30,10 @@ const BotonesPublicacion = ({publicacion}) => {
 
   return (
         <Card.Content style={styles.container}>
-            <Tooltip
+            <Popable
             backgroundColor={colores.appDefault}
-            withOverlay={false}
-            popover={<Reacciones setIndex={index=>setIndex(index)} publicacionId={publicacion.id} miReaccion={publicacion.resumen_reaccion.mi_reaccion}/>}>
+            onLongPress={()=>eliminarReaccion({publicacionId: publicacion.id})}
+            content={<Reacciones setIndex={index=>setIndex(index)} publicacionId={publicacion.id} miReaccion={publicacion.resumen_reaccion.mi_reaccion}/>}>
                 {publicacion.resumen_reaccion.mi_reaccion? 
                     <Button 
                     mode="outlined"
@@ -50,13 +52,13 @@ const BotonesPublicacion = ({publicacion}) => {
                         {selected.texto}
                     </Button>
                 }
-            </Tooltip>
+            </Popable>
             <Button 
             mode="outlined"
             style={{borderWidth:0}} 
             onPress={() => irAComentarios()}
             icon={()=>(<MaterialIcons name="insert-comment" size={22} color={colores.appDefault} />)}>
-                Comentar
+                Comentar {publicacion.comentarios.length>0? "("+publicacion.comentarios.length+")" : null }
             </Button>
         </Card.Content>
   );
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
         width: 25
     },
     container: {
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         flexDirection: 'row'
     },
     card:{

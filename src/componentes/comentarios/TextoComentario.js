@@ -7,7 +7,11 @@ import { Context as ComentariosContext } from '../../context/ComentariosContext'
 
 const TextoComentario = ({publicacionId}) => {
     const [texto, setTexto]= useState('');
-    const {state:{comentario_a_responder},crearComentario,responderComentario}= useContext(ComentariosContext);
+    const {state:{comentario_a_responder},crearComentario,responderComentario, borrar_comentario_a_responder}= useContext(ComentariosContext);
+
+    useEffect (() =>{
+        borrar_comentario_a_responder();
+    },[])
 
     const agregarNuevoComentario = async ()=> {
         if (comentario_a_responder.id === -1){
