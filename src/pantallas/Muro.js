@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet,StatusBar } from 'react-native';
 import {Context as ListarUsuariosContext} from '../context/ListarUsuariosContext';
 import {Context as PublicacionContext} from '../context/PublicacionContext';
 import { ListItem } from 'react-native-elements'
@@ -160,6 +160,12 @@ const Muro = ({navigation}) => {
 
   return (
     <View style={{ flex:1}}>
+        <StatusBar
+        animated={true}
+        backgroundColor={colores.appDefault}
+        barStyle='dark-content'
+        showHideTransition='fade'
+        hidden={false} />
         <Portal>
         
         {cantNotificaciones > 0 &&
