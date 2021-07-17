@@ -37,6 +37,7 @@ const Muro = ({navigation}) => {
   const [cantNotificaciones, setCantNotificaciones] = useState(0);
   const [visible, setVisible] = useState(false);
   const hideDialog = () => setVisible(false);
+  const [id,setId] = useState(null);
 
   const vaciarNotificaciones = () =>{
     const notif = notificacionesVivas;
@@ -56,14 +57,17 @@ const Muro = ({navigation}) => {
 
     getCurrentInfo().then((response)=>{
         const id = response.data.id
-        // init(`users-${id}`); 
+        setId(response.data.id)
+        init(`users-${id}`); 
     })
     
 
     setTodoaCero();
     if(redireccionar == true){
+      
       cerrarSesion();
       navigation.navigate('InicioSesion');
+
     }
     
   },[buscar, filtro, orden, tipoOrden, currentUser, comentarios, redireccionar]);
@@ -129,6 +133,18 @@ const Muro = ({navigation}) => {
             }
         );
     };
+
+    const unsubscribe = interest => {
+      RNPusherPushNotifications.unsubscribe(
+          interest,
+          (statusCode, response) => {
+          console.tron.logImportant(statusCode, response);
+          },
+          () => {
+          console.tron.logImportant('Success');
+          }
+      );
+  };
     //*****************************//
     //        FIN PUSHER           //
     //*****************************//
